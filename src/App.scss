@@ -1,0 +1,11 @@
+@import "./assets/scss/functions";
+@import "./assets/scss/variables";
+
+.listing-profile-img {
+  width: 40px;
+  height: 40px;
+}
+
+.line-height-sm {
+  line-height: $line-height-base/1.5;
+}

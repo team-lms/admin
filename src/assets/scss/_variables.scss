@@ -108,7 +108,7 @@ $escaped-characters: (("<", "%3c"), (">", "%3e"), ("#", "%23")) !default;
 //
 // Quickly modify global styling by enabling or disabling optional features.
 
-$enable-caret: true !default;
+$enable-caret: false !default;
 $enable-rounded: true !default;
 $enable-shadows: false !default;
 $enable-gradients: false !default;
