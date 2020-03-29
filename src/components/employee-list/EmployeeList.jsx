@@ -69,10 +69,11 @@ const EmployeeList = () => {
                     <OverlayTrigger
                       trigger="click"
                       placement="top"
+                      rootClose="false"
                       overlay={
                         (
                           <Popover id={ `popover-positioned-${employee.id}` }>
-                            <Popover.Content bsPrefix="popover-body p-0 overflow-hidden rounded">
+                            <Popover.Content bsPrefix="popover-body p-0 overflow-hidden rounded-lg">
                               <div className="list-group list-group-flush">
                                 <Link className="list-group-item list-group-item-action py-1 px-2" to="/">Edit</Link>
                                 <Link className="list-group-item list-group-item-action py-1 px-2" to="/">Do more</Link>
