@@ -16,7 +16,7 @@ const SideNav = () => (
           </NavLink>
         </li>
         <li className="nav-item">
-          <NavLink className="nav-link d-flex align-items-center" activeClassName="active" to="/employees">
+          <NavLink className="nav-link d-flex align-items-center" activeClassName="active" to="/employee/list">
             <Users size={ 16 } />
             <span className="ml-1">Employees</span>
           </NavLink>

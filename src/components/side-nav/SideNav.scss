@@ -23,7 +23,7 @@
   font-weight: 500;
   color: #333;
   &.active {
-    background-color: $primary;
+    background: $primary linear-gradient(180deg, mix($body-bg, $primary, 15%), $primary) repeat-x;
     color: $white;
   }
   &:not(.active):hover {

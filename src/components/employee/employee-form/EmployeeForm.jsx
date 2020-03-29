@@ -85,6 +85,7 @@ const EmployeeForm = () => {
                   type="text"
                   id="emailField"
                   name="email"
+                  placeholder="example@domain.com"
                   value={ employeeDetails.email }
                   onChange={ handleChange }
                 />
@@ -98,6 +99,7 @@ const EmployeeForm = () => {
                   type="text"
                   id="phoneNumberField"
                   name="phoneNumber"
+                  placeholder="0000000000"
                   value={ employeeDetails.phoneNumber }
                   onChange={ handleChange }
                 />
@@ -111,6 +113,7 @@ const EmployeeForm = () => {
                   type="text"
                   id="whatsappNumberField"
                   name="whatsappNumber"
+                  placeholder="0000000000"
                   value={ employeeDetails.whatsappNumber }
                   onChange={ handleChange }
                 />
@@ -124,6 +127,7 @@ const EmployeeForm = () => {
                   type="text"
                   id="designationField"
                   name="designation"
+                  placeholder="Software Developer"
                   value={ employeeDetails.designation }
                   onChange={ handleChange }
                 />
@@ -147,8 +151,8 @@ const EmployeeForm = () => {
               </div>
             </div>
             <div className="col-12 text-right">
-              <button type="submit" className="btn btn-outline-primary mr-2">Create</button>
-              <Link type="submit" className="btn btn-outline-secondary" to="/employees">Cancel</Link>
+              <button type="submit" className="btn btn-primary mr-2">Create</button>
+              <Link type="submit" className="btn btn-secondary" to="/employee/list">Cancel</Link>
             </div>
           </div>
         </div>

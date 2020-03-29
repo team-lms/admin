@@ -27,8 +27,8 @@ function App() {
               <Switch>
                 <Redirect exact from="/" to="/dashboard" />
                 <Route exact path="/dashboard" component={ Dashboard } />
-                <Route exact path="/employees" component={ EmployeeList } />
-                <Route exact path="/employee/:id?" component={ EmployeeForm } />
+                <Route exact path="/employee" component={ EmployeeForm } />
+                <Route path="/employee/list" component={ EmployeeList } />
               </Switch>
             </main>
           </div>

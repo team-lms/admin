@@ -111,7 +111,7 @@ $escaped-characters: (("<", "%3c"), (">", "%3e"), ("#", "%23")) !default;
 $enable-caret: false !default;
 $enable-rounded: true !default;
 $enable-shadows: false !default;
-$enable-gradients: false !default;
+$enable-gradients: true !default;
 $enable-transitions: true !default;
 $enable-prefers-reduced-motion-media-query: true !default;
 $enable-hover-media-query: false !default; // Deprecated, no longer affects any compiled CSS
