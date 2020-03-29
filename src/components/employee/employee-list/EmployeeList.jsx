@@ -7,7 +7,7 @@ const EmployeeList = () => {
   const [employees, setEmployees] = useState([]);
 
   useEffect(() => {
-    setEmployees([...Array(20).keys()].map((key) => ({ id: key })));
+    setEmployees([...Array(20).keys()].map((key) => ({ id: key + 1 })));
   }, []);
 
   return (
@@ -75,7 +75,7 @@ const EmployeeList = () => {
                           <Popover id={ `popover-positioned-${employee.id}` }>
                             <Popover.Content bsPrefix="popover-body p-0 overflow-hidden rounded-lg">
                               <div className="list-group list-group-flush">
-                                <Link className="list-group-item list-group-item-action py-1 px-2" to="/">Edit</Link>
+                                <Link className="list-group-item list-group-item-action py-1 px-2" to={ `/employee/${employee.id}` }>Edit</Link>
                                 <Link className="list-group-item list-group-item-action py-1 px-2" to="/">Do more</Link>
                               </div>
                             </Popover.Content>

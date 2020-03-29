@@ -2,7 +2,6 @@
 // Released under MIT and copyright 2014 Waybury.
 // https://useiconic.com/open
 
-
 // Checkboxes and radios
 //
 // Base class takes care of all the key behavioral aspects.
@@ -106,7 +105,6 @@
   }
 }
 
-
 // Checkboxes
 //
 // Tweak just a few things for checkboxes.
@@ -166,7 +164,6 @@
   }
 }
 
-
 // switches
 //
 // Tweak a few things for switches
@@ -184,14 +181,17 @@
     }
 
     &::after {
-      top: add(($font-size-base * $line-height-base - $custom-control-indicator-size) / 2, $custom-control-indicator-border-width * 2);
+      top: add(
+        ($font-size-base * $line-height-base - $custom-control-indicator-size) / 2,
+        $custom-control-indicator-border-width * 2
+      );
       left: add(-($custom-switch-width + $custom-control-gutter), $custom-control-indicator-border-width * 2);
       width: $custom-switch-indicator-size;
       height: $custom-switch-indicator-size;
       background-color: $custom-control-indicator-border-color;
       // stylelint-disable-next-line property-blacklist
       border-radius: $custom-switch-indicator-border-radius;
-      @include transition(transform .15s ease-in-out, $custom-forms-transition);
+      @include transition(transform 0.15s ease-in-out, $custom-forms-transition);
     }
   }
 
@@ -209,7 +209,6 @@
   }
 }
 
-
 // Select
 //
 // Replaces the browser default select with a custom one, mostly pulled from
@@ -220,7 +219,8 @@
   display: inline-block;
   width: 100%;
   height: $custom-select-height;
-  padding: $custom-select-padding-y ($custom-select-padding-x + $custom-select-indicator-padding) $custom-select-padding-y $custom-select-padding-x;
+  padding: $custom-select-padding-y ($custom-select-padding-x + $custom-select-indicator-padding)
+    $custom-select-padding-y $custom-select-padding-x;
   font-family: $custom-select-font-family;
   @include font-size($custom-select-font-size);
   font-weight: $custom-select-font-weight;
@@ -236,11 +236,11 @@
   &:focus {
     border-color: $custom-select-focus-border-color;
     outline: 0;
-    @if $enable-shadows {
-      box-shadow: $custom-select-box-shadow, $custom-select-focus-box-shadow;
-    } @else {
-      box-shadow: $custom-select-focus-box-shadow;
-    }
+    // @if $enable-shadows {
+    //   box-shadow: $custom-select-box-shadow, $custom-select-focus-box-shadow;
+    // } @else {
+    //   box-shadow: $custom-select-focus-box-shadow;
+    // }
 
     &::-ms-value {
       // For visual consistency with other platforms/browsers,
@@ -292,7 +292,6 @@
   padding-left: $custom-select-padding-x-lg;
   @include font-size($custom-select-font-size-lg);
 }
-
 
 // File
 //
@@ -389,9 +388,15 @@
 
     // Pseudo-elements must be split across multiple rulesets to have an effect.
     // No box-shadow() mixin for focus accessibility.
-    &::-webkit-slider-thumb { box-shadow: $custom-range-thumb-focus-box-shadow; }
-    &::-moz-range-thumb     { box-shadow: $custom-range-thumb-focus-box-shadow; }
-    &::-ms-thumb            { box-shadow: $custom-range-thumb-focus-box-shadow; }
+    &::-webkit-slider-thumb {
+      box-shadow: $custom-range-thumb-focus-box-shadow;
+    }
+    &::-moz-range-thumb {
+      box-shadow: $custom-range-thumb-focus-box-shadow;
+    }
+    &::-ms-thumb {
+      box-shadow: $custom-range-thumb-focus-box-shadow;
+    }
   }
 
   &::-moz-focus-outer {
@@ -456,7 +461,7 @@
     height: $custom-range-thumb-height;
     margin-top: 0; // Edge specific
     margin-right: $custom-range-thumb-focus-box-shadow-width; // Workaround that overflowed box-shadow is hidden.
-    margin-left: $custom-range-thumb-focus-box-shadow-width;  // Workaround that overflowed box-shadow is hidden.
+    margin-left: $custom-range-thumb-focus-box-shadow-width; // Workaround that overflowed box-shadow is hidden.
     @include gradient-bg($custom-range-thumb-bg);
     border: $custom-range-thumb-border;
     @include border-radius($custom-range-thumb-border-radius);

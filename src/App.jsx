@@ -11,7 +11,8 @@ import {
 import Navbar from './components/navbar/Navbar';
 import SideNav from './components/side-nav/SideNav';
 import Dashboard from './components/dashboard/Dashboard';
-import EmployeeList from './components/employee-list/EmployeeList';
+import EmployeeList from './components/employee/employee-list/EmployeeList';
+import EmployeeForm from './components/employee/employee-form/EmployeeForm';
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
                 <Redirect exact from="/" to="/dashboard" />
                 <Route exact path="/dashboard" component={ Dashboard } />
                 <Route exact path="/employees" component={ EmployeeList } />
+                <Route exact path="/employee/:id?" component={ EmployeeForm } />
               </Switch>
             </main>
           </div>
