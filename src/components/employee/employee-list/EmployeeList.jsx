@@ -2,12 +2,22 @@ import React, { useState, useEffect } from 'react';
 import { MoreHorizontal } from 'react-feather';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import moment from 'moment';
+import { Employee } from '../../services/http-services/http-service';
 
 const EmployeeList = () => {
   const [employees, setEmployees] = useState([]);
+  const [count, setCount] = useState([]);
+
+
+  const getEmployeeList = async () => {
+    const { count: totalCount, rows } = await Employee.getEmployeeList();
+    setCount(totalCount);
+    setEmployees(rows);
+  };
 
   useEffect(() => {
-    setEmployees([...Array(20).keys()].map((key) => ({ id: key + 1 })));
+    getEmployeeList();
   }, []);
 
   return (
@@ -36,15 +46,20 @@ const EmployeeList = () => {
           <tbody>
             {
               employees.map((employee) => (
+
                 <tr key={ employee.id }>
                   <td className="py-2">
                     <div className="d-flex align-items-center">
                       <img className="rounded-circle listing-profile-img border" src="https://randomuser.me/api/portraits/lego/3.jpg" alt="Rodney Gibson" />
                       <div className="ml-2">
                         <span className="d-inline-block line-height-sm">
-                          Rodney Gibson
+                          {employee.firstName}
+                          {' '}
+                          {employee.lastName}
                           <br />
-                          <small className="text-muted">(Since 19th Aug 2019)</small>
+                          <small className="text-muted">
+                            {moment(employee.createdAt).format('LL')}
+                          </small>
                         </span>
                       </div>
                     </div>
@@ -52,9 +67,9 @@ const EmployeeList = () => {
                   <td className="py-2">
                     <span className="d-inline-block">
                       <span className="d-inline-block line-height-sm">
-                        rodney.gibson@example.com
+                        {employee.email}
                         <br />
-                        <small className="text-muted">(551)-070-6119</small>
+                        <small className="text-muted">{employee.phoneNumber}</small>
                       </span>
                     </span>
                   </td>
