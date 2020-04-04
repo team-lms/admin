@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { validate as Validator } from 'validate.js';
 
 const EmployeeForm = () => {
   const [employeeForm, setEmployeeForm] = useState({
     submitted: false,
     errors: null
   });
+
   const [employeeDetails, setEmployeeDetails] = useState({
     firstName: '',
     lastName: '',
@@ -16,12 +18,37 @@ const EmployeeForm = () => {
     status: ''
   });
 
+  useEffect(() => {
+    const validationResult = Validator.validate(employeeDetails, {
+      firstName: { presence: { allowEmpty: false } },
+      email: { presence: { allowEmpty: false }, email: true },
+      phoneNumber: { presence: { allowEmpty: false }, length: { is: 10 } },
+      whatsappNumber: { length: { is: 10 } },
+      designation: { presence: { allowEmpty: false } },
+      status: { presence: { allowEmpty: false } }
+    });
+
+    if (typeof employeeDetails !== 'undefined') {
+      if (employeeDetails.whatsappNumber.length === 0) {
+        delete validationResult.whatsappNumber;
+      }
+    }
+
+    setEmployeeForm((prev) => ({
+      ...prev,
+      errors: validationResult || null
+    }));
+  }, [employeeDetails]);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     setEmployeeForm(() => ({
       ...employeeForm,
       submitted: true
     }));
+    if (!employeeForm.errors) {
+
+    }
   };
 
   const handleChange = (event) => {
@@ -32,16 +59,11 @@ const EmployeeForm = () => {
     }));
   };
 
-  useEffect(() => {
-    console.log();
-  }, [employeeDetails]);
-
   return (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 className="h3">New Employee</h1>
       </div>
-
       <form onSubmit={ handleSubmit }>
         <div className="p-3 border rounded">
           <div className="form-row">
@@ -59,6 +81,11 @@ const EmployeeForm = () => {
                       value={ employeeDetails.firstName }
                       onChange={ handleChange }
                     />
+                    {(employeeForm.submitted && employeeForm.errors
+                    && employeeForm.errors.firstName)
+                    && (
+                      <span className="text-danger">{employeeForm.errors.firstName[0]}</span>
+                    )}
                   </div>
                 </div>
                 <div className="col-6">
@@ -89,6 +116,11 @@ const EmployeeForm = () => {
                   value={ employeeDetails.email }
                   onChange={ handleChange }
                 />
+                {(employeeForm.submitted && employeeForm.errors && employeeForm.errors.email)
+                && (employeeForm.errors.email[0]
+                  ? (<span className="text-danger">{employeeForm.errors.email[0]}</span>)
+                  : (<span className="text-danger">{employeeForm.errors.email[1]}</span>)
+                )}
               </div>
             </div>
             <div className="col-6">
@@ -103,6 +135,11 @@ const EmployeeForm = () => {
                   value={ employeeDetails.phoneNumber }
                   onChange={ handleChange }
                 />
+                {(employeeForm.submitted && employeeForm.errors && employeeForm.errors.phoneNumber)
+                && (employeeForm.errors.phoneNumber[0]
+                  ? (<span className="text-danger">{employeeForm.errors.phoneNumber[0]}</span>)
+                  : (<span className="text-danger">{employeeForm.errors.phoneNumber[1]}</span>)
+                )}
               </div>
             </div>
             <div className="col-6">
@@ -117,6 +154,15 @@ const EmployeeForm = () => {
                   value={ employeeDetails.whatsappNumber }
                   onChange={ handleChange }
                 />
+                {(employeeForm.submitted
+                && employeeForm.errors
+                && employeeForm.errors.whatsappNumber)
+                && (
+                <span className="text-danger">
+                  {employeeForm.errors.whatsappNumber[0]}
+                </span>
+                )}
+
               </div>
             </div>
             <div className="col-6">
@@ -131,6 +177,8 @@ const EmployeeForm = () => {
                   value={ employeeDetails.designation }
                   onChange={ handleChange }
                 />
+                {(employeeForm.submitted && employeeForm.errors && employeeForm.errors.designation)
+                && (<span className="text-danger">{employeeForm.errors.designation[0]}</span>)}
               </div>
             </div>
             <div className="col-6">
@@ -148,6 +196,8 @@ const EmployeeForm = () => {
                   <option value="Active">Active</option>
                   <option value="Inactive">Inactive</option>
                 </select>
+                {(employeeForm.submitted && employeeForm.errors && employeeForm.errors.status)
+                  && (<span className="text-danger">{employeeForm.errors.status[0]}</span>)}
               </div>
             </div>
             <div className="col-12 text-right">

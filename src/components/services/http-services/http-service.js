@@ -11,6 +11,7 @@ const Employee = {
       return error;
     }
   }
+
 };
 
 module.exports = {
