@@ -11,9 +11,6 @@ const Employee = {
       return error;
     }
   }
-
 };
 
-module.exports = {
-  Employee
-};
+export default Employee;

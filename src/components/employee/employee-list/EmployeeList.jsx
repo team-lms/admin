@@ -3,7 +3,7 @@ import { MoreHorizontal } from 'react-feather';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
-import { Employee } from '../../services/http-services/http-service';
+import Employee from '../../services/http-services/http-service';
 
 const EmployeeList = () => {
   const [employees, setEmployees] = useState([]);
@@ -53,12 +53,12 @@ const EmployeeList = () => {
                       <img className="rounded-circle listing-profile-img border" src="https://randomuser.me/api/portraits/lego/3.jpg" alt="Rodney Gibson" />
                       <div className="ml-2">
                         <span className="d-inline-block line-height-sm">
-                          {employee.firstName}
-                          {' '}
-                          {employee.lastName}
+                          { employee.firstName }
+                          { ' ' }
+                          { employee.lastName }
                           <br />
                           <small className="text-muted">
-                            {moment(employee.createdAt).format('LL')}
+                            { moment(employee.createdAt).format('LL') }
                           </small>
                         </span>
                       </div>
@@ -67,9 +67,9 @@ const EmployeeList = () => {
                   <td className="py-2">
                     <span className="d-inline-block">
                       <span className="d-inline-block line-height-sm">
-                        {employee.email}
+                        { employee.email }
                         <br />
-                        <small className="text-muted">{employee.phoneNumber}</small>
+                        <small className="text-muted">{ employee.phoneNumber }</small>
                       </span>
                     </span>
                   </td>
