@@ -19,11 +19,13 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <Navbar />
         <div className="container-fluid">
           <div className="row">
-            <SideNav />
-            <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-4">
+            <div className="col-md-2 d-none d-md-block p-0">
+              <SideNav />
+            </div>
+            <main role="main" className="col-md-9 ml-sm-auto col-lg-10 p-0">
+              <Navbar />
               <Switch>
                 <Redirect exact from="/" to="/dashboard" />
                 <Route exact path="/dashboard" component={ Dashboard } />

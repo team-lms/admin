@@ -1,9 +1,16 @@
-@import url('https://fonts.googleapis.com/css?family=PT+Sans:400,400i,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oxygen:wght@300;400;700&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Oleo+Script:700&display=swap');
 
-$enable-gradients: true;
-$font-family-sans-serif: 'PT Sans', sans-serif;
+$font-family-sans-serif: 'Oxygen', sans-serif;
 $font-size-base: 0.938rem;
+
+$enable-gradients: true;
+$enable-shadows: true;
+$primary: #f4828d;
+
+$border-radius: 0.625rem;
+$border-radius-lg: 1.5rem;
+$border-radius-sm: 0.25rem;
 
 @import '../../../node_modules/bootstrap/scss/functions';
 @import '../../../node_modules/bootstrap/scss/variables';

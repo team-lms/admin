@@ -1,5 +1,9 @@
-@import '../../../node_modules/bootstrap/scss/functions';
-@import '../../../node_modules/bootstrap/scss/variables';
+@import '../../assets/scss/theme.scss';
+
+.logo {
+  font-size: 40px !important;
+  font-family: 'Oleo Script', cursive;
+}
 
 .sidebar {
   position: fixed;
@@ -7,7 +11,6 @@
   bottom: 0;
   left: 0;
   z-index: 100;
-  padding: 61px 0 0 !important;
   box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.1);
 }
 
@@ -20,13 +23,16 @@
 }
 
 .sidebar .nav-link {
+  width: 90px;
+  height: 90px;
   font-weight: 500;
-  color: #333;
+  color: $body-color;
+  background-color: $gray-300;
   &.active {
     background: $primary linear-gradient(180deg, mix($body-bg, $primary, 15%), $primary) repeat-x;
     color: $white;
   }
   &:not(.active):hover {
-    background-color: $light;
+    background-color: $gray-400;
   }
 }

@@ -3,22 +3,9 @@ import { MoreHorizontal } from 'react-feather';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
-import Employee from '../../services/http-services/http-service';
 
 const EmployeeList = () => {
   const [employees, setEmployees] = useState([]);
-  const [count, setCount] = useState([]);
-
-
-  const getEmployeeList = async () => {
-    const { count: totalCount, rows } = await Employee.getEmployeeList();
-    setCount(totalCount);
-    setEmployees(rows);
-  };
-
-  useEffect(() => {
-    getEmployeeList();
-  }, []);
 
   return (
     <>
@@ -33,7 +20,7 @@ const EmployeeList = () => {
         </div>
       </div>
 
-      <div className="table-responsive border rounded-lg mb-3">
+      <div className="table-responsive border mb-3">
         <table className="table table-hover mb-0">
           <thead>
             <tr>
@@ -46,16 +33,13 @@ const EmployeeList = () => {
           <tbody>
             {
               employees.map((employee) => (
-
                 <tr key={ employee.id }>
                   <td className="py-2">
                     <div className="d-flex align-items-center">
                       <img className="rounded-circle listing-profile-img border" src="https://randomuser.me/api/portraits/lego/3.jpg" alt="Rodney Gibson" />
                       <div className="ml-2">
                         <span className="d-inline-block line-height-sm">
-                          { employee.firstName }
-                          { ' ' }
-                          { employee.lastName }
+                          { `${employee.firstName} ${employee.lastName}` }
                           <br />
                           <small className="text-muted">
                             { moment(employee.createdAt).format('LL') }
