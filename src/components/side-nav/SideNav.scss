@@ -1,5 +1,5 @@
-@import "../../assets/scss/functions";
-@import "../../assets/scss/variables";
+@import '../../../node_modules/bootstrap/scss/functions';
+@import '../../../node_modules/bootstrap/scss/variables';
 
 .sidebar {
   position: fixed;
@@ -7,7 +7,7 @@
   bottom: 0;
   left: 0;
   z-index: 100;
-  padding: 61px 0 0;
+  padding: 61px 0 0 !important;
   box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.1);
 }
 

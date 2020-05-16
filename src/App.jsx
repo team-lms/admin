@@ -1,5 +1,5 @@
 import React from 'react';
-import './assets/scss/bootstrap.scss';
+import './assets/scss/theme.scss';
 import './App.scss';
 import {
   BrowserRouter as Router,
