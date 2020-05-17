@@ -5,7 +5,6 @@ import {
   User,
   Settings
 } from 'react-feather';
-import './SideNav.scss';
 
 const SideNav = () => (
   <nav className="sidebar-sticky sidebar bg-light">

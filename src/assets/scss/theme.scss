@@ -6,9 +6,10 @@ $font-size-base: 0.938rem;
 
 $enable-gradients: true;
 $enable-shadows: true;
-$primary: #f4828d;
+$primary: #f4818e;
+$secondary: #95a8c9;
 
-$border-radius: 0.625rem;
+$border-radius: 0.313rem;
 $border-radius-lg: 1.5rem;
 $border-radius-sm: 0.25rem;
 
@@ -42,3 +43,6 @@ $border-radius-sm: 0.25rem;
 @import '../../../node_modules/bootstrap/scss/tooltip';
 @import '../../../node_modules/bootstrap/scss/popover';
 @import '../../../node_modules/bootstrap/scss/utilities';
+
+// main styles
+@import './style.scss';

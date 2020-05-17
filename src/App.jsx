@@ -26,12 +26,14 @@ function App() {
             </div>
             <main role="main" className="col-md-9 ml-sm-auto col-lg-10 p-0">
               <Navbar />
-              <Switch>
-                <Redirect exact from="/" to="/dashboard" />
-                <Route exact path="/dashboard" component={ Dashboard } />
-                <Route exact path="/employee" component={ EmployeeForm } />
-                <Route path="/employee/list" component={ EmployeeList } />
-              </Switch>
+              <div className="px-3">
+                <Switch>
+                  <Redirect exact from="/" to="/dashboard" />
+                  <Route exact path="/dashboard" component={ Dashboard } />
+                  <Route exact path="/employee" component={ EmployeeForm } />
+                  <Route path="/employee/list" component={ EmployeeList } />
+                </Switch>
+              </div>
             </main>
           </div>
         </div>
