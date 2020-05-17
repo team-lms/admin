@@ -34,38 +34,32 @@ const EmployeeList = () => {
         </div>
       </div>
 
-      <div className="table-responsive border mb-3">
+      <div className="table-responsive mb-3">
         <table className="table table-hover mb-0">
           <thead>
             <tr>
-              <th className="border-top-0">Basic Details</th>
-              <th className="border-top-0">Contact Details</th>
-              <th className="border-top-0">Supervisor</th>
-              <th className="border-top-0">Actions</th>
+              <th className="border-top-0 border-bottom-0">Basic Details</th>
+              <th className="border-top-0 border-bottom-0">Contact Details</th>
+              <th className="border-top-0 border-bottom-0">Supervisor</th>
+              <th className="border-top-0 border-bottom-0">Actions</th>
             </tr>
           </thead>
           <tbody>
             {
-              employees.map((employee) => (
+              employees.map((employee, index) => (
                 <tr key={ employee.id }>
-                  <td>
-                    <div className="d-flex align-items-center">
-                      <img className="rounded-circle listing-profile-img border" src="https://randomuser.me/api/portraits/lego/3.jpg" alt="Rodney Gibson" />
-                      <div className="ml-2">
-                        <span className="d-inline-block line-height-sm">
-                          Brad Thomas
-                          <br />
-                          <small className="text-muted">
-                            (
-                            <span>Since </span>
-                            { moment(employee.createdAt).format('Do MMM YYYY') }
-                            )
-                          </small>
-                        </span>
-                      </div>
-                    </div>
+                  <td className={ index === 0 ? 'border-top-0' : '' }>
+                    <span className="d-block">
+                      Brad Thomas
+                    </span>
+                    <small className="text-muted">
+                      (Since
+                      { ' ' }
+                      { moment(employee.createdAt).format('Do MMM YYYY') }
+                      )
+                    </small>
                   </td>
-                  <td>
+                  <td className={ index === 0 ? 'border-top-0' : '' }>
                     <span className="d-inline-block">
                       <span className="d-block">
                         rose.pelletier@example.com
@@ -73,14 +67,13 @@ const EmployeeList = () => {
                       <small className="text-muted">045-672-3124</small>
                     </span>
                   </td>
-                  <td>
-                    <span className="d-inline-block line-height-sm">
+                  <td className={ index === 0 ? 'border-top-0' : '' }>
+                    <span className="d-block">
                       Sally Pena
-                      <br />
-                      <small className="text-muted">(Technical Head)</small>
                     </span>
+                    <small className="text-muted">(Technical Head)</small>
                   </td>
-                  <td>
+                  <td className={ index === 0 ? 'border-top-0' : '' }>
                     <OverlayTrigger
                       trigger="click"
                       placement="top"
