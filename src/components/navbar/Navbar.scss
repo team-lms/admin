@@ -1,0 +1,13 @@
+.role-text {
+  margin-top: -0.625rem;
+}
+
+.user-dropdown {
+  &:after {
+    content: none;
+  }
+  img {
+    width: 35px;
+    height: 35px;
+  }
+}
