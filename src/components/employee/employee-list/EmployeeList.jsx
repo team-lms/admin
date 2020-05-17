@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { MoreHorizontal, UserPlus } from 'react-feather';
+import { UserPlus } from 'react-feather';
 import { OverlayTrigger, Popover, Dropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
+import action from '../../../assets/img/Setting-2.png';
 
 const EmployeeList = () => {
   const [employees, setEmployees] = useState([]);
@@ -76,7 +77,7 @@ const EmployeeList = () => {
                   <td className={ index === 0 ? 'border-top-0' : '' }>
                     <OverlayTrigger
                       trigger="click"
-                      placement="top"
+                      placement="bottom"
                       rootClose="false"
                       overlay={
                         (
@@ -91,8 +92,8 @@ const EmployeeList = () => {
                         )
                       }
                     >
-                      <button type="button" className="btn btn-outline-secondary btn-sm py-0">
-                        <MoreHorizontal size={ 14 } />
+                      <button type="button" className="btn  btn-sm py-0">
+                        <img className="path" src={ action } alt="action icon" />
                       </button>
                     </OverlayTrigger>
                   </td>
