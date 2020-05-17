@@ -5,11 +5,11 @@ import { Link } from 'react-router-dom';
 import moment from 'moment';
 import action from '../../../assets/img/Setting-2.png';
 
-const EmployeeList = () => {
-  const [employees, setEmployees] = useState([]);
+const HumanResourceList = () => {
+  const [humanResources, setHumanResources] = useState([]);
 
   useEffect(() => {
-    setEmployees([{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }]);
+    setHumanResources([{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }]);
   }, []);
 
   return (
@@ -17,11 +17,11 @@ const EmployeeList = () => {
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
         <Dropdown>
           <Dropdown.Toggle variant="secondary" id="dropdown-basic" className="btn-sm">
-            Employees
+            Human Resource Managers
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
-            <Link className="dropdown-item" to="/dashboard">Employees</Link>
+            <Link className="dropdown-item" to="/employee/list">Employees</Link>
             <Link className="dropdown-item" to="/supervisor/list">Supervisors</Link>
             <Link className="dropdown-item" to="/humanresource/list">Human Resource Managers</Link>
           </Dropdown.Menu>
@@ -47,7 +47,7 @@ const EmployeeList = () => {
           </thead>
           <tbody>
             {
-              employees.map((employee, index) => (
+              humanResources.map((employee, index) => (
                 <tr key={ employee.id }>
                   <td className={ index === 0 ? 'border-top-0' : '' }>
                     <span className="d-block">
@@ -107,4 +107,4 @@ const EmployeeList = () => {
   );
 };
 
-export default EmployeeList;
+export default HumanResourceList;

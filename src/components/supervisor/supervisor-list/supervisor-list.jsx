@@ -20,7 +20,7 @@ const SupervisorList = () => {
           </Dropdown.Toggle>
           <Dropdown.Menu>
             <Link className="dropdown-item" to="/supervisor/list">Supervisors</Link>
-            <Link className="dropdown-item" to="/dashboard">Human Resource Managers</Link>
+            <Link className="dropdown-item" to="/humanresource/list">Human Resource Managers</Link>
             <Link className="dropdown-item" to="/employee/list">Employees</Link>
           </Dropdown.Menu>
         </Dropdown>

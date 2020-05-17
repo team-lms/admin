@@ -14,6 +14,7 @@ import Dashboard from './components/dashboard/Dashboard';
 import EmployeeList from './components/employee/employee-list/EmployeeList';
 import EmployeeForm from './components/employee/employee-form/EmployeeForm';
 import SupervisorList from './components/supervisor/supervisor-list/supervisor-list';
+import HumanResourceList from './components/human-resource-manager/human-resource-listing/human-resource-listing';
 
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
                   <Route exact path="/employee" component={ EmployeeForm } />
                   <Route path="/employee/list" component={ EmployeeList } />
                   <Route path="/supervisor/list" component={ SupervisorList } />
+                  <Route path="/humanresource/list" component={ HumanResourceList } />
                 </Switch>
               </div>
             </main>
