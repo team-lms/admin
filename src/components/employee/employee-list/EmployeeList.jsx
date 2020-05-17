@@ -15,7 +15,7 @@ const EmployeeList = () => {
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
         <Dropdown>
-          <Dropdown.Toggle variant="secondary" id="dropdown-basic" className="btn-sm text-white">
+          <Dropdown.Toggle variant="secondary" id="dropdown-basic" className="btn-sm">
             Employees
           </Dropdown.Toggle>
 
