@@ -4,13 +4,26 @@ import { OverlayTrigger, Popover, Dropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import action from '../../../assets/img/Setting-2.png';
+import { Employee } from '../../../api/service';
 
 const EmployeeList = () => {
   const [employees, setEmployees] = useState([]);
+  const [filters] = useState({
+    limit: 10, offset: 0, sortType: 'ASC', sortField: 'createdAt'
+  });
+
+  const getEmployeeList = async () => {
+    const result = await Employee.getEmployeeList(filters);
+    if (result.success) {
+      setEmployees([result.data]);
+    }
+  };
 
   useEffect(() => {
+    getEmployeeList();
     setEmployees([{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }]);
   }, []);
+
 
   return (
     <>
@@ -55,8 +68,8 @@ const EmployeeList = () => {
                     </span>
                     <small className="text-muted">
                       (Since
-                      { ' ' }
-                      { moment(employee.createdAt).format('Do MMM YYYY') }
+                      {' '}
+                      {moment(employee.createdAt).format('Do MMM YYYY')}
                       )
                     </small>
                   </td>
