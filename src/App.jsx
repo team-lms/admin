@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import './assets/scss/theme.scss';
 import './App.scss';
 import {
@@ -16,6 +17,15 @@ import EmployeeForm from './components/employee/employee-form/EmployeeForm';
 import SupervisorList from './components/supervisor/supervisor-list/supervisor-list';
 import HumanResourceList from './components/human-resource-manager/human-resource-listing/human-resource-listing';
 
+axios.interceptors.request.use((config) => {
+  // if (window.localStorage.getItem('token')) {
+  // config.headers.authorization = `Bearer${window.localStorage.getItem('token')}`;
+  // eslint-disable-next-line no-param-reassign
+  config.headers.authorization = 'Bearer + eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoie1wiaWRcIjoxLFwiZW1haWxcIjpcImFkbWluQGxtcy5jb21cIixcInJvbGVcIjpcIkFkbWluXCIsXCJwaG9uZU51bWJlclwiOlwiODA3NTQzODkyM1wiLFwiZmlyc3ROYW1lXCI6XCJBZG1pblwiLFwibGFzdE5hbWVcIjpudWxsfSIsImlhdCI6MTU5MDE3MDM1NywiZXhwIjoxNTkwMjU2NzU3fQ.8lGBkzELmzZAdJWEWYo0T6_94v9TpL0QuDa7dPpSn2g';
+
+  // }
+  return config;
+}, (error) => Promise.reject(error));
 
 function App() {
   return (
