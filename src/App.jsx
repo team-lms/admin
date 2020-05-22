@@ -20,12 +20,8 @@ import SupervisorList from './components/supervisor/supervisor-list/supervisor-l
 import HumanResourceList from './components/human-resource-manager/human-resource-listing/human-resource-listing';
 
 axios.interceptors.request.use((config) => {
-  // if (window.localStorage.getItem('token')) {
-  // config.headers.authorization = `Bearer${window.localStorage.getItem('token')}`;
   // eslint-disable-next-line no-param-reassign
   config.headers.authorization = 'Bearer + eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoie1wiaWRcIjoxLFwiZW1haWxcIjpcImFkbWluQGxtcy5jb21cIixcInJvbGVcIjpcIkFkbWluXCIsXCJwaG9uZU51bWJlclwiOlwiODA3NTQzODkyM1wiLFwiZmlyc3ROYW1lXCI6XCJBZG1pblwiLFwibGFzdE5hbWVcIjpudWxsfSIsImlhdCI6MTU5MDIwNzk5OSwiZXhwIjoxNTkwMjk0Mzk5fQ.uFkFLidq9pwTy_LsrULAkES7BN4bAdioMGN3O_DL-xA';
-
-  // }
   return config;
 }, (error) => Promise.reject(error));
 
