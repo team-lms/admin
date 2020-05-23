@@ -3,6 +3,7 @@ import { UserPlus } from 'react-feather';
 import { OverlayTrigger, Popover, Dropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
+import { toast } from 'react-toastify';
 import action from '../../../assets/img/Setting-2.png';
 import { Employee } from '../../../api/service';
 
@@ -17,6 +18,8 @@ const EmployeeList = () => {
     if (result.data.success) {
       const newData = result.data.data.rows;
       setEmployees(...employees, newData);
+    } else {
+      toast.error(result.message);
     }
   };
 
@@ -32,7 +35,6 @@ const EmployeeList = () => {
           <Dropdown.Toggle variant="secondary" id="dropdown-basic" className="btn-sm">
             Employees
           </Dropdown.Toggle>
-
           <Dropdown.Menu>
             <Link className="dropdown-item" to="/dashboard">Employees</Link>
             <Link className="dropdown-item" to="/supervisor/list">Supervisors</Link>
