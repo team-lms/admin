@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { UserPlus } from 'react-feather';
-import { OverlayTrigger, Popover, Dropdown } from 'react-bootstrap';
+import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { toast } from 'react-toastify';
 import action from '../../../assets/img/Setting-2.png';
 import { Employee } from '../../../api/service';
+import Header from '../../header/header';
 
 const EmployeeList = () => {
   const [employees, setEmployees] = useState([]);
@@ -31,16 +32,7 @@ const EmployeeList = () => {
   return (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
-        <Dropdown>
-          <Dropdown.Toggle variant="secondary" id="dropdown-basic" className="btn-sm">
-            Employees
-          </Dropdown.Toggle>
-          <Dropdown.Menu>
-            <Link className="dropdown-item" to="/dashboard">Employees</Link>
-            <Link className="dropdown-item" to="/supervisor/list">Supervisors</Link>
-            <Link className="dropdown-item" to="/humanresource/list">Human Resource Managers</Link>
-          </Dropdown.Menu>
-        </Dropdown>
+        <Header selectedPage="Employees" />
         <div className="btn-toolbar mb-2 mb-md-0">
           <button type="button" className="btn btn-sm btn-primary mr-2">
             <span>Add </span>
@@ -62,62 +54,95 @@ const EmployeeList = () => {
           </thead>
           <tbody>
             {
-                employees.map((employee, index) => (
-                  <tr key={ employee.id }>
-                    <td className={ index === 0 ? 'border-top-0' : '' }>
+              employees.map((employee, index) => (
+                <tr key={ employee.id }>
+                  <td className={ index === 0 ? 'border-top-0' : '' }>
+                    <span className="d-block">
+                      { employee.firstName }
+                      { ' ' }
+                      { ' ' }
+                      { employee.lastName }
+                    </span>
+                    <small className="text-muted">
+                      (Since
+                      { ' ' }
+                      { moment(employee.createdAt).format('Do MMM YYYY') }
+                      )
+                    </small>
+                  </td>
+                  <td className={ index === 0 ? 'border-top-0' : '' }>
+                    <span className="d-inline-block">
                       <span className="d-block">
-                        {employee.firstName}
-                        {' '}
-                        {' '}
-                        {employee.lastName}
+                        { employee.email }
                       </span>
-                      <small className="text-muted">
-                        (Since
-                        {' '}
-                        {moment(employee.createdAt).format('Do MMM YYYY')}
+                      <small className="text-muted">{ employee.phoneNumber }</small>
+                    </span>
+                  </td>
+                  <td className={ index === 0 ? 'border-top-0' : '' }>
+                    <span className="d-block">
+                      Sally Pena
+                    </span>
+                    <small className="text-muted">(Technical Head)</small>
+                  </td>
+                  <td className={ index === 0 ? 'border-top-0' : '' }>
+                    <OverlayTrigger
+                      trigger="click"
+                      placement="bottom"
+                      rootClose="false"
+                      overlay={
+                        (
+                          <Popover id={ `popover-positioned-${employee.id}` }>
+                            <Popover.Content bsPrefix="popover-body p-0 overflow-hidden rounded">
+                              <div className="list-group list-group-flush rounded">
+                                <Link className="list-group-item list-group-item-action py-1 px-2" to="/employee">Edit</Link>
+                                <Link className="list-group-item list-group-item-action py-1 px-2" to="/">Delete</Link>
+                              </div>
+                            </Popover.Content>
+                          </Popover>
                         )
-                      </small>
-                    </td>
-                    <td className={ index === 0 ? 'border-top-0' : '' }>
-                      <span className="d-inline-block">
-                        <span className="d-block">
-                          {employee.email}
-                        </span>
-                        <small className="text-muted">{employee.phoneNumber}</small>
-                      </span>
-                    </td>
-                    <td className={ index === 0 ? 'border-top-0' : '' }>
+                      }
+                    />
+                  </td>
+                  <td className={ index === 0 ? 'border-top-0' : '' }>
+                    <span className="d-inline-block">
                       <span className="d-block">
-                        Sally Pena
+                        { employee.email }
                       </span>
-                      <small className="text-muted">(Technical Head)</small>
-                    </td>
-                    <td className={ index === 0 ? 'border-top-0' : '' }>
-                      <OverlayTrigger
-                        trigger="click"
-                        placement="bottom"
-                        rootClose="false"
-                        overlay={
-                          (
-                            <Popover id={ `popover-positioned-${employee.id}` }>
-                              <Popover.Content bsPrefix="popover-body p-0 overflow-hidden rounded">
-                                <div className="list-group list-group-flush rounded">
-                                  <Link className="list-group-item list-group-item-action py-1 px-2" to="/employee">Edit</Link>
-                                  <Link className="list-group-item list-group-item-action py-1 px-2" to="/">Delete</Link>
-                                </div>
-                              </Popover.Content>
-                            </Popover>
-                          )
-                        }
-                      >
-                        <button type="button" className="btn  btn-sm py-0">
-                          <img className="path" src={ action } alt="action icon" />
-                        </button>
-                      </OverlayTrigger>
-                    </td>
-                  </tr>
-                ))
-              }
+                      <small className="text-muted">{ employee.phoneNumber }</small>
+                    </span>
+                  </td>
+                  <td className={ index === 0 ? 'border-top-0' : '' }>
+                    <span className="d-block">
+                      Sally Pena
+                    </span>
+                    <small className="text-muted">(Technical Head)</small>
+                  </td>
+                  <td className={ index === 0 ? 'border-top-0' : '' }>
+                    <OverlayTrigger
+                      trigger="click"
+                      placement="bottom"
+                      rootClose="false"
+                      overlay={
+                        (
+                          <Popover id={ `popover-positioned-${employee.id}` }>
+                            <Popover.Content bsPrefix="popover-body p-0 overflow-hidden rounded">
+                              <div className="list-group list-group-flush rounded">
+                                <Link className="list-group-item list-group-item-action py-1 px-2" to="/employee">Edit</Link>
+                                <Link className="list-group-item list-group-item-action py-1 px-2" to="/">Delete</Link>
+                              </div>
+                            </Popover.Content>
+                          </Popover>
+                        )
+                      }
+                    >
+                      <button type="button" className="btn  btn-sm py-0">
+                        <img className="path" src={ action } alt="action icon" />
+                      </button>
+                    </OverlayTrigger>
+                  </td>
+                </tr>
+              ))
+            }
           </tbody>
         </table>
       </div>
