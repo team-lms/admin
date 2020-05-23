@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { UserPlus } from 'react-feather';
-import { OverlayTrigger, Popover, Dropdown } from 'react-bootstrap';
+import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { toast } from 'react-toastify';
 import action from '../../../assets/img/Setting-2.png';
 import { Employee } from '../../../api/service';
+import Header from '../../header/header';
 
 const EmployeeList = () => {
   const [employees, setEmployees] = useState([]);
@@ -31,16 +32,7 @@ const EmployeeList = () => {
   return (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
-        <Dropdown>
-          <Dropdown.Toggle variant="secondary" id="dropdown-basic" className="btn-sm">
-            Employees
-          </Dropdown.Toggle>
-          <Dropdown.Menu>
-            <Link className="dropdown-item" to="/dashboard">Employees</Link>
-            <Link className="dropdown-item" to="/supervisor/list">Supervisors</Link>
-            <Link className="dropdown-item" to="/humanresource/list">Human Resource Managers</Link>
-          </Dropdown.Menu>
-        </Dropdown>
+        <Header />
         <div className="btn-toolbar mb-2 mb-md-0">
           <button type="button" className="btn btn-sm btn-primary mr-2">
             <span>Add </span>
