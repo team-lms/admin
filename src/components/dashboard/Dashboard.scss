@@ -1,0 +1,21 @@
+.dashboard-listing-icon {
+  width: 55px;
+  height: 55px;
+}
+
+.avatars {
+  padding-left: 0;
+  list-style: none;
+  margin: 0;
+  li {
+    display: inline-block;
+    + li {
+      margin-left: -0.55rem;
+    }
+    img {
+      width: 2.25rem;
+      height: 2.25rem;
+      border: 2px solid $white;
+    }
+  }
+}
