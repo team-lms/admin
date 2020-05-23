@@ -21,7 +21,7 @@ axios.interceptors.request.use((config) => {
   // if (window.localStorage.getItem('token')) {
   // config.headers.authorization = `Bearer${window.localStorage.getItem('token')}`;
   // eslint-disable-next-line no-param-reassign
-  config.headers.authorization = 'Bearer + eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoie1wiaWRcIjoxLFwiZW1haWxcIjpcImFkbWluQGxtcy5jb21cIixcInJvbGVcIjpcIkFkbWluXCIsXCJwaG9uZU51bWJlclwiOlwiODA3NTQzODkyM1wiLFwiZmlyc3ROYW1lXCI6XCJBZG1pblwiLFwibGFzdE5hbWVcIjpudWxsfSIsImlhdCI6MTU5MDE3MDM1NywiZXhwIjoxNTkwMjU2NzU3fQ.8lGBkzELmzZAdJWEWYo0T6_94v9TpL0QuDa7dPpSn2g';
+  config.headers.authorization = 'Bearer + eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoie1wiaWRcIjoxLFwiZW1haWxcIjpcImFkbWluQGxtcy5jb21cIixcInJvbGVcIjpcIkFkbWluXCIsXCJwaG9uZU51bWJlclwiOlwiODA3NTQzODkyM1wiLFwiZmlyc3ROYW1lXCI6XCJBZG1pblwiLFwibGFzdE5hbWVcIjpudWxsfSIsImlhdCI6MTU5MDIwNzk5OSwiZXhwIjoxNTkwMjk0Mzk5fQ.uFkFLidq9pwTy_LsrULAkES7BN4bAdioMGN3O_DL-xA';
 
   // }
   return config;
