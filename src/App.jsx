@@ -2,6 +2,8 @@ import React from 'react';
 import axios from 'axios';
 import './assets/scss/theme.scss';
 import './App.scss';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import {
   BrowserRouter as Router,
   Redirect,
@@ -30,6 +32,7 @@ axios.interceptors.request.use((config) => {
 function App() {
   return (
     <div className="App">
+      <ToastContainer />
       <Router>
         <div className="container-fluid">
           <div className="row">
