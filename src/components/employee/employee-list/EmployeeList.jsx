@@ -17,8 +17,7 @@ const EmployeeList = () => {
   const getEmployeeList = async () => {
     const result = await Employee.getEmployeeList(filters);
     if (result.data.success) {
-      const newData = result.data.data.rows;
-      setEmployees(...employees, newData);
+      setEmployees(...employees, result.data.data.rows);
     } else {
       toast.error(result.message);
     }
