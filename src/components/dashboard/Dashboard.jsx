@@ -109,6 +109,7 @@ const Dashboard = () => {
         description="Manage supervisor for each team"
         peoples={ supervisors }
         remainingPeoplesCount={ 20 }
+        route="/supervisor/list"
       />
       <RolePanel
         Icon={ UserCheck }
@@ -116,6 +117,7 @@ const Dashboard = () => {
         description="Manage human resource team"
         peoples={ humanResource }
         remainingPeoplesCount={ 14 }
+        route="/humanresource/list"
       />
       <RolePanel
         Icon={ Users }
@@ -123,6 +125,7 @@ const Dashboard = () => {
         description="Manage employees of the organization"
         peoples={ employees }
         remainingPeoplesCount={ 40 }
+        route="/employee/list"
       />
     </div>
   );
