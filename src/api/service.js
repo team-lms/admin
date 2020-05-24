@@ -36,3 +36,21 @@ export const HumanResource = {
     }
   }
 };
+
+export const Supervisor = {
+  getSupervisorList: async (filters) => {
+    try {
+      const result = await axios.get('/supervisor', {
+        params: {
+          offset: filters.offset,
+          limit: filters.limit,
+          sortType: filters.sortType,
+          sortField: filters.sortField
+        }
+      });
+      return result;
+    } catch (error) {
+      return error.response.data;
+    }
+  }
+};

@@ -3,14 +3,28 @@ import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { UserPlus } from 'react-feather';
 import moment from 'moment';
+import { toast } from 'react-toastify';
 import action from '../../../assets/img/Setting-2.png';
 import Header from '../../header/header';
+import { Supervisor } from '../../../api/service';
 
 const SupervisorList = () => {
   const [supervisors, setSupervisor] = useState([]);
+  const [filters] = useState({
+    limit: 10, offset: 0, sortType: 'ASC', sortField: 'createdAt'
+  });
+
+  const getSupervisorList = async () => {
+    const result = await Supervisor.getSupervisorList(filters);
+    if (result.data.success) {
+      setSupervisor(...supervisors, result.data.data.rows);
+    } else {
+      toast.error(result.message);
+    }
+  };
 
   useEffect(() => {
-    setSupervisor([{ id: 1 }, { id: 2 }, { id: 3 }]);
+    getSupervisorList();
   }, []);
   return (
     <>
@@ -41,7 +55,9 @@ const SupervisorList = () => {
                 <tr key={ supervisor.id }>
                   <td className={ index === 0 ? 'border-top-0' : '' }>
                     <span className="d-block">
-                      Mark Thomas
+                      {supervisor.firstName}
+                      {' '}
+                      {supervisor.lastName}
                     </span>
                     <small className="text-muted">
                       (Since
@@ -53,15 +69,15 @@ const SupervisorList = () => {
                   <td className={ index === 0 ? 'border-top-0' : '' }>
                     <span className="d-inline-block">
                       <span className="d-block">
-                        thomas@gmail.com
+                        {supervisor.email}
                       </span>
-                      <small className="text-muted">7788445544</small>
+                      <small className="text-muted">{supervisor.phoneNumber}</small>
                     </span>
                   </td>
                   <td className={ index === 0 ? 'border-top-0' : '' }>
                     <span className="d-inline-block">
                       <span className="d-block">
-                        Web Team
+                        {supervisor.teamAssociations[0].team.teamName}
                       </span>
                     </span>
                   </td>

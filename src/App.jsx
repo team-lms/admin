@@ -21,7 +21,7 @@ import HumanResourceList from './components/human-resource-manager/human-resourc
 
 axios.interceptors.request.use((config) => {
   // eslint-disable-next-line no-param-reassign
-  config.headers.authorization = 'Bearer + eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoie1wiaWRcIjoxLFwiZW1haWxcIjpcImFkbWluQGxtcy5jb21cIixcInJvbGVcIjpcIkFkbWluXCIsXCJwaG9uZU51bWJlclwiOlwiODA3NTQzODkyM1wiLFwiZmlyc3ROYW1lXCI6XCJBZG1pblwiLFwibGFzdE5hbWVcIjpudWxsfSIsImlhdCI6MTU5MDIwNzk5OSwiZXhwIjoxNTkwMjk0Mzk5fQ.uFkFLidq9pwTy_LsrULAkES7BN4bAdioMGN3O_DL-xA';
+  config.headers.authorization = 'Bearer + eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoie1wiaWRcIjoxLFwiZW1haWxcIjpcImFkbWluQGxtcy5jb21cIixcInJvbGVcIjpcIkFkbWluXCIsXCJwaG9uZU51bWJlclwiOlwiODA3NTQzODkyM1wiLFwiZmlyc3ROYW1lXCI6XCJBZG1pblwiLFwibGFzdE5hbWVcIjpudWxsfSIsImlhdCI6MTU5MDMxNzkwOSwiZXhwIjoxNTkwNDA0MzA5fQ.-tXrTlQUulFSBrAhjRBMbieLKlkVYBxXna7icN_zruY';
   return config;
 }, (error) => Promise.reject(error));
 
