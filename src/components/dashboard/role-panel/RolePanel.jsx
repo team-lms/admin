@@ -3,7 +3,7 @@ import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
 const RolePanel = ({
-  icon,
+  Icon,
   title,
   description,
   peoples,
@@ -12,8 +12,8 @@ const RolePanel = ({
   <div className="card bg-light mt-3">
     <div className="card-body">
       <div className="row">
-        <div className="col-auto">
-          <img className="rounded dashboard-listing-icon" src={ icon } alt="Supervisors" />
+        <div className="col-auto text-primary">
+          <Icon size={ 50 } />
         </div>
         <div className="col">
           <div className="row">
@@ -57,7 +57,7 @@ const RolePanel = ({
 ));
 
 RolePanel.propTypes = {
-  icon: PropTypes.string.isRequired,
+  Icon: PropTypes.elementType.isRequired,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   peoples: PropTypes.arrayOf(PropTypes.shape({
