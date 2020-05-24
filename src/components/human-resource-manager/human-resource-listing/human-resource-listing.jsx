@@ -3,14 +3,28 @@ import { UserPlus } from 'react-feather';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
+import { toast } from 'react-toastify';
 import action from '../../../assets/img/Setting-2.png';
 import Header from '../../header/header';
+import { HumanResource } from '../../../api/service';
+
 
 const HumanResourceList = () => {
   const [humanResources, setHumanResources] = useState([]);
+  const [filters] = useState({
+    limit: 10, offset: 0, sortType: 'ASC', sortField: 'createdAt'
+  });
 
+  const getHumanResourceList = async () => {
+    const result = await HumanResource.getHumanResourceList(filters);
+    if (result.data.success) {
+      setHumanResources(...humanResources, result.data.data.rows);
+    } else {
+      toast.error(result.message);
+    }
+  };
   useEffect(() => {
-    setHumanResources([{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }]);
+    getHumanResourceList();
   }, []);
 
   return (
@@ -38,25 +52,27 @@ const HumanResourceList = () => {
           </thead>
           <tbody>
             {
-              humanResources.map((employee, index) => (
-                <tr key={ employee.id }>
+              humanResources.map((humanResource, index) => (
+                <tr key={ humanResource.id }>
                   <td className={ index === 0 ? 'border-top-0' : '' }>
                     <span className="d-block">
-                      Brad Thomas
+                      {humanResource.firstName}
+                      {' '}
+                      {humanResource.lastName}
                     </span>
                     <small className="text-muted">
                       (Since
                       { ' ' }
-                      { moment(employee.createdAt).format('Do MMM YYYY') }
+                      { moment(humanResource.createdAt).format('Do MMM YYYY') }
                       )
                     </small>
                   </td>
                   <td className={ index === 0 ? 'border-top-0' : '' }>
                     <span className="d-inline-block">
                       <span className="d-block">
-                        rose.pelletier@example.com
+                        {humanResource.email}
                       </span>
-                      <small className="text-muted">045-672-3124</small>
+                      <small className="text-muted">{humanResource.phoneNumber}</small>
                     </span>
                   </td>
                   <td className={ index === 0 ? 'border-top-0' : '' }>
@@ -72,7 +88,7 @@ const HumanResourceList = () => {
                       rootClose="false"
                       overlay={
                         (
-                          <Popover id={ `popover-positioned-${employee.id}` }>
+                          <Popover id={ `popover-positioned-${humanResource.id}` }>
                             <Popover.Content bsPrefix="popover-body p-0 overflow-hidden rounded">
                               <div className="list-group list-group-flush rounded">
                                 <Link className="list-group-item list-group-item-action py-1 px-2" to="/employee">Edit</Link>

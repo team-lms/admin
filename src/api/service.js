@@ -19,6 +19,20 @@ export const Employee = {
   }
 };
 
-export default {
-  Employee
+export const HumanResource = {
+  getHumanResourceList: async (filters) => {
+    try {
+      const result = await axios.get('/hr', {
+        params: {
+          offset: filters.offset,
+          limit: filters.limit,
+          sortType: filters.sortType,
+          sortField: filters.sortField
+        }
+      });
+      return result;
+    } catch (error) {
+      return error.response.data;
+    }
+  }
 };
