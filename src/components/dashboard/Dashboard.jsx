@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { User, UserCheck, Users } from 'react-feather';
+import { Link } from 'react-router-dom';
 import RolePanel from './role-panel/RolePanel';
 import DashboardChart from './dashboard-chart/DashboardChart';
 
@@ -103,27 +104,34 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      <RolePanel
-        Icon={ User }
-        title="Supervisor"
-        description="Manage supervisor for each team"
-        peoples={ supervisors }
-        remainingPeoplesCount={ 20 }
-      />
-      <RolePanel
-        Icon={ UserCheck }
-        title="Human Resource"
-        description="Manage human resource team"
-        peoples={ humanResource }
-        remainingPeoplesCount={ 14 }
-      />
-      <RolePanel
-        Icon={ Users }
-        title="Employee"
-        description="Manage employees of the organization"
-        peoples={ employees }
-        remainingPeoplesCount={ 40 }
-      />
+      <Link className="color-black" to="/supervisor/list">
+        <RolePanel
+          Icon={ User }
+          title="Supervisor"
+          description="Manage supervisor for each team"
+          peoples={ supervisors }
+          remainingPeoplesCount={ 20 }
+        />
+
+      </Link>
+      <Link className="color-black" to="/humanresource/list">
+        <RolePanel
+          Icon={ UserCheck }
+          title="Human Resource"
+          description="Manage human resource team"
+          peoples={ humanResource }
+          remainingPeoplesCount={ 14 }
+        />
+      </Link>
+      <Link className="color-black" to="/employee/list">
+        <RolePanel
+          Icon={ Users }
+          title="Employee"
+          description="Manage employees of the organization"
+          peoples={ employees }
+          remainingPeoplesCount={ 40 }
+        />
+      </Link>
     </div>
   );
 };
