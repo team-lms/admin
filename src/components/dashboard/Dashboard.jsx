@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { User, UserCheck, Users } from 'react-feather';
 import RolePanel from './role-panel/RolePanel';
 
 const Dashboard = () => {
@@ -87,21 +88,21 @@ const Dashboard = () => {
         </div>
       </div>
       <RolePanel
-        icon="https://randomuser.me/api/portraits/women/29.jpg"
+        Icon={ User }
         title="Supervisor"
         description="Manage supervisor for each team"
         peoples={ supervisors }
         remainingPeoplesCount={ 20 }
       />
       <RolePanel
-        icon="https://randomuser.me/api/portraits/men/3.jpg"
+        Icon={ UserCheck }
         title="Human Resource"
         description="Manage human resource team"
         peoples={ humanResource }
         remainingPeoplesCount={ 14 }
       />
       <RolePanel
-        icon="https://randomuser.me/api/portraits/women/32.jpg"
+        Icon={ Users }
         title="Employee"
         description="Manage employees of the organization"
         peoples={ employees }
