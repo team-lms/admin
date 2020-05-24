@@ -104,34 +104,30 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      <Link className="color-black" to="/supervisor/list">
-        <RolePanel
-          Icon={ User }
-          title="Supervisor"
-          description="Manage supervisor for each team"
-          peoples={ supervisors }
-          remainingPeoplesCount={ 20 }
-        />
-
-      </Link>
-      <Link className="color-black" to="/humanresource/list">
-        <RolePanel
-          Icon={ UserCheck }
-          title="Human Resource"
-          description="Manage human resource team"
-          peoples={ humanResource }
-          remainingPeoplesCount={ 14 }
-        />
-      </Link>
-      <Link className="color-black" to="/employee/list">
-        <RolePanel
-          Icon={ Users }
-          title="Employee"
-          description="Manage employees of the organization"
-          peoples={ employees }
-          remainingPeoplesCount={ 40 }
-        />
-      </Link>
+      <RolePanel
+        Icon={ User }
+        title="Supervisor"
+        description="Manage supervisor for each team"
+        peoples={ supervisors }
+        remainingPeoplesCount={ 20 }
+        route="/supervisor/list"
+      />
+      <RolePanel
+        Icon={ UserCheck }
+        title="Human Resource"
+        description="Manage human resource team"
+        peoples={ humanResource }
+        remainingPeoplesCount={ 14 }
+        route="/humanresource/list"
+      />
+      <RolePanel
+        Icon={ Users }
+        title="Employee"
+        description="Manage employees of the organization"
+        peoples={ employees }
+        remainingPeoplesCount={ 40 }
+        route="/employee/list"
+      />
     </div>
   );
 };
