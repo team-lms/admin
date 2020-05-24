@@ -26,7 +26,7 @@ const RolePanel = ({
                 <div className="col-auto">
                   <ul className="avatars">
                     { peoples.map((people, index) => (
-                      <li>
+                      <li key={ people.name }>
                         <OverlayTrigger overlay={ (
                           <Tooltip id={ `tooltip-for-${title}-${index + 1}` }>
                             { people.name }

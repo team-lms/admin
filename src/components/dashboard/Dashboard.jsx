@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { User, UserCheck, Users } from 'react-feather';
 import RolePanel from './role-panel/RolePanel';
+import DashboardChart from './dashboard-chart/DashboardChart';
 
 const Dashboard = () => {
   const [supervisors, setSupervisors] = useState([]);
@@ -82,7 +83,22 @@ const Dashboard = () => {
         <div className="col-9">
           <div className="card rounded-lg h-100 bg-light">
             <div className="card-body">
-              Chart goes here
+              <div className="row h-100 align-items-center">
+                <div className="col-7 align-self-stretch">
+                  <div className="border-bottom h-100">
+                    <DashboardChart />
+                  </div>
+                </div>
+                <div className="col-5 text-center">
+                  <div className="d-inline-block text-left">
+                    <p className="lead mb-0">People working today</p>
+                    <div className="d-inline-flex align-items-start">
+                      <p className="display-4 font-weight-bold mb-0">134</p>
+                      <button type="button" className="btn btn-sm btn-secondary py-0 mt-3 ml-2">See more</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
