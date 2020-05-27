@@ -24,9 +24,7 @@ const Navbar = () => (
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
-              <Link className="dropdown-item" to="/dashboard">Employees</Link>
-              <Link className="dropdown-item" to="/dashboard">Supervisors</Link>
-              <Link className="dropdown-item" to="/dashboard">Human Resource Managers</Link>
+              <Link className="dropdown-item" to="/dashboard">Logout</Link>
             </Dropdown.Menu>
           </Dropdown>
         </li>
