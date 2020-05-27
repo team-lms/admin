@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { validate as Validator } from 'validate.js';
 
 const EmployeeForm = () => {
@@ -235,16 +234,21 @@ const EmployeeForm = () => {
             </div>
             <div className="col-4">
               <div className="form-group">
-                <label htmlFor="whatsappNumberField">Sex</label>
-                <input
-                  className="form-control"
+                <label htmlFor="whatsappNumberField">Select Sex</label>
+                <select
+                  className="custom-select"
                   type="text"
-                  id="whatsappNumberField"
-                  name="whatsappNumber"
-                  placeholder="0000000000"
-                  value={ employeeDetails.whatsappNumber }
+                  id="designationField"
+                  name="designation"
+                  value={ employeeDetails.status }
                   onChange={ handleChange }
-                />
+                >
+                  <option value="">Select Sex</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Others">Others</option>
+
+                </select>
                 { (employeeForm.submitted
                   && employeeForm.errors
                   && employeeForm.errors.whatsappNumber)
@@ -256,49 +260,50 @@ const EmployeeForm = () => {
 
               </div>
             </div>
-            {/* <div className="col-6">
+            <div className="col-6">
               <div className="form-group">
-                <label htmlFor="designationField">Designation</label>
-                <input
-                  className="form-control"
+                <label htmlFor="maritalStatus">Marital Status</label>
+                <select
+                  className="custom-select"
                   type="text"
                   id="designationField"
                   name="designation"
-                  placeholder="Software Developer"
-                  value={ employeeDetails.designation }
+                  value={ employeeDetails.status }
                   onChange={ handleChange }
-                />
-                { (employeeForm.submitted && employeeForm.errors && employeeForm.errors.designation)
-                  && (<span className="text-danger">{ employeeForm.errors.designation[0] }</span>) }
+                >
+                  <option value="">Select Marital Status</option>
+                  <option value="Single">Single</option>
+                  <option value="Married">Married</option>
+                  <option value="Widowed">Widowed</option>
+                  <option value="Separated">Separated</option>
+                  <option value="Divorced">Divorced</option>
+                </select>
               </div>
             </div>
             <div className="col-6">
               <div className="form-group">
-                <label htmlFor="statusField">Status</label>
+                <label htmlFor="maritalStatus">Nationality</label>
                 <select
                   className="custom-select"
                   type="text"
-                  id="statusField"
-                  name="status"
+                  id="designationField"
+                  name="designation"
                   value={ employeeDetails.status }
                   onChange={ handleChange }
                 >
-                  <option value="">Select</option>
-                  <option value="Active">Active</option>
-                  <option value="Inactive">Inactive</option>
+                  <option value="">Select Nationality</option>
+                  <option value="Single">Single</option>
+                  <option value="Married">Married</option>
+                  <option value="Widowed">Widowed</option>
+                  <option value="Separated">Separated</option>
+                  <option value="Divorced">Divorced</option>
                 </select>
-                { (employeeForm.submitted && employeeForm.errors && employeeForm.errors.status)
-                  && (<span className="text-danger">{ employeeForm.errors.status[0] }</span>) }
               </div>
-            </div> */}
-            {/* <div className="col-12 text-right">
-              <button type="submit" className="btn btn-primary mr-2">Create</button>
-              <Link type="submit" className="btn btn-secondary" to="/employee/list">Cancel</Link>
-            </div> */}
+            </div>
           </div>
           <h4>Job Details</h4>
           <div className="form-row">
-            <div className="col-4">
+            <div className="col-6">
               <div className="form-group">
                 <label htmlFor="firstNameField">Designation</label>
                 <select
@@ -316,7 +321,7 @@ const EmployeeForm = () => {
               </div>
 
             </div>
-            <div className="col-4">
+            <div className="col-6">
               <div className="form-group">
                 <label htmlFor="firstNameField">Team</label>
                 <select
@@ -334,7 +339,7 @@ const EmployeeForm = () => {
               </div>
 
             </div>
-            <div className="col-4">
+            <div className="col-6">
               <div className="form-group">
                 <label htmlFor="firstNameField">Hired On</label>
                 <select
@@ -350,6 +355,26 @@ const EmployeeForm = () => {
                   <option value="Inactive">Inactive</option>
                 </select>
               </div>
+
+
+            </div>
+            <div className="col-6">
+              <div className="form-group">
+                <label htmlFor="firstNameField">Job Type</label>
+                <select
+                  className="custom-select"
+                  type="text"
+                  id="designationField"
+                  name="designation"
+                  value={ employeeDetails.status }
+                  onChange={ handleChange }
+                >
+                  <option value="">Select</option>
+                  <option value="Active">Active</option>
+                  <option value="Inactive">Inactive</option>
+                </select>
+              </div>
+
 
             </div>
           </div>
