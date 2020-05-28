@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { validate as Validator } from 'validate.js';
 
 const EmployeeForm = () => {
@@ -9,21 +10,37 @@ const EmployeeForm = () => {
 
   const [employeeDetails, setEmployeeDetails] = useState({
     firstName: '',
+    middleName: '',
     lastName: '',
     email: '',
     phoneNumber: '',
     whatsappNumber: '',
+    address: '',
+    sex: '',
+    maritalStatus: '',
+    nationality: '',
     designation: '',
+    team: '',
+    hiredOn: '',
+    jobType: '',
     status: ''
   });
 
   useEffect(() => {
     const validationResult = Validator.validate(employeeDetails, {
       firstName: { presence: { allowEmpty: false } },
-      email: { presence: { allowEmpty: false }, email: true },
       phoneNumber: { presence: { allowEmpty: false }, length: { is: 10 } },
       whatsappNumber: { length: { is: 10 } },
+      email: { presence: { allowEmpty: false }, email: true },
+      dateOfBirth: { presence: { allowEmpty: false } },
+      address: { presence: { allowEmpty: false } },
+      sex: { presence: { allowEmpty: false } },
+      maritalStatus: { presence: { allowEmpty: false } },
+      nationality: { presence: { allowEmpty: false } },
       designation: { presence: { allowEmpty: false } },
+      team: { presence: { allowEmpty: false } },
+      hiredOn: { presence: { allowEmpty: false } },
+      jobType: { presence: { allowEmpty: false } },
       status: { presence: { allowEmpty: false } }
     });
 
@@ -64,9 +81,6 @@ const EmployeeForm = () => {
         <div className="p-3 rounded">
           <h4>Personal Information</h4>
           <div className="form-row">
-            {/* <div className="col-6"> */}
-            {/* <div className="form-row"> */}
-
             <div className="col-4">
               <div className="form-group">
                 <label htmlFor="firstNameField">First Name</label>
@@ -88,37 +102,30 @@ const EmployeeForm = () => {
             </div>
             <div className="col-4">
               <div className="form-group">
-                <label htmlFor="lastNameField">Middle Name</label>
+                <label htmlFor="middleNameField">Middle Name</label>
+                <input
+                  className="form-control"
+                  type="text"
+                  id="middleNameField"
+                  name="middleName"
+                  placeholder="Middle name"
+                  value={ employeeDetails.middleName }
+                  onChange={ handleChange }
+                />
+              </div>
+            </div>
+            <div className="col-4">
+              <div className="form-group">
+                <label htmlFor="lastNameField">Last Name</label>
                 <input
                   className="form-control"
                   type="text"
                   id="lastNameField"
                   name="lastName"
-                  placeholder="Middle name"
+                  placeholder="Last Name"
                   value={ employeeDetails.lastName }
                   onChange={ handleChange }
                 />
-              </div>
-              {/* </div> */}
-              {/* </div> */}
-            </div>
-            <div className="col-4">
-              <div className="form-group">
-                <label htmlFor="emailField">Last Name</label>
-                <input
-                  className="form-control"
-                  type="text"
-                  id="emailField"
-                  name="email"
-                  placeholder="Last Name"
-                  value={ employeeDetails.email }
-                  onChange={ handleChange }
-                />
-                { (employeeForm.submitted && employeeForm.errors && employeeForm.errors.email)
-                  && (employeeForm.errors.email[0]
-                    ? (<span className="text-danger">{ employeeForm.errors.email[0] }</span>)
-                    : (<span className="text-danger">{ employeeForm.errors.email[1] }</span>)
-                  ) }
               </div>
             </div>
             <div className="col-4">
@@ -133,11 +140,13 @@ const EmployeeForm = () => {
                   value={ employeeDetails.phoneNumber }
                   onChange={ handleChange }
                 />
-                { (employeeForm.submitted && employeeForm.errors && employeeForm.errors.phoneNumber)
-                  && (employeeForm.errors.phoneNumber[0]
-                    ? (<span className="text-danger">{ employeeForm.errors.phoneNumber[0] }</span>)
-                    : (<span className="text-danger">{ employeeForm.errors.phoneNumber[1] }</span>)
-                  ) }
+                { (employeeForm.submitted
+                && employeeForm.errors
+                && employeeForm.errors.phoneNumber)
+                && (employeeForm.errors.phoneNumber[0]
+                  ? (<span className="text-danger">{ employeeForm.errors.phoneNumber[0] }</span>)
+                  : (<span className="text-danger">{ employeeForm.errors.phoneNumber[1] }</span>)
+                ) }
               </div>
             </div>
             <div className="col-4">
@@ -172,38 +181,37 @@ const EmployeeForm = () => {
                   id="whatsappNumberField"
                   name="whatsappNumber"
                   placeholder="Email Id"
-                  value={ employeeDetails.whatsappNumber }
+                  value={ employeeDetails.email }
                   onChange={ handleChange }
                 />
                 { (employeeForm.submitted
-                  && employeeForm.errors
-                  && employeeForm.errors.whatsappNumber)
-                  && (
-                    <span className="text-danger">
-                      { employeeForm.errors.whatsappNumber[0] }
-                    </span>
-                  ) }
+                && employeeForm.errors
+                && employeeForm.errors.email)
+                && (employeeForm.errors.email[0]
+                  ? (<span className="text-danger">{ employeeForm.errors.email[0] }</span>)
+                  : (<span className="text-danger">{ employeeForm.errors.email[1] }</span>)
+                ) }
 
               </div>
             </div>
             <div className="col-4">
               <div className="form-group">
-                <label htmlFor="whatsappNumberField">Date Of Birth</label>
+                <label htmlFor="dateOfBirthField">Date Of Birth</label>
                 <input
                   className="form-control"
                   type="text"
-                  id="whatsappNumberField"
-                  name="whatsappNumber"
+                  id="dateOfBirthField"
+                  name="dateOfBirth"
                   placeholder="Date of Birth"
-                  value={ employeeDetails.whatsappNumber }
+                  value={ employeeDetails.dateOfBirth }
                   onChange={ handleChange }
                 />
                 { (employeeForm.submitted
                   && employeeForm.errors
-                  && employeeForm.errors.whatsappNumber)
+                  && employeeForm.errors.dateOfBirth)
                   && (
                     <span className="text-danger">
-                      { employeeForm.errors.whatsappNumber[0] }
+                      { employeeForm.errors.dateOfBirth[0] }
                     </span>
                   ) }
 
@@ -211,64 +219,61 @@ const EmployeeForm = () => {
             </div>
             <div className="col-4">
               <div className="form-group">
-                <label htmlFor="whatsappNumberField">Address</label>
+                <label htmlFor="addressField">Address</label>
                 <input
                   className="form-control"
                   type="text"
-                  id="whatsappNumberField"
-                  name="whatsappNumber"
+                  id="addressField"
+                  name="address"
                   placeholder="Address"
-                  value={ employeeDetails.whatsappNumber }
+                  value={ employeeDetails.address }
                   onChange={ handleChange }
                 />
-                { (employeeForm.submitted
-                  && employeeForm.errors
-                  && employeeForm.errors.whatsappNumber)
-                  && (
-                    <span className="text-danger">
-                      { employeeForm.errors.whatsappNumber[0] }
-                    </span>
-                  ) }
-
+                {(employeeForm.submitted
+                && employeeForm.errors
+                && employeeForm.errors.address)
+                && (
+                <span className="text-danger">
+                  {employeeForm.errors.address[0]}
+                </span>
+                )}
               </div>
             </div>
             <div className="col-4">
               <div className="form-group">
-                <label htmlFor="whatsappNumberField">Select Sex</label>
+                <label htmlFor="sexField">Select Sex</label>
                 <select
                   className="custom-select"
                   type="text"
-                  id="designationField"
-                  name="designation"
-                  value={ employeeDetails.status }
+                  id="sexField"
+                  name="sex"
+                  value={ employeeDetails.sex }
                   onChange={ handleChange }
                 >
                   <option value="">Select Sex</option>
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
                   <option value="Others">Others</option>
-
                 </select>
-                { (employeeForm.submitted
-                  && employeeForm.errors
-                  && employeeForm.errors.whatsappNumber)
-                  && (
-                    <span className="text-danger">
-                      { employeeForm.errors.whatsappNumber[0] }
-                    </span>
-                  ) }
-
+                {(employeeForm.submitted
+                && employeeForm.errors
+                && employeeForm.errors.sex)
+                && (
+                <span className="text-danger">
+                  {employeeForm.errors.sex[0]}
+                </span>
+                ) }
               </div>
             </div>
             <div className="col-6">
               <div className="form-group">
-                <label htmlFor="maritalStatus">Marital Status</label>
+                <label htmlFor="maritalStatusField">Marital Status</label>
                 <select
                   className="custom-select"
                   type="text"
-                  id="designationField"
-                  name="designation"
-                  value={ employeeDetails.status }
+                  id="maritalStatusField"
+                  name="maritalStatus"
+                  value={ employeeDetails.maritalStatus }
                   onChange={ handleChange }
                 >
                   <option value="">Select Marital Status</option>
@@ -278,17 +283,25 @@ const EmployeeForm = () => {
                   <option value="Separated">Separated</option>
                   <option value="Divorced">Divorced</option>
                 </select>
+                {(employeeForm.submitted
+                  && employeeForm.errors
+                  && employeeForm.errors.maritalStatus)
+                  && (
+                  <span className="text-danger">
+                    {employeeForm.errors.maritalStatus[0]}
+                  </span>
+                  )}
               </div>
             </div>
             <div className="col-6">
               <div className="form-group">
-                <label htmlFor="maritalStatus">Nationality</label>
+                <label htmlFor="nationalityField">Nationality</label>
                 <select
                   className="custom-select"
                   type="text"
-                  id="designationField"
-                  name="designation"
-                  value={ employeeDetails.status }
+                  id="nationalityField"
+                  name="nationality"
+                  value={ employeeDetails.nationality }
                   onChange={ handleChange }
                 >
                   <option value="">Select Nationality</option>
@@ -298,6 +311,15 @@ const EmployeeForm = () => {
                   <option value="Separated">Separated</option>
                   <option value="Divorced">Divorced</option>
                 </select>
+                {(employeeForm.submitted
+                  && employeeForm.errors
+                  && employeeForm.errors.nationality)
+                  && (
+                  <span className="text-danger">
+                    {employeeForm.errors.nationality[0]}
+                  </span>
+                  )}
+
               </div>
             </div>
           </div>
@@ -305,77 +327,109 @@ const EmployeeForm = () => {
           <div className="form-row">
             <div className="col-6">
               <div className="form-group">
-                <label htmlFor="firstNameField">Designation</label>
+                <label htmlFor="designationField">Designation</label>
                 <select
                   className="custom-select"
                   type="text"
                   id="designationField"
                   name="designation"
-                  value={ employeeDetails.status }
+                  value={ employeeDetails.designation }
                   onChange={ handleChange }
                 >
                   <option value="">Select a Designation</option>
                   <option value="Active">Active</option>
                   <option value="Inactive">Inactive</option>
                 </select>
+                {(employeeForm.submitted
+                  && employeeForm.errors
+                  && employeeForm.errors.designation)
+                  && (
+                  <span className="text-danger">
+                    {employeeForm.errors.designation[0]}
+                  </span>
+                  )}
               </div>
 
             </div>
             <div className="col-6">
               <div className="form-group">
-                <label htmlFor="firstNameField">Team</label>
+                <label htmlFor="teamField">Team</label>
                 <select
                   className="custom-select"
                   type="text"
-                  id="designationField"
-                  name="designation"
-                  value={ employeeDetails.status }
+                  id="teamField"
+                  name="team"
+                  value={ employeeDetails.team }
                   onChange={ handleChange }
                 >
                   <option value="">Select A Team</option>
                   <option value="Active">Active</option>
                   <option value="Inactive">Inactive</option>
                 </select>
+                {(employeeForm.submitted
+                  && employeeForm.errors
+                  && employeeForm.errors.team)
+                  && (
+                  <span className="text-danger">
+                    {employeeForm.errors.team[0]}
+                  </span>
+                  )}
               </div>
 
             </div>
             <div className="col-6">
               <div className="form-group">
-                <label htmlFor="firstNameField">Hired On</label>
+                <label htmlFor="hiredOnField">Hired On</label>
                 <select
                   className="custom-select"
                   type="text"
-                  id="designationField"
-                  name="designation"
-                  value={ employeeDetails.status }
+                  id="hiredOnField"
+                  name="hiredOn"
+                  value={ employeeDetails.hiredOn }
                   onChange={ handleChange }
                 >
                   <option value="">Select</option>
                   <option value="Active">Active</option>
                   <option value="Inactive">Inactive</option>
                 </select>
+                {(employeeForm.submitted
+                  && employeeForm.errors
+                  && employeeForm.errors.hiredOn)
+                  && (
+                  <span className="text-danger">
+                    {employeeForm.errors.hiredOn[0]}
+                  </span>
+                  )}
               </div>
-
-
             </div>
             <div className="col-6">
               <div className="form-group">
-                <label htmlFor="firstNameField">Job Type</label>
+                <label htmlFor="jobTypeField">Job Type</label>
                 <select
                   className="custom-select"
                   type="text"
-                  id="designationField"
-                  name="designation"
-                  value={ employeeDetails.status }
+                  id="jobTypeField"
+                  name="jobType"
+                  value={ employeeDetails.jobType }
                   onChange={ handleChange }
                 >
                   <option value="">Select</option>
-                  <option value="Active">Active</option>
-                  <option value="Inactive">Inactive</option>
+                  <option value="Active">Part Time</option>
+                  <option value="Inactive">Full Time</option>
                 </select>
+                {(employeeForm.submitted
+                  && employeeForm.errors
+                  && employeeForm.errors.jobType)
+                  && (
+                  <span className="text-danger">
+                    {employeeForm.errors.jobType[0]}
+                  </span>
+                  )}
               </div>
-
-
+            </div>
+            <div className="col-12 text-right">
+              <button type="submit" className="btn btn-primary mr-2">Create</button>
+              <Link type="submit" className="btn btn-secondary" to="/employee/list">Cancel</Link>
             </div>
           </div>
         </div>
