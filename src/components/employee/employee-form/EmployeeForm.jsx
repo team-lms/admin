@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { validate as Validator } from 'validate.js';
+import { toast } from 'react-toastify';
+// import Select from 'react-select';
+import { Teams, CountryList } from '../../../api/service';
 
 const EmployeeForm = () => {
   const [employeeForm, setEmployeeForm] = useState({
@@ -25,6 +28,11 @@ const EmployeeForm = () => {
     jobType: '',
     status: ''
   });
+  const [filters] = useState({
+    limit: 10, offset: 0, sortType: 'ASC', sortField: 'createdAt'
+  });
+  const [teamList, setTeamList] = useState([]);
+  const [countryList, setCountryList] = useState([]);
 
   useEffect(() => {
     const validationResult = Validator.validate(employeeDetails, {
@@ -55,6 +63,32 @@ const EmployeeForm = () => {
       errors: validationResult || null
     }));
   }, [employeeDetails]);
+
+  /**
+   * Get Team API Call
+   */
+
+  const getTeams = async () => {
+    const result = await Teams.getTeamList(filters);
+    if (result.data.success) {
+      setTeamList(...teamList, result.data.data.rows);
+    } else {
+      toast.error(result.message);
+    }
+  };
+
+  /**
+   * Get Country Wise Information
+   */
+  const getCountry = async () => {
+    const result = await CountryList.getCountryList();
+    setCountryList(...countryList, result.data);
+  };
+
+  useEffect(() => {
+    getTeams();
+    getCountry();
+  }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -174,12 +208,12 @@ const EmployeeForm = () => {
             </div>
             <div className="col-4">
               <div className="form-group">
-                <label htmlFor="whatsappNumberField">Email</label>
+                <label htmlFor="emailField">Email</label>
                 <input
                   className="form-control"
                   type="text"
-                  id="whatsappNumberField"
-                  name="whatsappNumber"
+                  id="emailField"
+                  name="email"
                   placeholder="Email Id"
                   value={ employeeDetails.email }
                   onChange={ handleChange }
@@ -305,11 +339,11 @@ const EmployeeForm = () => {
                   onChange={ handleChange }
                 >
                   <option value="">Select Nationality</option>
-                  <option value="Single">Single</option>
-                  <option value="Married">Married</option>
-                  <option value="Widowed">Widowed</option>
-                  <option value="Separated">Separated</option>
-                  <option value="Divorced">Divorced</option>
+                  {countryList.map((country) => (
+                    <option key={ country.name } value={ country.demonym }>
+                      {country.demonym}
+                    </option>
+                  ))}
                 </select>
                 {(employeeForm.submitted
                   && employeeForm.errors
@@ -363,8 +397,9 @@ const EmployeeForm = () => {
                   onChange={ handleChange }
                 >
                   <option value="">Select A Team</option>
-                  <option value="Active">Active</option>
-                  <option value="Inactive">Inactive</option>
+                  {teamList.map((team) => (
+                    <option value={ team.teamName }>{team.teamName}</option>
+                  ))}
                 </select>
                 {(employeeForm.submitted
                   && employeeForm.errors
