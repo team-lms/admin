@@ -79,7 +79,6 @@ export const CountryList = {
       const result = await axios.get('https://restcountries.eu/rest/v2/all?fields=name;callingCodes;demonym');
       return result;
     } catch (error) {
-      console.log(error);
       return error.response;
     }
   }

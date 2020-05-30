@@ -19,6 +19,7 @@ const EmployeeForm = () => {
     phoneNumber: '',
     whatsappNumber: '',
     address: '',
+    pinCode: '',
     sex: '',
     maritalStatus: '',
     nationality: '',
@@ -42,6 +43,7 @@ const EmployeeForm = () => {
       email: { presence: { allowEmpty: false }, email: true },
       dateOfBirth: { presence: { allowEmpty: false } },
       address: { presence: { allowEmpty: false } },
+      pinCode: { presence: { allowEmpty: false }, numericality: { onlyInteger: true } },
       sex: { presence: { allowEmpty: false } },
       maritalStatus: { presence: { allowEmpty: false } },
       nationality: { presence: { allowEmpty: false } },
@@ -275,6 +277,34 @@ const EmployeeForm = () => {
             </div>
             <div className="col-4">
               <div className="form-group">
+                <label htmlFor="pinCodeField">Pincode</label>
+                <input
+                  className="form-control"
+                  type="text"
+                  id="pinCodeField"
+                  name="pinCode"
+                  placeholder="PinCode"
+                  value={ employeeDetails.pinCode }
+                  onChange={ handleChange }
+                />
+                {(employeeForm.submitted
+                && employeeForm.errors
+                && employeeForm.errors.pinCode)
+                && (employeeForm.errors.pinCode[0]
+                  ? (
+                    <span className="text-danger">
+                      {employeeForm.errors.pinCode[0]}
+                    </span>
+                  )
+                  : (
+                    <span className="text-danger">
+                      {employeeForm.errors.pinCode[1]}
+                    </span>
+                  ))}
+              </div>
+            </div>
+            <div className="col-4">
+              <div className="form-group">
                 <label htmlFor="sexField">Select Sex</label>
                 <select
                   className="custom-select"
@@ -299,7 +329,7 @@ const EmployeeForm = () => {
                 ) }
               </div>
             </div>
-            <div className="col-6">
+            <div className="col-4">
               <div className="form-group">
                 <label htmlFor="maritalStatusField">Marital Status</label>
                 <select
@@ -327,7 +357,7 @@ const EmployeeForm = () => {
                   )}
               </div>
             </div>
-            <div className="col-6">
+            <div className="col-4">
               <div className="form-group">
                 <label htmlFor="nationalityField">Nationality</label>
                 <select
