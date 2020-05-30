@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { validate as Validator } from 'validate.js';
 import { toast } from 'react-toastify';
 import 'react-dates/lib/css/_datepicker.css';
-// import Select from 'react-select';
 import { SingleDatePicker } from 'react-dates';
 import * as moment from 'moment';
 import { Teams, CountryList } from '../../../api/service';
@@ -15,8 +14,6 @@ const EmployeeForm = () => {
   });
   const [focused, setFocused] = useState(false);
   const [hiredOnFocused, setHiredOnFocused] = useState(false);
-
-  // const [date, setDate] = useState(moment())
 
   const [employeeDetails, setEmployeeDetails] = useState({
     firstName: '',
@@ -138,10 +135,10 @@ const EmployeeForm = () => {
                   onChange={ handleChange }
                 />
                 { (employeeForm.submitted && employeeForm.errors
-                      && employeeForm.errors.firstName)
-                      && (
-                        <span className="text-danger">{ employeeForm.errors.firstName[0] }</span>
-                      ) }
+                  && employeeForm.errors.firstName)
+                  && (
+                    <span className="text-danger">{ employeeForm.errors.firstName[0] }</span>
+                  ) }
               </div>
             </div>
             <div className="col-4">
@@ -185,12 +182,12 @@ const EmployeeForm = () => {
                   onChange={ handleChange }
                 />
                 { (employeeForm.submitted
-                && employeeForm.errors
-                && employeeForm.errors.phoneNumber)
-                && (employeeForm.errors.phoneNumber[0]
-                  ? (<span className="text-danger">{ employeeForm.errors.phoneNumber[0] }</span>)
-                  : (<span className="text-danger">{ employeeForm.errors.phoneNumber[1] }</span>)
-                ) }
+                  && employeeForm.errors
+                  && employeeForm.errors.phoneNumber)
+                  && (employeeForm.errors.phoneNumber[0]
+                    ? (<span className="text-danger">{ employeeForm.errors.phoneNumber[0] }</span>)
+                    : (<span className="text-danger">{ employeeForm.errors.phoneNumber[1] }</span>)
+                  ) }
               </div>
             </div>
             <div className="col-4">
@@ -229,12 +226,12 @@ const EmployeeForm = () => {
                   onChange={ handleChange }
                 />
                 { (employeeForm.submitted
-                && employeeForm.errors
-                && employeeForm.errors.email)
-                && (employeeForm.errors.email[0]
-                  ? (<span className="text-danger">{ employeeForm.errors.email[0] }</span>)
-                  : (<span className="text-danger">{ employeeForm.errors.email[1] }</span>)
-                ) }
+                  && employeeForm.errors
+                  && employeeForm.errors.email)
+                  && (employeeForm.errors.email[0]
+                    ? (<span className="text-danger">{ employeeForm.errors.email[0] }</span>)
+                    : (<span className="text-danger">{ employeeForm.errors.email[1] }</span>)
+                  ) }
 
               </div>
             </div>
@@ -245,10 +242,11 @@ const EmployeeForm = () => {
                   date={ employeeDetails.dateOfBirth }
                   onDateChange={ (date) => handleChange({ target: { name: 'dateOfBirth', value: date } }) }
                   focused={ focused }
-                  onFocusChange={ (focus) => setFocused(focus) }
+                  onFocusChange={ ({ focused: _focused }) => setFocused(_focused) }
                   id="dateOfBirthField"
                   placeholder="Date of Birth"
                   keepOpenOnDateSelect={ false }
+                  numberOfMonths={ 1 }
                 />
                 { (employeeForm.submitted
                   && employeeForm.errors
@@ -273,14 +271,14 @@ const EmployeeForm = () => {
                   value={ employeeDetails.address }
                   onChange={ handleChange }
                 />
-                {(employeeForm.submitted
-                && employeeForm.errors
-                && employeeForm.errors.address)
-                && (
-                <span className="text-danger">
-                  {employeeForm.errors.address[0]}
-                </span>
-                )}
+                { (employeeForm.submitted
+                  && employeeForm.errors
+                  && employeeForm.errors.address)
+                  && (
+                    <span className="text-danger">
+                      { employeeForm.errors.address[0] }
+                    </span>
+                  ) }
               </div>
             </div>
             <div className="col-4">
@@ -295,20 +293,20 @@ const EmployeeForm = () => {
                   value={ employeeDetails.pinCode }
                   onChange={ handleChange }
                 />
-                {(employeeForm.submitted
-                && employeeForm.errors
-                && employeeForm.errors.pinCode)
-                && (employeeForm.errors.pinCode[0]
-                  ? (
-                    <span className="text-danger">
-                      {employeeForm.errors.pinCode[0]}
-                    </span>
-                  )
-                  : (
-                    <span className="text-danger">
-                      {employeeForm.errors.pinCode[1]}
-                    </span>
-                  ))}
+                { (employeeForm.submitted
+                  && employeeForm.errors
+                  && employeeForm.errors.pinCode)
+                  && (employeeForm.errors.pinCode[0]
+                    ? (
+                      <span className="text-danger">
+                        { employeeForm.errors.pinCode[0] }
+                      </span>
+                    )
+                    : (
+                      <span className="text-danger">
+                        { employeeForm.errors.pinCode[1] }
+                      </span>
+                    )) }
               </div>
             </div>
             <div className="col-4">
@@ -327,14 +325,14 @@ const EmployeeForm = () => {
                   <option value="Female">Female</option>
                   <option value="Others">Others</option>
                 </select>
-                {(employeeForm.submitted
-                && employeeForm.errors
-                && employeeForm.errors.sex)
-                && (
-                <span className="text-danger">
-                  {employeeForm.errors.sex[0]}
-                </span>
-                ) }
+                { (employeeForm.submitted
+                  && employeeForm.errors
+                  && employeeForm.errors.sex)
+                  && (
+                    <span className="text-danger">
+                      { employeeForm.errors.sex[0] }
+                    </span>
+                  ) }
               </div>
             </div>
             <div className="col-4">
@@ -355,14 +353,14 @@ const EmployeeForm = () => {
                   <option value="Separated">Separated</option>
                   <option value="Divorced">Divorced</option>
                 </select>
-                {(employeeForm.submitted
+                { (employeeForm.submitted
                   && employeeForm.errors
                   && employeeForm.errors.maritalStatus)
                   && (
-                  <span className="text-danger">
-                    {employeeForm.errors.maritalStatus[0]}
-                  </span>
-                  )}
+                    <span className="text-danger">
+                      { employeeForm.errors.maritalStatus[0] }
+                    </span>
+                  ) }
               </div>
             </div>
             <div className="col-4">
@@ -377,20 +375,20 @@ const EmployeeForm = () => {
                   onChange={ handleChange }
                 >
                   <option value="">Select Nationality</option>
-                  {countryList.map((country) => (
+                  { countryList.map((country) => (
                     <option key={ country.name } value={ country.demonym }>
-                      {country.demonym}
+                      { country.demonym }
                     </option>
-                  ))}
+                  )) }
                 </select>
-                {(employeeForm.submitted
+                { (employeeForm.submitted
                   && employeeForm.errors
                   && employeeForm.errors.nationality)
                   && (
-                  <span className="text-danger">
-                    {employeeForm.errors.nationality[0]}
-                  </span>
-                  )}
+                    <span className="text-danger">
+                      { employeeForm.errors.nationality[0] }
+                    </span>
+                  ) }
 
               </div>
             </div>
@@ -412,14 +410,14 @@ const EmployeeForm = () => {
                   <option value="Active">Active</option>
                   <option value="Inactive">Inactive</option>
                 </select>
-                {(employeeForm.submitted
+                { (employeeForm.submitted
                   && employeeForm.errors
                   && employeeForm.errors.designation)
                   && (
-                  <span className="text-danger">
-                    {employeeForm.errors.designation[0]}
-                  </span>
-                  )}
+                    <span className="text-danger">
+                      { employeeForm.errors.designation[0] }
+                    </span>
+                  ) }
               </div>
 
             </div>
@@ -435,18 +433,18 @@ const EmployeeForm = () => {
                   onChange={ handleChange }
                 >
                   <option value="">Select A Team</option>
-                  {teamList.map((team) => (
-                    <option value={ team.teamName }>{team.teamName}</option>
-                  ))}
+                  { teamList.map((team) => (
+                    <option value={ team.teamName }>{ team.teamName }</option>
+                  )) }
                 </select>
-                {(employeeForm.submitted
+                { (employeeForm.submitted
                   && employeeForm.errors
                   && employeeForm.errors.team)
                   && (
-                  <span className="text-danger">
-                    {employeeForm.errors.team[0]}
-                  </span>
-                  )}
+                    <span className="text-danger">
+                      { employeeForm.errors.team[0] }
+                    </span>
+                  ) }
               </div>
 
             </div>
@@ -463,14 +461,14 @@ const EmployeeForm = () => {
                   keepOpenOnDateSelect={ false }
                 />
 
-                {(employeeForm.submitted
+                { (employeeForm.submitted
                   && employeeForm.errors
                   && employeeForm.errors.hiredOn)
                   && (
-                  <span className="text-danger">
-                    {employeeForm.errors.hiredOn[0]}
-                  </span>
-                  )}
+                    <span className="text-danger">
+                      { employeeForm.errors.hiredOn[0] }
+                    </span>
+                  ) }
               </div>
             </div>
             <div className="col-6">
@@ -488,14 +486,14 @@ const EmployeeForm = () => {
                   <option value="Active">Part Time</option>
                   <option value="Inactive">Full Time</option>
                 </select>
-                {(employeeForm.submitted
+                { (employeeForm.submitted
                   && employeeForm.errors
                   && employeeForm.errors.jobType)
                   && (
-                  <span className="text-danger">
-                    {employeeForm.errors.jobType[0]}
-                  </span>
-                  )}
+                    <span className="text-danger">
+                      { employeeForm.errors.jobType[0] }
+                    </span>
+                  ) }
               </div>
             </div>
             <div className="col-12 text-right">
