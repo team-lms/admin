@@ -18,6 +18,7 @@ import EmployeeList from './components/employee/employee-list/EmployeeList';
 import EmployeeForm from './components/employee/employee-form/EmployeeForm';
 import SupervisorList from './components/supervisor/supervisor-list/supervisor-list';
 import HumanResourceList from './components/human-resource-manager/human-resource-listing/human-resource-listing';
+import TeamList from './components/team/team-list/team-list';
 
 axios.interceptors.request.use((config) => {
   // eslint-disable-next-line no-param-reassign
@@ -45,6 +46,8 @@ function App() {
                   <Route path="/employee/list" component={ EmployeeList } />
                   <Route path="/supervisor/list" component={ SupervisorList } />
                   <Route path="/humanresource/list" component={ HumanResourceList } />
+                  <Route path="/team/list" component={ TeamList } />
+
                 </Switch>
               </div>
             </main>
