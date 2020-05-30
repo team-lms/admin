@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { validate as Validator } from 'validate.js';
 import { toast } from 'react-toastify';
+import 'react-dates/lib/css/_datepicker.css';
 // import Select from 'react-select';
+import { SingleDatePicker } from 'react-dates';
+import * as moment from 'moment';
 import { Teams, CountryList } from '../../../api/service';
 
 const EmployeeForm = () => {
@@ -10,6 +13,10 @@ const EmployeeForm = () => {
     submitted: false,
     errors: null
   });
+  const [focused, setFocused] = useState(false);
+  const [hiredOnFocused, setHiredOnFocused] = useState(false);
+
+  // const [date, setDate] = useState(moment())
 
   const [employeeDetails, setEmployeeDetails] = useState({
     firstName: '',
@@ -18,6 +25,7 @@ const EmployeeForm = () => {
     email: '',
     phoneNumber: '',
     whatsappNumber: '',
+    dateOfBirth: moment(),
     address: '',
     pinCode: '',
     sex: '',
@@ -25,7 +33,7 @@ const EmployeeForm = () => {
     nationality: '',
     designation: '',
     team: '',
-    hiredOn: '',
+    hiredOn: moment(),
     jobType: '',
     status: ''
   });
@@ -233,14 +241,14 @@ const EmployeeForm = () => {
             <div className="col-4">
               <div className="form-group">
                 <label htmlFor="dateOfBirthField">Date Of Birth</label>
-                <input
-                  className="form-control"
-                  type="text"
+                <SingleDatePicker
+                  date={ employeeDetails.dateOfBirth }
+                  onDateChange={ (date) => handleChange({ target: { name: 'dateOfBirth', value: date } }) }
+                  focused={ focused }
+                  onFocusChange={ (focus) => setFocused(focus) }
                   id="dateOfBirthField"
-                  name="dateOfBirth"
                   placeholder="Date of Birth"
-                  value={ employeeDetails.dateOfBirth }
-                  onChange={ handleChange }
+                  keepOpenOnDateSelect={ false }
                 />
                 { (employeeForm.submitted
                   && employeeForm.errors
@@ -445,18 +453,16 @@ const EmployeeForm = () => {
             <div className="col-6">
               <div className="form-group">
                 <label htmlFor="hiredOnField">Hired On</label>
-                <select
-                  className="custom-select"
-                  type="text"
+                <SingleDatePicker
+                  date={ employeeDetails.hiredOn }
+                  onDateChange={ (date) => handleChange({ target: { name: 'hiredOn', value: date } }) }
+                  focused={ hiredOnFocused }
+                  onFocusChange={ (focus) => setHiredOnFocused(focus) }
                   id="hiredOnField"
-                  name="hiredOn"
-                  value={ employeeDetails.hiredOn }
-                  onChange={ handleChange }
-                >
-                  <option value="">Select</option>
-                  <option value="Active">Active</option>
-                  <option value="Inactive">Inactive</option>
-                </select>
+                  placeholder="Hired On"
+                  keepOpenOnDateSelect={ false }
+                />
+
                 {(employeeForm.submitted
                   && employeeForm.errors
                   && employeeForm.errors.hiredOn)

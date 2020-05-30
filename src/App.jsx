@@ -19,6 +19,7 @@ import EmployeeForm from './components/employee/employee-form/EmployeeForm';
 import SupervisorList from './components/supervisor/supervisor-list/supervisor-list';
 import HumanResourceList from './components/human-resource-manager/human-resource-listing/human-resource-listing';
 import TeamList from './components/team/team-list/team-list';
+import 'react-dates/initialize';
 
 axios.interceptors.request.use((config) => {
   if (config.url !== 'https://restcountries.eu/rest/v2/all?fields=name;callingCodes;demonym') {
