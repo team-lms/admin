@@ -19,10 +19,13 @@ import EmployeeForm from './components/employee/employee-form/EmployeeForm';
 import SupervisorList from './components/supervisor/supervisor-list/supervisor-list';
 import HumanResourceList from './components/human-resource-manager/human-resource-listing/human-resource-listing';
 import TeamList from './components/team/team-list/team-list';
+import 'react-dates/initialize';
 
 axios.interceptors.request.use((config) => {
-  // eslint-disable-next-line no-param-reassign
-  config.headers.authorization = 'Bearer + eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoie1wiaWRcIjoxLFwiZW1haWxcIjpcImFkbWluQGxtcy5jb21cIixcInJvbGVcIjpcIkFkbWluXCIsXCJwaG9uZU51bWJlclwiOlwiODA3NTQzODkyM1wiLFwiZmlyc3ROYW1lXCI6XCJBZG1pblwiLFwibGFzdE5hbWVcIjpudWxsfSIsImlhdCI6MTU5MDMxNzkwOSwiZXhwIjoxNTkwNDA0MzA5fQ.-tXrTlQUulFSBrAhjRBMbieLKlkVYBxXna7icN_zruY';
+  if (config.url !== 'https://restcountries.eu/rest/v2/all?fields=name;callingCodes;demonym') {
+    // eslint-disable-next-line no-param-reassign
+    config.headers.authorization = 'Bearer + eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoie1wiaWRcIjoxLFwiZW1haWxcIjpcImFkbWluQGxtcy5jb21cIixcInJvbGVcIjpcIkFkbWluXCIsXCJwaG9uZU51bWJlclwiOlwiODA3NTQzODkyM1wiLFwiZmlyc3ROYW1lXCI6XCJBZG1pblwiLFwibGFzdE5hbWVcIjpudWxsfSIsImlhdCI6MTU5MDY2MzA2MSwiZXhwIjoxNTkwNzQ5NDYxfQ.dJX5nklTTo6i4XPSNdWIlLv4FHNlGrYb7mZqilGw3_Y';
+  }
   return config;
 }, (error) => Promise.reject(error));
 
