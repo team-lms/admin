@@ -7,6 +7,7 @@ const Dashboard = () => {
   const [supervisors, setSupervisors] = useState([]);
   const [humanResource, setHumanResource] = useState([]);
   const [employees, setEmployees] = useState([]);
+  const [teams, setTeams] = useState([]);
 
   useEffect(() => {
     setSupervisors([{
@@ -38,6 +39,22 @@ const Dashboard = () => {
     }]);
 
     setEmployees([{
+      name: 'Howard Moreno',
+      profilePicture: 'https://randomuser.me/api/portraits/men/67.jpg'
+    }, {
+      name: 'Sophia Freeman',
+      profilePicture: 'https://randomuser.me/api/portraits/women/3.jpg'
+    }, {
+      name: 'Terry Lewis',
+      profilePicture: 'https://randomuser.me/api/portraits/women/92.jpg'
+    }, {
+      name: 'Becky Brooks',
+      profilePicture: 'https://randomuser.me/api/portraits/women/62.jpg'
+    }, {
+      name: 'Bertha Bryant',
+      profilePicture: 'https://randomuser.me/api/portraits/women/23.jpg'
+    }]);
+    setTeams([{
       name: 'Howard Moreno',
       profilePicture: 'https://randomuser.me/api/portraits/men/67.jpg'
     }, {
@@ -126,6 +143,14 @@ const Dashboard = () => {
         peoples={ employees }
         remainingPeoplesCount={ 40 }
         route="/employee/list"
+      />
+      <RolePanel
+        Icon={ Users }
+        title="Teams"
+        description="Manage teams of the organization"
+        peoples={ teams }
+        remainingPeoplesCount={ 15 }
+        route="/teams/list"
       />
     </div>
   );
