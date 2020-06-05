@@ -150,7 +150,7 @@ const Dashboard = () => {
         description="Manage teams of the organization"
         peoples={ teams }
         remainingPeoplesCount={ 15 }
-        route="/teams/list"
+        route="/team/list"
       />
     </div>
   );

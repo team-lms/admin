@@ -13,6 +13,7 @@ const Header = ({ selectedPage }) => (
         <Link className="dropdown-item" to="/employee/list">Employees</Link>
         <Link className="dropdown-item" to="/supervisor/list">Supervisors</Link>
         <Link className="dropdown-item" to="/humanresource/list">Human Resource Managers</Link>
+        <Link className="dropdown-item" to="/team/list">Teams</Link>
       </Dropdown.Menu>
     </Dropdown>
   </>
