@@ -24,7 +24,7 @@ import 'react-dates/initialize';
 axios.interceptors.request.use((config) => {
   if (config.url !== 'https://restcountries.eu/rest/v2/all?fields=name;callingCodes;demonym') {
     // eslint-disable-next-line no-param-reassign
-    config.headers.authorization = 'Bearer + eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoie1wiaWRcIjoxLFwiZW1haWxcIjpcImFkbWluQGxtcy5jb21cIixcInJvbGVcIjpcIkFkbWluXCIsXCJwaG9uZU51bWJlclwiOlwiODA3NTQzODkyM1wiLFwiZmlyc3ROYW1lXCI6XCJBZG1pblwiLFwibGFzdE5hbWVcIjpudWxsfSIsImlhdCI6MTU5MDY2MzA2MSwiZXhwIjoxNTkwNzQ5NDYxfQ.dJX5nklTTo6i4XPSNdWIlLv4FHNlGrYb7mZqilGw3_Y';
+    config.headers.authorization = 'Bearer + eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoie1wiaWRcIjoxLFwiZW1haWxcIjpcImFkbWluQGxtcy5jb21cIixcInJvbGVcIjpcIkFkbWluXCIsXCJwaG9uZU51bWJlclwiOlwiODA3NTQzODkyM1wiLFwiZmlyc3ROYW1lXCI6XCJBZG1pblwiLFwibGFzdE5hbWVcIjpudWxsfSIsImlhdCI6MTU5MTM3NzU0NCwiZXhwIjoxNTkxNDYzOTQ0fQ.oDBs33IOqnjlo1tuiY3_Vhp4aw0mr6GqcMm015QTEDY';
   }
   return config;
 }, (error) => Promise.reject(error));
