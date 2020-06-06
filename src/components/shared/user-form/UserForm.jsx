@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { validate as Validator } from 'validate.js';
+import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 import 'react-dates/lib/css/_datepicker.css';
 import { SingleDatePicker } from 'react-dates';
 import * as moment from 'moment';
 import { Teams, CountryList } from '../../../api/service';
 
-const EmployeeForm = () => {
-  const [employeeForm, setEmployeeForm] = useState({
+const UserForm = ({ location }) => {
+  const [userForm, setUserForm] = useState({
     submitted: false,
     errors: null
   });
   const [focused, setFocused] = useState(false);
   const [hiredOnFocused, setHiredOnFocused] = useState(false);
+  const [title, setTitle] = useState('');
 
-  const [employeeDetails, setEmployeeDetails] = useState({
+  const [userDetails, setUserDetails] = useState({
     firstName: '',
     middleName: '',
     lastName: '',
@@ -41,7 +43,7 @@ const EmployeeForm = () => {
   const [countryList, setCountryList] = useState([]);
 
   useEffect(() => {
-    const validationResult = Validator.validate(employeeDetails, {
+    const validationResult = Validator.validate(userDetails, {
       firstName: { presence: { allowEmpty: false } },
       phoneNumber: { presence: { allowEmpty: false }, length: { is: 10 } },
       whatsappNumber: { length: { is: 10 } },
@@ -59,17 +61,17 @@ const EmployeeForm = () => {
       status: { presence: { allowEmpty: false } }
     });
 
-    if (typeof employeeDetails !== 'undefined') {
-      if (employeeDetails.whatsappNumber.length === 0) {
+    if (typeof userDetails !== 'undefined') {
+      if (userDetails.whatsappNumber.length === 0) {
         delete validationResult.whatsappNumber;
       }
     }
 
-    setEmployeeForm((prev) => ({
+    setUserForm((prev) => ({
       ...prev,
       errors: validationResult || null
     }));
-  }, [employeeDetails]);
+  }, [userDetails]);
 
   /**
    * Get Team API Call
@@ -83,6 +85,10 @@ const EmployeeForm = () => {
       toast.error(result.message);
     }
   };
+
+  useEffect(() => {
+    setTitle(location.state.title);
+  }, []);
 
   /**
    * Get Country Wise Information
@@ -99,16 +105,16 @@ const EmployeeForm = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setEmployeeForm(() => ({
-      ...employeeForm,
+    setUserForm(() => ({
+      ...userForm,
       submitted: true
     }));
   };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setEmployeeDetails(() => ({
-      ...employeeDetails,
+    setUserDetails(() => ({
+      ...userDetails,
       [name]: value
     }));
   };
@@ -116,7 +122,11 @@ const EmployeeForm = () => {
   return (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 className="h3">New Employee</h1>
+        <h1 className="h3">
+          New
+          {' '}
+          {title}
+        </h1>
       </div>
       <form onSubmit={ handleSubmit }>
         <div className="p-3 rounded">
@@ -131,13 +141,13 @@ const EmployeeForm = () => {
                   id="firstNameField"
                   name="firstName"
                   placeholder="First name"
-                  value={ employeeDetails.firstName }
+                  value={ userDetails.firstName }
                   onChange={ handleChange }
                 />
-                { (employeeForm.submitted && employeeForm.errors
-                  && employeeForm.errors.firstName)
+                { (userForm.submitted && userForm.errors
+                  && userForm.errors.firstName)
                   && (
-                    <span className="text-danger">{ employeeForm.errors.firstName[0] }</span>
+                    <span className="text-danger">{ userForm.errors.firstName[0] }</span>
                   ) }
               </div>
             </div>
@@ -150,7 +160,7 @@ const EmployeeForm = () => {
                   id="middleNameField"
                   name="middleName"
                   placeholder="Middle name"
-                  value={ employeeDetails.middleName }
+                  value={ userDetails.middleName }
                   onChange={ handleChange }
                 />
               </div>
@@ -164,7 +174,7 @@ const EmployeeForm = () => {
                   id="lastNameField"
                   name="lastName"
                   placeholder="Last Name"
-                  value={ employeeDetails.lastName }
+                  value={ userDetails.lastName }
                   onChange={ handleChange }
                 />
               </div>
@@ -178,15 +188,15 @@ const EmployeeForm = () => {
                   id="phoneNumberField"
                   name="phoneNumber"
                   placeholder="Phone Number"
-                  value={ employeeDetails.phoneNumber }
+                  value={ userDetails.phoneNumber }
                   onChange={ handleChange }
                 />
-                { (employeeForm.submitted
-                  && employeeForm.errors
-                  && employeeForm.errors.phoneNumber)
-                  && (employeeForm.errors.phoneNumber[0]
-                    ? (<span className="text-danger">{ employeeForm.errors.phoneNumber[0] }</span>)
-                    : (<span className="text-danger">{ employeeForm.errors.phoneNumber[1] }</span>)
+                { (userForm.submitted
+                  && userForm.errors
+                  && userForm.errors.phoneNumber)
+                  && (userForm.errors.phoneNumber[0]
+                    ? (<span className="text-danger">{ userForm.errors.phoneNumber[0] }</span>)
+                    : (<span className="text-danger">{ userForm.errors.phoneNumber[1] }</span>)
                   ) }
               </div>
             </div>
@@ -199,15 +209,15 @@ const EmployeeForm = () => {
                   id="whatsappNumberField"
                   name="whatsappNumber"
                   placeholder="Whatsapp Number"
-                  value={ employeeDetails.whatsappNumber }
+                  value={ userDetails.whatsappNumber }
                   onChange={ handleChange }
                 />
-                { (employeeForm.submitted
-                  && employeeForm.errors
-                  && employeeForm.errors.whatsappNumber)
+                { (userForm.submitted
+                  && userForm.errors
+                  && userForm.errors.whatsappNumber)
                   && (
                     <span className="text-danger">
-                      { employeeForm.errors.whatsappNumber[0] }
+                      { userForm.errors.whatsappNumber[0] }
                     </span>
                   ) }
 
@@ -222,15 +232,15 @@ const EmployeeForm = () => {
                   id="emailField"
                   name="email"
                   placeholder="Email Id"
-                  value={ employeeDetails.email }
+                  value={ userDetails.email }
                   onChange={ handleChange }
                 />
-                { (employeeForm.submitted
-                  && employeeForm.errors
-                  && employeeForm.errors.email)
-                  && (employeeForm.errors.email[0]
-                    ? (<span className="text-danger">{ employeeForm.errors.email[0] }</span>)
-                    : (<span className="text-danger">{ employeeForm.errors.email[1] }</span>)
+                { (userForm.submitted
+                  && userForm.errors
+                  && userForm.errors.email)
+                  && (userForm.errors.email[0]
+                    ? (<span className="text-danger">{ userForm.errors.email[0] }</span>)
+                    : (<span className="text-danger">{ userForm.errors.email[1] }</span>)
                   ) }
 
               </div>
@@ -239,7 +249,7 @@ const EmployeeForm = () => {
               <div className="form-group">
                 <label htmlFor="dateOfBirthField">Date Of Birth</label>
                 <SingleDatePicker
-                  date={ employeeDetails.dateOfBirth }
+                  date={ userDetails.dateOfBirth }
                   onDateChange={ (date) => handleChange({ target: { name: 'dateOfBirth', value: date } }) }
                   focused={ focused }
                   onFocusChange={ ({ focused: _focused }) => setFocused(_focused) }
@@ -248,12 +258,12 @@ const EmployeeForm = () => {
                   keepOpenOnDateSelect={ false }
                   numberOfMonths={ 1 }
                 />
-                { (employeeForm.submitted
-                  && employeeForm.errors
-                  && employeeForm.errors.dateOfBirth)
+                { (userForm.submitted
+                  && userForm.errors
+                  && userForm.errors.dateOfBirth)
                   && (
                     <span className="text-danger">
-                      { employeeForm.errors.dateOfBirth[0] }
+                      { userForm.errors.dateOfBirth[0] }
                     </span>
                   ) }
 
@@ -268,15 +278,15 @@ const EmployeeForm = () => {
                   id="addressField"
                   name="address"
                   placeholder="Address"
-                  value={ employeeDetails.address }
+                  value={ userDetails.address }
                   onChange={ handleChange }
                 />
-                { (employeeForm.submitted
-                  && employeeForm.errors
-                  && employeeForm.errors.address)
+                { (userForm.submitted
+                  && userForm.errors
+                  && userForm.errors.address)
                   && (
                     <span className="text-danger">
-                      { employeeForm.errors.address[0] }
+                      { userForm.errors.address[0] }
                     </span>
                   ) }
               </div>
@@ -290,21 +300,21 @@ const EmployeeForm = () => {
                   id="pinCodeField"
                   name="pinCode"
                   placeholder="PinCode"
-                  value={ employeeDetails.pinCode }
+                  value={ userDetails.pinCode }
                   onChange={ handleChange }
                 />
-                { (employeeForm.submitted
-                  && employeeForm.errors
-                  && employeeForm.errors.pinCode)
-                  && (employeeForm.errors.pinCode[0]
+                { (userForm.submitted
+                  && userForm.errors
+                  && userForm.errors.pinCode)
+                  && (userForm.errors.pinCode[0]
                     ? (
                       <span className="text-danger">
-                        { employeeForm.errors.pinCode[0] }
+                        { userForm.errors.pinCode[0] }
                       </span>
                     )
                     : (
                       <span className="text-danger">
-                        { employeeForm.errors.pinCode[1] }
+                        { userForm.errors.pinCode[1] }
                       </span>
                     )) }
               </div>
@@ -317,7 +327,7 @@ const EmployeeForm = () => {
                   type="text"
                   id="sexField"
                   name="sex"
-                  value={ employeeDetails.sex }
+                  value={ userDetails.sex }
                   onChange={ handleChange }
                 >
                   <option value="">Select Sex</option>
@@ -325,12 +335,12 @@ const EmployeeForm = () => {
                   <option value="Female">Female</option>
                   <option value="Others">Others</option>
                 </select>
-                { (employeeForm.submitted
-                  && employeeForm.errors
-                  && employeeForm.errors.sex)
+                { (userForm.submitted
+                  && userForm.errors
+                  && userForm.errors.sex)
                   && (
                     <span className="text-danger">
-                      { employeeForm.errors.sex[0] }
+                      { userForm.errors.sex[0] }
                     </span>
                   ) }
               </div>
@@ -343,7 +353,7 @@ const EmployeeForm = () => {
                   type="text"
                   id="maritalStatusField"
                   name="maritalStatus"
-                  value={ employeeDetails.maritalStatus }
+                  value={ userDetails.maritalStatus }
                   onChange={ handleChange }
                 >
                   <option value="">Select Marital Status</option>
@@ -353,12 +363,12 @@ const EmployeeForm = () => {
                   <option value="Separated">Separated</option>
                   <option value="Divorced">Divorced</option>
                 </select>
-                { (employeeForm.submitted
-                  && employeeForm.errors
-                  && employeeForm.errors.maritalStatus)
+                { (userForm.submitted
+                  && userForm.errors
+                  && userForm.errors.maritalStatus)
                   && (
                     <span className="text-danger">
-                      { employeeForm.errors.maritalStatus[0] }
+                      { userForm.errors.maritalStatus[0] }
                     </span>
                   ) }
               </div>
@@ -371,7 +381,7 @@ const EmployeeForm = () => {
                   type="text"
                   id="nationalityField"
                   name="nationality"
-                  value={ employeeDetails.nationality }
+                  value={ userDetails.nationality }
                   onChange={ handleChange }
                 >
                   <option value="">Select Nationality</option>
@@ -381,12 +391,12 @@ const EmployeeForm = () => {
                     </option>
                   )) }
                 </select>
-                { (employeeForm.submitted
-                  && employeeForm.errors
-                  && employeeForm.errors.nationality)
+                { (userForm.submitted
+                  && userForm.errors
+                  && userForm.errors.nationality)
                   && (
                     <span className="text-danger">
-                      { employeeForm.errors.nationality[0] }
+                      { userForm.errors.nationality[0] }
                     </span>
                   ) }
 
@@ -403,19 +413,19 @@ const EmployeeForm = () => {
                   type="text"
                   id="designationField"
                   name="designation"
-                  value={ employeeDetails.designation }
+                  value={ userDetails.designation }
                   onChange={ handleChange }
                 >
                   <option value="">Select a Designation</option>
                   <option value="Active">Active</option>
                   <option value="Inactive">Inactive</option>
                 </select>
-                { (employeeForm.submitted
-                  && employeeForm.errors
-                  && employeeForm.errors.designation)
+                { (userForm.submitted
+                  && userForm.errors
+                  && userForm.errors.designation)
                   && (
                     <span className="text-danger">
-                      { employeeForm.errors.designation[0] }
+                      { userForm.errors.designation[0] }
                     </span>
                   ) }
               </div>
@@ -429,7 +439,7 @@ const EmployeeForm = () => {
                   type="text"
                   id="teamField"
                   name="team"
-                  value={ employeeDetails.team }
+                  value={ userDetails.team }
                   onChange={ handleChange }
                 >
                   <option value="">Select A Team</option>
@@ -437,12 +447,12 @@ const EmployeeForm = () => {
                     <option value={ team.teamName }>{ team.teamName }</option>
                   )) }
                 </select>
-                { (employeeForm.submitted
-                  && employeeForm.errors
-                  && employeeForm.errors.team)
+                { (userForm.submitted
+                  && userForm.errors
+                  && userForm.errors.team)
                   && (
                     <span className="text-danger">
-                      { employeeForm.errors.team[0] }
+                      { userForm.errors.team[0] }
                     </span>
                   ) }
               </div>
@@ -452,7 +462,7 @@ const EmployeeForm = () => {
               <div className="form-group">
                 <label htmlFor="hiredOnField">Hired On</label>
                 <SingleDatePicker
-                  date={ employeeDetails.hiredOn }
+                  date={ userDetails.hiredOn }
                   onDateChange={ (date) => handleChange({ target: { name: 'hiredOn', value: date } }) }
                   focused={ hiredOnFocused }
                   onFocusChange={ (focus) => setHiredOnFocused(focus) }
@@ -461,12 +471,12 @@ const EmployeeForm = () => {
                   keepOpenOnDateSelect={ false }
                 />
 
-                { (employeeForm.submitted
-                  && employeeForm.errors
-                  && employeeForm.errors.hiredOn)
+                { (userForm.submitted
+                  && userForm.errors
+                  && userForm.errors.hiredOn)
                   && (
                     <span className="text-danger">
-                      { employeeForm.errors.hiredOn[0] }
+                      { userForm.errors.hiredOn[0] }
                     </span>
                   ) }
               </div>
@@ -479,19 +489,19 @@ const EmployeeForm = () => {
                   type="text"
                   id="jobTypeField"
                   name="jobType"
-                  value={ employeeDetails.jobType }
+                  value={ userDetails.jobType }
                   onChange={ handleChange }
                 >
                   <option value="">Select</option>
                   <option value="Active">Part Time</option>
                   <option value="Inactive">Full Time</option>
                 </select>
-                { (employeeForm.submitted
-                  && employeeForm.errors
-                  && employeeForm.errors.jobType)
+                { (userForm.submitted
+                  && userForm.errors
+                  && userForm.errors.jobType)
                   && (
                     <span className="text-danger">
-                      { employeeForm.errors.jobType[0] }
+                      { userForm.errors.jobType[0] }
                     </span>
                   ) }
               </div>
@@ -507,4 +517,10 @@ const EmployeeForm = () => {
   );
 };
 
-export default EmployeeForm;
+
+UserForm.propTypes = {
+  location: PropTypes.objectOf(PropTypes.string).isRequired
+};
+
+
+export default UserForm;
