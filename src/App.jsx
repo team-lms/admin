@@ -19,6 +19,7 @@ import EmployeeForm from './components/employee/employee-form/EmployeeForm';
 import SupervisorList from './components/supervisor/supervisor-list/supervisor-list';
 import HumanResourceList from './components/human-resource-manager/human-resource-listing/human-resource-listing';
 import TeamList from './components/team/team-list/team-list';
+import ProfileForm from './components/Profile/ProfileForm';
 import 'react-dates/initialize';
 
 axios.interceptors.request.use((config) => {
@@ -50,7 +51,7 @@ function App() {
                   <Route path="/supervisor/list" component={ SupervisorList } />
                   <Route path="/humanresource/list" component={ HumanResourceList } />
                   <Route path="/team/list" component={ TeamList } />
-
+                  <Route path="/profile" component={ ProfileForm } />
                 </Switch>
               </div>
             </main>
