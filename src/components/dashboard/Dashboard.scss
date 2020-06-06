@@ -19,3 +19,44 @@
     }
   }
 }
+
+.see-more {
+  top: 10px;
+  &.left {
+    left: 0.625rem;
+  }
+  &.right {
+    right: 0.625rem;
+  }
+}
+
+.border-2 {
+  border-width: 0.125rem !important;
+}
+
+.leaves-toggle {
+  &:focus {
+    outline: none;
+    @include box-shadow($btn-focus-box-shadow, $btn-active-box-shadow !important);
+  }
+  &::after {
+    content: '';
+    display: none;
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    border: solid 15px transparent;
+    border-left-color: $primary;
+  }
+  &.active {
+    background-color: $primary;
+    color: $white;
+    &::after {
+      display: block;
+    }
+    .badge {
+      border: $btn-border-width solid $white;
+    }
+  }
+}
