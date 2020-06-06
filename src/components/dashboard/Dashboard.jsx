@@ -1,13 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { User, UserCheck, Users } from 'react-feather';
+import { Link } from 'react-router-dom';
+import {
+  User,
+  UserCheck,
+  Users,
+  Check,
+  X
+} from 'react-feather';
+import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 import RolePanel from './role-panel/RolePanel';
 import DashboardChart from './dashboard-chart/DashboardChart';
+import LeavePanelBg from '../../assets/img/leave_panel_bg.png';
 
 const Dashboard = () => {
   const [supervisors, setSupervisors] = useState([]);
   const [humanResource, setHumanResource] = useState([]);
   const [employees, setEmployees] = useState([]);
   const [teams, setTeams] = useState([]);
+  const [showShouldPanel, setShowShouldPanel] = useState(false);
 
   useEffect(() => {
     setSupervisors([{
@@ -72,12 +82,25 @@ const Dashboard = () => {
     }]);
   }, []);
 
+  const handleLeaveShowKeyPress = (event) => {
+    if (event.key === ' ' || event.key === 'Enter') {
+      event.preventDefault();
+      setShowShouldPanel(!showShouldPanel);
+    }
+  };
+
   return (
     <div className="container py-5">
       <div className="row mb-5">
         <div className="col-3">
           <div className="d-flex flex-column text-center">
-            <div className="card border-0 shadow rounded-lg">
+            <div
+              className={ `card border-0 shadow rounded-lg leaves-toggle ${showShouldPanel ? 'active' : ''}` }
+              role="button"
+              tabIndex="0"
+              onKeyPress={ handleLeaveShowKeyPress }
+              onClick={ () => setShowShouldPanel(!showShouldPanel) }
+            >
               <div className="card-body">
                 <p className="lead mb-0">Pending Approvals</p>
                 <div className="d-inline-flex align-items-start">
@@ -99,8 +122,61 @@ const Dashboard = () => {
         </div>
         <div className="col-9">
           <div className="card rounded-lg h-100 bg-light">
-            <div className="card-body">
-              <div className="row h-100 align-items-center">
+            <div className="card-body p-0">
+              { showShouldPanel && (
+                <div className="d-flex flex-column justify-content-between h-100">
+                  <OverlayTrigger
+                    overlay={ (
+                      <Tooltip id="seeMoreLeaves">
+                        See more leaves
+                      </Tooltip>
+                    ) }
+                  >
+                    <Link to="/" className="btn btn-secondary btn-sm py-0 position-absolute see-more left">See more</Link>
+                  </OverlayTrigger>
+                  <OverlayTrigger
+                    overlay={ (
+                      <Tooltip id="closeLeavePanel">
+                        Close leave panel
+                      </Tooltip>
+                    ) }
+                  >
+                    <button
+                      type="button"
+                      className="btn btn-secondary btn-sm py-0 position-absolute see-more right"
+                      onClick={ () => setShowShouldPanel(false) }
+                    >
+                      <X size={ 13 } />
+                    </button>
+                  </OverlayTrigger>
+                  <img src={ LeavePanelBg } className="img-fluid" alt="Leave panel background" />
+                  <div className="col d-flex flex-column justify-content-center">
+                    <div className="row align-items-center">
+                      <div className="col-auto">
+                        <span className="h2 font-weight-bold text-primary">20-24</span>
+                        <p className="lead">April 2020</p>
+                      </div>
+                      <div className="col border-left border-2">
+                        <span className="h2">Claude Watkins</span>
+                        <p className="lead">Planned Leave</p>
+                      </div>
+                      <div className="col-auto">
+                        <div className="btn-group" role="group" aria-label="Leave Actions">
+                          <button type="button" className="btn btn-outline-success">
+                            <Check size={ 16 } />
+                            Approve
+                          </button>
+                          <button type="button" className="btn btn-outline-danger">
+                            <X size={ 16 } />
+                            Reject
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) }
+              <div className={ `row h-100 align-items-center ${showShouldPanel ? 'd-none' : ''}` }>
                 <div className="col-7 align-self-stretch">
                   <div className="border-bottom h-100">
                     <DashboardChart />
