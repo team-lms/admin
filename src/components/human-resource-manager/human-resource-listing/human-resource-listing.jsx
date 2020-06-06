@@ -32,10 +32,20 @@ const HumanResourceList = () => {
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
         <Header selectedPage="Human Resource Managers" />
         <div className="btn-toolbar mb-2 mb-md-0">
-          <button type="button" className="btn btn-sm btn-primary mr-2">
-            <span>Add </span>
-            <UserPlus size={ 13 } />
-          </button>
+          <Link to={
+            {
+              pathname: '/humanresource/create',
+              state: {
+                title: 'Human Resource'
+              }
+            }
+          }
+          >
+            <button type="button" className="btn btn-sm btn-primary mr-2">
+              <span>Add </span>
+              <UserPlus size={ 13 } />
+            </button>
+          </Link>
           <button type="button" className="btn btn-sm btn-outline-secondary">Filters</button>
         </div>
       </div>

@@ -15,12 +15,11 @@ import Navbar from './components/navbar/Navbar';
 import SideNav from './components/side-nav/SideNav';
 import Dashboard from './components/dashboard/Dashboard';
 import EmployeeList from './components/employee/employee-list/EmployeeList';
-import EmployeeForm from './components/employee/employee-form/EmployeeForm';
+import UserForm from './components/shared/user-form/UserForm';
 import SupervisorList from './components/supervisor/supervisor-list/supervisor-list';
 import HumanResourceList from './components/human-resource-manager/human-resource-listing/human-resource-listing';
 import TeamList from './components/team/team-list/team-list';
 import ProfileForm from './components/Profile/ProfileForm';
-import 'react-dates/initialize';
 
 axios.interceptors.request.use((config) => {
   if (config.url !== 'https://restcountries.eu/rest/v2/all?fields=name;callingCodes;demonym') {
@@ -46,12 +45,14 @@ function App() {
                 <Switch>
                   <Redirect exact from="/" to="/dashboard" />
                   <Route exact path="/dashboard" component={ Dashboard } />
-                  <Route exact path="/employee" component={ EmployeeForm } />
+                  <Route exact path="/employee/create" component={ UserForm } />
                   <Route path="/employee/list" component={ EmployeeList } />
                   <Route path="/supervisor/list" component={ SupervisorList } />
                   <Route path="/humanresource/list" component={ HumanResourceList } />
                   <Route path="/team/list" component={ TeamList } />
                   <Route path="/profile" component={ ProfileForm } />
+                  <Route exact path="/humanresource/create" component={ UserForm } />
+                  <Route exact path="/supervisor/create" component={ UserForm } />
                 </Switch>
               </div>
             </main>
