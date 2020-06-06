@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import {
-  OverlayTrigger, Popover, Button, Modal
+  OverlayTrigger, Popover, Modal
 } from 'react-bootstrap';
 import { UserPlus } from 'react-feather';
 import moment from 'moment';
@@ -65,10 +65,10 @@ const TeamList = () => {
       <div className="d-flex justify-content-between flex-wrap flex-md-wrap align-items-center pt-3 pb-2 mb-3">
         <Header selectedPage="Teams" />
         <div className="btn-toolbar mb-2 mb-md-0">
-          <Button variant="primary" className="btn btn-sm btn-primary mr-2" onClick={ handleShow }>
+          <button type="button" className="btn btn-sm btn-primary mr-2" onClick={ handleShow }>
             <span>Add</span>
             <UserPlus size={ 13 } />
-          </Button>
+          </button>
           <button type="button" className="btn btn-sm btn-outline-secondary">Filters</button>
         </div>
       </div>
@@ -199,9 +199,9 @@ const TeamList = () => {
           </form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={ handleSubmit }>
+          <button type="button" className="btn btn-sm btn-primary" onClick={ handleSubmit }>
             Create
-          </Button>
+          </button>
         </Modal.Footer>
       </Modal>
     </>
