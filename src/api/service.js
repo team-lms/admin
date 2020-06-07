@@ -67,6 +67,9 @@ export const HumanResource = {
 };
 
 export const Supervisor = {
+  /**
+   * Get Supervisor List
+   */
   getSupervisorList: async (filters) => {
     try {
       const result = await axios.get('/supervisor', {
@@ -77,6 +80,17 @@ export const Supervisor = {
           sortField: filters.sortField
         }
       });
+      return result;
+    } catch (error) {
+      return error.response.data;
+    }
+  },
+  /**
+   * Create A Supervisor
+   */
+  createASupervisor: async (supervisor) => {
+    try {
+      const result = await axios.post('/supervisor', { ...supervisor });
       return result;
     } catch (error) {
       return error.response.data;

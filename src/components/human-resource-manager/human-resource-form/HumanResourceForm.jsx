@@ -8,8 +8,8 @@ import { HumanResource } from '../../../api/service';
 const HumanResourceForm = () => {
   const history = useHistory();
 
-  const handleSubmit = async (historyDetails) => {
-    const result = await HumanResource.createAHumanResource(historyDetails);
+  const handleSubmit = async (hrDetails) => {
+    const result = await HumanResource.createAHumanResource(hrDetails);
     if (result.data.success) {
       history.push('/humanresource/list');
       toast.success(result.data.message);

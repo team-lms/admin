@@ -17,8 +17,9 @@ import Dashboard from './components/dashboard/Dashboard';
 import EmployeeList from './components/employee/employee-list/EmployeeList';
 import EmployeeForm from './components/employee/employee-form/EmployeeForm';
 
-import UserForm from './components/shared/user-form/UserForm';
 import SupervisorList from './components/supervisor/supervisor-list/supervisor-list';
+import SupervisorForm from './components/supervisor/supervisor-form/SupervisorForm';
+
 import HumanResourceList from './components/human-resource-manager/human-resource-listing/human-resource-listing';
 import HumanResourceForm from './components/human-resource-manager/human-resource-form/HumanResourceForm';
 
@@ -55,9 +56,7 @@ function App() {
                   <Route path="/humanresource/list" component={ HumanResourceList } />
                   <Route path="/team/list" component={ TeamList } />
                   <Route exact path="/humanresource/create" component={ HumanResourceForm } />
-                  <Route exact path="/supervisor/create" component={ UserForm } />
-
-
+                  <Route exact path="/supervisor/create" component={ SupervisorForm } />
                 </Switch>
               </div>
             </main>
