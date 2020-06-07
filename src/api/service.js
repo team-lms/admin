@@ -35,6 +35,9 @@ export const Employee = {
 };
 
 export const HumanResource = {
+  /**
+   * Get HR List
+   */
   getHumanResourceList: async (filters) => {
     try {
       const result = await axios.get('/hr', {
@@ -45,6 +48,17 @@ export const HumanResource = {
           sortField: filters.sortField
         }
       });
+      return result;
+    } catch (error) {
+      return error.response.data;
+    }
+  },
+  /**
+   * Create a HR
+   */
+  createAHumanResource: async (hr) => {
+    try {
+      const result = await axios.post('/hr', { ...hr });
       return result;
     } catch (error) {
       return error.response.data;

@@ -20,6 +20,8 @@ import EmployeeForm from './components/employee/employee-form/EmployeeForm';
 import UserForm from './components/shared/user-form/UserForm';
 import SupervisorList from './components/supervisor/supervisor-list/supervisor-list';
 import HumanResourceList from './components/human-resource-manager/human-resource-listing/human-resource-listing';
+import HumanResourceForm from './components/human-resource-manager/human-resource-form/HumanResourceForm';
+
 import TeamList from './components/team/team-list/team-list';
 import 'react-dates/initialize';
 
@@ -52,7 +54,7 @@ function App() {
                   <Route path="/supervisor/list" component={ SupervisorList } />
                   <Route path="/humanresource/list" component={ HumanResourceList } />
                   <Route path="/team/list" component={ TeamList } />
-                  <Route exact path="/humanresource/create" component={ UserForm } />
+                  <Route exact path="/humanresource/create" component={ HumanResourceForm } />
                   <Route exact path="/supervisor/create" component={ UserForm } />
 
 
