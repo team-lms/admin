@@ -23,12 +23,12 @@ const TeamList = () => {
   const [teamDetails, setTeamDetails] = useState({
     teamName: '',
     supervisorName: '',
-    status: ''
+    status: 'Active'
   });
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   /**
-   * Get Team List
+   * Get Team List API
    */
   const getTeamList = async () => {
     const result = await Teams.getTeamList(filters);
@@ -40,12 +40,20 @@ const TeamList = () => {
   };
 
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     setTeamForm(() => ({
       ...teamForm,
       submitted: true
     }));
+    if (!teamForm.errors) {
+      const result = await Teams.createTeam(teamDetails);
+      if (result.data.success) {
+        handleClose();
+      } else {
+        toast.error(result.message);
+      }
+    }
   };
 
   const handleChange = (event) => {
@@ -55,6 +63,10 @@ const TeamList = () => {
       [name]: value
     }));
   };
+
+  /**
+   * Calling Team List
+   */
 
   useEffect(() => {
     getTeamList();
@@ -153,10 +165,11 @@ const TeamList = () => {
               <label htmlFor="teamNameField" className="col-sm-2 col-form-label">Team</label>
               <div className="col-sm-10">
                 <input
-                  type="text"
                   className="form-control"
+                  type="text"
                   id="teamNameField"
                   placeholder="Team Name"
+                  name="teamName"
                   value={ teamDetails.teamName }
                   onChange={ handleChange }
                 />
