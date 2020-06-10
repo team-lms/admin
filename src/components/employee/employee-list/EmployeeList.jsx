@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { UserPlus } from 'react-feather';
-import { OverlayTrigger, Popover } from 'react-bootstrap';
+import {
+  OverlayTrigger, Popover, Modal, Button
+} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { toast } from 'react-toastify';
 import action from '../../../assets/img/Setting-2.png';
 import { Employee } from '../../../api/service';
 import Header from '../../header/header';
+import DeleteUser from '../../shared/delete-user/DeleteUser';
 
 const EmployeeList = () => {
   const [employees, setEmployees] = useState([]);
@@ -26,6 +29,29 @@ const EmployeeList = () => {
   useEffect(() => {
     getEmployeeList();
   }, [employees]);
+
+  /**
+   * Delete Employee
+   */
+  const onDelete = () => {
+    console.log('hey');
+    return (
+      <Modal.Dialog show>
+        <Modal.Header closeButton>
+          <Modal.Title>Modal title</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          <p>Modal body text goes here.</p>
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Button variant="secondary">Close</Button>
+          <Button variant="primary">Save changes</Button>
+        </Modal.Footer>
+      </Modal.Dialog>
+    );
+  };
 
 
   return (
@@ -97,7 +123,7 @@ const EmployeeList = () => {
                           <Popover.Content bsPrefix="popover-body p-0 overflow-hidden rounded">
                             <div className="list-group list-group-flush rounded">
                               <Link className="list-group-item list-group-item-action py-1 px-2" to="/employee">Edit</Link>
-                              <Link className="list-group-item list-group-item-action py-1 px-2" to="/">Delete</Link>
+                              <button type="button" className="list-group-item btn  btn-sm py-1 px-2" onClick={ onDelete }>Delete</button>
                             </div>
                           </Popover.Content>
                         </Popover>
