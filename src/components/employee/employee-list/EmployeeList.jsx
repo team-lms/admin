@@ -38,7 +38,9 @@ const EmployeeList = () => {
    */
   const onDelete = (employee) => {
     setShow(true);
-    setSelectedEmployee(employee);
+    const employeeToBeDeleted = employee;
+    employeeToBeDeleted.name = `${employee.firstName} ${employee.middleName} ${employee.lastName}`;
+    setSelectedEmployee(employeeToBeDeleted);
     getEmployeeList();
   };
 

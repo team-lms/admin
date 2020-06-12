@@ -37,7 +37,9 @@ const HumanResourceList = () => {
    */
   const onDelete = (humanResource) => {
     setShow(true);
-    setSelectedHumanResource(humanResource);
+    const hrToBeDeleted = humanResource;
+    hrToBeDeleted.name = `${humanResource.firstName} ${humanResource.middleName} ${humanResource.lastName}`;
+    setSelectedHumanResource(hrToBeDeleted);
     getHumanResourceList();
   };
 

@@ -37,7 +37,9 @@ const SupervisorList = () => {
    */
   const onDelete = (supervisor) => {
     setShow(true);
-    setSelectedSupervisor(supervisor);
+    const supervisorToBeDeleted = supervisor;
+    supervisorToBeDeleted.name = `${supervisor.firstName} ${supervisor.middleName} ${supervisor.lastName}`;
+    setSelectedSupervisor(supervisorToBeDeleted);
     getSupervisorList();
   };
 
