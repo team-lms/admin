@@ -86,6 +86,9 @@ export const Supervisor = {
    * Get Supervisor List
    */
   getSupervisorList: async (filters) => {
+    /**
+     * Get Supervisor List
+    */
     try {
       const result = await axios.get('/supervisor', {
         params: {
@@ -106,6 +109,17 @@ export const Supervisor = {
   createASupervisor: async (supervisor) => {
     try {
       const result = await axios.post('/supervisor', { ...supervisor });
+      return result;
+    } catch (error) {
+      return error.response.data;
+    }
+  },
+  /**
+   * Delete A Supervisor
+   */
+  deleteASupervisor: async (supervisorId) => {
+    try {
+      const result = await axios.delete(`/supervisor/${supervisorId}`);
       return result;
     } catch (error) {
       return error.response.data;

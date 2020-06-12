@@ -7,17 +7,22 @@ import { toast } from 'react-toastify';
 import action from '../../../assets/img/Setting-2.png';
 import Header from '../../header/header';
 import { Supervisor } from '../../../api/service';
+import DeleteUser from '../../shared/delete-user/DeleteUser';
+
 
 const SupervisorList = () => {
   const [supervisors, setSupervisor] = useState([]);
   const [filters] = useState({
     limit: 10, offset: 0, sortType: 'ASC', sortField: 'createdAt'
   });
+  const [selectedSupervisor, setSelectedSupervisor] = useState([]);
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
 
   const getSupervisorList = async () => {
     const result = await Supervisor.getSupervisorList(filters);
     if (result.data.success) {
-      setSupervisor(...supervisors, result.data.data.rows);
+      setSupervisor(result.data.data.rows);
     } else {
       toast.error(result.message);
     }
@@ -26,6 +31,31 @@ const SupervisorList = () => {
   useEffect(() => {
     getSupervisorList();
   }, []);
+
+  /**
+   * Delete Pop Up
+   */
+  const onDelete = (supervisor) => {
+    setShow(true);
+    setSelectedSupervisor(supervisor);
+    getSupervisorList();
+  };
+
+  /**
+   * Delete Supervisor
+   */
+  const deleteSupervisor = async (supervisor) => {
+    const result = await Supervisor.deleteASupervisor(supervisor.id);
+    if (result.data) {
+      setShow(false);
+      if (result.data.success) {
+        toast.success(result.data.message);
+        getSupervisorList();
+      } else {
+        toast.error(result.message);
+      }
+    }
+  };
   return (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-wrap align-items-center pt-3 pb-2 mb-3">
@@ -94,7 +124,7 @@ const SupervisorList = () => {
                           <Popover.Content bsPrefix="popover-body p-0 overflow-hidden rounded">
                             <div className="list-group list-group-flush rounded">
                               <Link className="list-group-item list-group-item-action py-1 px-2" to="/employee">Edit</Link>
-                              <Link className="list-group-item list-group-item-action py-1 px-2" to="/">Delete</Link>
+                              <button type="button" className="list-group-item btn  btn-sm py-1 px-2" onClick={ (event) => onDelete(supervisor, event.target) }>Delete</button>
                             </div>
                           </Popover.Content>
                         </Popover>
@@ -112,6 +142,14 @@ const SupervisorList = () => {
           </tbody>
         </table>
       </div>
+      {show
+      && (
+        <DeleteUser
+          user={ selectedSupervisor }
+          handleClose={ handleClose }
+          deleteUser={ deleteSupervisor }
+        />
+      )}
     </>
   );
 };

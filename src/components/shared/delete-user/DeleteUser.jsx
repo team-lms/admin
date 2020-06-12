@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
-const DeleteUser = ({ user, handleClose, deleteEmployee }) => (
+const DeleteUser = ({ user, handleClose, deleteUser }) => (
   <Modal show>
     <Modal.Header handleClose>
       <Modal.Title>Delete Employee</Modal.Title>
@@ -20,7 +20,7 @@ const DeleteUser = ({ user, handleClose, deleteEmployee }) => (
       <button type="button" className="btn btn-secondary" onClick={ handleClose }>
         Close
       </button>
-      <button type="submit" className="btn btn-primary" onClick={ () => deleteEmployee(user) }>
+      <button type="submit" className="btn btn-primary" onClick={ () => deleteUser(user) }>
         Delete
       </button>
     </Modal.Footer>
@@ -36,7 +36,7 @@ DeleteUser.propTypes = {
     lastName: PropTypes.string
   })).isRequired,
   handleClose: PropTypes.func,
-  deleteEmployee: PropTypes.func.isRequired
+  deleteUser: PropTypes.func.isRequired
 
 };
 export default DeleteUser;

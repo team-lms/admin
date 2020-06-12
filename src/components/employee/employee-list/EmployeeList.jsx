@@ -151,7 +151,7 @@ const EmployeeList = () => {
           <DeleteUser
             user={ selectedEmployee }
             handleClose={ handleClose }
-            deleteEmployee={ deleteEmployee }
+            deleteUser={ deleteEmployee }
           />
         )}
 
