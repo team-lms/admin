@@ -9,6 +9,7 @@ import moment from 'moment';
 import { Teams, Supervisor } from '../../../api/service';
 import Header from '../../header/header';
 import action from '../../../assets/img/Setting-2.png';
+import DeleteUser from '../../shared/delete-user/DeleteUser';
 
 const TeamList = () => {
   const [teams, setTeams] = useState([]);
@@ -25,6 +26,11 @@ const TeamList = () => {
     supervisorName: '',
     status: 'Active'
   });
+  const [selectedTeam, setSelectedTeam] = useState();
+  const [showDelete, setShowDelete] = useState(false);
+
+  const handleCloseDelete = () => setShowDelete(false);
+
   const handleClose = () => setShow(false);
   const [supervisors, setSupervisors] = useState([]);
   /**
@@ -93,6 +99,31 @@ const TeamList = () => {
     getTeamList();
   }, []);
 
+  /**
+   * Delete Pop Up
+   */
+  const onDelete = (team) => {
+    setShowDelete(true);
+    const teamToBeDeleted = team;
+    teamToBeDeleted.name = team.teamName;
+    setSelectedTeam(teamToBeDeleted);
+  };
+
+  /**
+   * Delete Team
+  */
+  const deleteTeam = async (team) => {
+    const result = await Teams.deleteATeam(team.id);
+    if (result.data) {
+      setShowDelete(false);
+      if (result.data.success) {
+        toast.success(result.data.message);
+        getTeamList();
+      } else {
+        toast.error(result.message);
+      }
+    }
+  };
   return (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-wrap align-items-center pt-3 pb-2 mb-3">
@@ -127,18 +158,18 @@ const TeamList = () => {
                     <small className="text-muted">
                       (Since
                       {' '}
-                      { moment(team.createdAt).format('Do MMM YYYY') }
+                      {moment(team.createdAt).format('Do MMM YYYY')}
                       )
                     </small>
                   </td>
                   <td className={ index === 0 ? 'border-top-0' : '' }>
                     <span className="d-inline-block">
                       {team.teamAssociations
-                      && (
-                      <span className="d-block">
-                        {team.teamAssociations.length}
-                      </span>
-                      )}
+                        && (
+                          <span className="d-block">
+                            {team.teamAssociations.length}
+                          </span>
+                        )}
                     </span>
                   </td>
                   <td className={ index === 0 ? 'border-top-0' : '' }>
@@ -158,7 +189,7 @@ const TeamList = () => {
                           <Popover.Content bsPrefix="popover-body p-0 overflow-hidden rounded">
                             <div className="list-group list-group-flush rounded">
                               <Link className="list-group-item list-group-item-action py-1 px-2" to="/employee">Edit</Link>
-                              <Link className="list-group-item list-group-item-action py-1 px-2" to="/">Delete</Link>
+                              <button type="button" className="list-group-item btn  btn-sm py-1 px-2" onClick={ (event) => onDelete(team, event.target) }>Delete</button>
                             </div>
                           </Popover.Content>
                         </Popover>
@@ -246,6 +277,14 @@ const TeamList = () => {
           </button>
         </Modal.Footer>
       </Modal>
+      {showDelete
+        && (
+          <DeleteUser
+            user={ selectedTeam }
+            handleClose={ handleCloseDelete }
+            deleteUser={ deleteTeam }
+          />
+        )}
     </>
   );
 };

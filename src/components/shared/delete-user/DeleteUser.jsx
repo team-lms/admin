@@ -10,11 +10,9 @@ const DeleteUser = ({ user, handleClose, deleteUser }) => (
     <Modal.Body>
       Are you sure you want to delete
       {' '}
-      {user.firstName}
+      {user.name}
       {' '}
-      {user.middleName}
-      {' '}
-      {user.lastName}
+      ?
     </Modal.Body>
     <Modal.Footer>
       <button type="button" className="btn btn-secondary" onClick={ handleClose }>

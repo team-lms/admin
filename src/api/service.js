@@ -166,6 +166,18 @@ export const Teams = {
     } catch (error) {
       return error.response.data;
     }
+  },
+
+  /**
+   * Delete A Team
+   */
+  deleteATeam: async (teamId) => {
+    try {
+      const result = await axios.delete(`/team/${teamId}`);
+      return result;
+    } catch (error) {
+      return error.response.data;
+    }
   }
 };
 
