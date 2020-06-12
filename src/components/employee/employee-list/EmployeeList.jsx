@@ -151,6 +151,7 @@ const EmployeeList = () => {
       {show
         && (
           <DeleteUser
+            title="Delete Employee"
             user={ selectedEmployee }
             handleClose={ handleClose }
             deleteUser={ deleteEmployee }

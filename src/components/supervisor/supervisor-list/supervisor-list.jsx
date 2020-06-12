@@ -147,6 +147,7 @@ const SupervisorList = () => {
       {show
       && (
         <DeleteUser
+          title="Delete Supervisor"
           user={ selectedSupervisor }
           handleClose={ handleClose }
           deleteUser={ deleteSupervisor }

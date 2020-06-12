@@ -2,10 +2,12 @@ import React from 'react';
 import { Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
-const DeleteUser = ({ user, handleClose, deleteUser }) => (
+const DeleteUser = ({
+  user, handleClose, deleteUser, title
+}) => (
   <Modal show>
     <Modal.Header handleClose>
-      <Modal.Title>Delete Employee</Modal.Title>
+      <Modal.Title>{title}</Modal.Title>
     </Modal.Header>
     <Modal.Body>
       Are you sure you want to delete
@@ -34,7 +36,7 @@ DeleteUser.propTypes = {
     lastName: PropTypes.string
   })).isRequired,
   handleClose: PropTypes.func,
-  deleteUser: PropTypes.func.isRequired
-
+  deleteUser: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired
 };
 export default DeleteUser;

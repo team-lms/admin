@@ -280,6 +280,7 @@ const TeamList = () => {
       {showDelete
         && (
           <DeleteUser
+            title="Delete Team"
             user={ selectedTeam }
             handleClose={ handleCloseDelete }
             deleteUser={ deleteTeam }

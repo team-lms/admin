@@ -147,6 +147,7 @@ const HumanResourceList = () => {
       {show
       && (
         <DeleteUser
+          title="Delete Hr"
           user={ selectedHumanResource }
           handleClose={ handleClose }
           deleteUser={ deleteHumanResource }
