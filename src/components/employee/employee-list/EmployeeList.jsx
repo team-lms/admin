@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { UserPlus } from 'react-feather';
 import {
-  OverlayTrigger, Popover, Modal, Button
+  OverlayTrigger, Popover
 } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
@@ -16,6 +16,9 @@ const EmployeeList = () => {
   const [filters] = useState({
     limit: 10, offset: 0, sortType: 'ASC', sortField: 'createdAt'
   });
+  const [selectedEmployee, setSelectedEmployee] = useState([]);
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
 
   const getEmployeeList = async () => {
     const result = await Employee.getEmployeeList(filters);
@@ -28,29 +31,31 @@ const EmployeeList = () => {
 
   useEffect(() => {
     getEmployeeList();
-  }, [employees]);
+  }, []);
 
   /**
-   * Delete Employee
+   * Delete Pop Up
    */
-  const onDelete = () => {
-    console.log('hey');
-    return (
-      <Modal.Dialog show>
-        <Modal.Header closeButton>
-          <Modal.Title>Modal title</Modal.Title>
-        </Modal.Header>
+  const onDelete = (employee) => {
+    setShow(true);
+    setSelectedEmployee(employee);
+    getEmployeeList();
+  };
 
-        <Modal.Body>
-          <p>Modal body text goes here.</p>
-        </Modal.Body>
-
-        <Modal.Footer>
-          <Button variant="secondary">Close</Button>
-          <Button variant="primary">Save changes</Button>
-        </Modal.Footer>
-      </Modal.Dialog>
-    );
+  /**
+   * Delete API
+   */
+  const deleteEmployee = async (employee) => {
+    const result = await Employee.deleteEmployee(employee.id);
+    if (result.data) {
+      setShow(false);
+      if (result.data.success) {
+        toast.success(result.data.message);
+        getEmployeeList();
+      } else {
+        toast.error(result.message);
+      }
+    }
   };
 
 
@@ -86,25 +91,25 @@ const EmployeeList = () => {
                 <tr key={ employee.id }>
                   <td className={ index === 0 ? 'border-top-0' : '' }>
                     <span className="d-block">
-                      { employee.firstName }
-                      { ' ' }
-                      { employee.middleName }
+                      {employee.firstName}
+                      {' '}
+                      {employee.middleName}
                       {' '}
                       {employee.lastName}
                     </span>
                     <small className="text-muted">
                       (Since
-                      { ' ' }
-                      { moment(employee.createdAt).format('Do MMM YYYY') }
+                      {' '}
+                      {moment(employee.createdAt).format('Do MMM YYYY')}
                       )
                     </small>
                   </td>
                   <td className={ index === 0 ? 'border-top-0' : '' }>
                     <span className="d-inline-block">
                       <span className="d-block">
-                        { employee.email }
+                        {employee.email}
                       </span>
-                      <small className="text-muted">{ employee.phoneNumber }</small>
+                      <small className="text-muted">{employee.phoneNumber}</small>
                     </span>
                   </td>
                   <td className={ index === 0 ? 'border-top-0' : '' }>
@@ -123,7 +128,7 @@ const EmployeeList = () => {
                           <Popover.Content bsPrefix="popover-body p-0 overflow-hidden rounded">
                             <div className="list-group list-group-flush rounded">
                               <Link className="list-group-item list-group-item-action py-1 px-2" to="/employee">Edit</Link>
-                              <button type="button" className="list-group-item btn  btn-sm py-1 px-2" onClick={ onDelete }>Delete</button>
+                              <button type="button" className="list-group-item btn  btn-sm py-1 px-2" onClick={ (event) => onDelete(employee, event.target) }>Delete</button>
                             </div>
                           </Popover.Content>
                         </Popover>
@@ -141,6 +146,15 @@ const EmployeeList = () => {
           </tbody>
         </table>
       </div>
+      {show
+        && (
+          <DeleteUser
+            user={ selectedEmployee }
+            handleClose={ handleClose }
+            deleteEmployee={ deleteEmployee }
+          />
+        )}
+
     </>
   );
 };

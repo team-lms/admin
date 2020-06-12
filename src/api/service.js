@@ -6,6 +6,9 @@ export const Employee = {
    * Get Employee List
    */
   getEmployeeList: async (filters) => {
+    /**
+     * Get Employee List
+     */
     try {
       const result = await axios.get('/employee', {
         params: {
@@ -27,6 +30,18 @@ export const Employee = {
   createAEmployee: async (employee) => {
     try {
       const result = await axios.post('/employee', { ...employee });
+      return result;
+    } catch (error) {
+      return error.response.data;
+    }
+  },
+
+  /**
+   * Delete Employee
+   */
+  deleteEmployee: async (employeeId) => {
+    try {
+      const result = await axios.delete(`/employee/${employeeId}`);
       return result;
     } catch (error) {
       return error.response.data;

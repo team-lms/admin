@@ -1,20 +1,42 @@
 import React from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 
-const DeleteUser = () => (
-  <Modal.Dialog>
-    <Modal.Header closeButton>
-      <Modal.Title>Modal title</Modal.Title>
+const DeleteUser = ({ user, handleClose, deleteEmployee }) => (
+  <Modal show>
+    <Modal.Header handleClose>
+      <Modal.Title>Delete Employee</Modal.Title>
     </Modal.Header>
-
     <Modal.Body>
-      <p>Modal body text goes here.</p>
+      Are you sure you want to delete
+      {' '}
+      {user.firstName}
+      {' '}
+      {user.middleName}
+      {' '}
+      {user.lastName}
     </Modal.Body>
-
     <Modal.Footer>
-      <Button variant="secondary">Close</Button>
-      <Button variant="primary">Save changes</Button>
+      <button type="button" className="btn btn-secondary" onClick={ handleClose }>
+        Close
+      </button>
+      <button type="submit" className="btn btn-primary" onClick={ () => deleteEmployee(user) }>
+        Delete
+      </button>
     </Modal.Footer>
-  </Modal.Dialog>
+  </Modal>
 );
+DeleteUser.defaultProps = {
+  handleClose: null
+};
+DeleteUser.propTypes = {
+  user: PropTypes.objectOf(PropTypes.shape({
+    firstName: PropTypes.string.isRequired,
+    middleName: PropTypes.string,
+    lastName: PropTypes.string
+  })).isRequired,
+  handleClose: PropTypes.func,
+  deleteEmployee: PropTypes.func.isRequired
+
+};
 export default DeleteUser;
