@@ -15,7 +15,7 @@ const SupervisorList = () => {
   const [filters] = useState({
     limit: 10, offset: 0, sortType: 'ASC', sortField: 'createdAt'
   });
-  const [selectedSupervisor, setSelectedSupervisor] = useState([]);
+  const [selectedSupervisor, setSelectedSupervisor] = useState();
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
 

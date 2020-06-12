@@ -78,6 +78,17 @@ export const HumanResource = {
     } catch (error) {
       return error.response.data;
     }
+  },
+  /**
+   * Delete a HR
+   */
+  deleteAHumanResource: async (hrId) => {
+    try {
+      const result = await axios.delete(`/hr/${hrId}`);
+      return result;
+    } catch (error) {
+      return error.response.data;
+    }
   }
 };
 
@@ -86,9 +97,6 @@ export const Supervisor = {
    * Get Supervisor List
    */
   getSupervisorList: async (filters) => {
-    /**
-     * Get Supervisor List
-    */
     try {
       const result = await axios.get('/supervisor', {
         params: {
@@ -128,6 +136,9 @@ export const Supervisor = {
 };
 
 export const Teams = {
+  /**
+   * Get Teams List
+   */
   getTeamList: async (filters) => {
     try {
       const result = await axios.get('/team', {
@@ -144,6 +155,10 @@ export const Teams = {
     }
   },
 
+  /**
+   * Create A Team
+   */
+
   createTeam: async (team) => {
     try {
       const result = await axios.post('/team', { ...team });
@@ -155,6 +170,9 @@ export const Teams = {
 };
 
 export const CountryList = {
+  /**
+   * Country List API
+   */
   getCountryList: async () => {
     try {
       const result = await axios.get('https://restcountries.eu/rest/v2/all?fields=name;callingCodes;demonym');
