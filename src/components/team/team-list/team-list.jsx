@@ -6,7 +6,7 @@ import {
 } from 'react-bootstrap';
 import { UserPlus } from 'react-feather';
 import moment from 'moment';
-import { Teams } from '../../../api/service';
+import { Teams, Supervisor } from '../../../api/service';
 import Header from '../../header/header';
 import action from '../../../assets/img/Setting-2.png';
 
@@ -23,29 +23,58 @@ const TeamList = () => {
   const [teamDetails, setTeamDetails] = useState({
     teamName: '',
     supervisorName: '',
-    status: ''
+    status: 'Active'
   });
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const [supervisors, setSupervisors] = useState([]);
   /**
-   * Get Team List
+   * Get Team List API
    */
   const getTeamList = async () => {
     const result = await Teams.getTeamList(filters);
     if (result.data.success) {
-      setTeams(...teams, result.data.data.rows);
+      setTeams(result.data.data.rows);
     } else {
       toast.error(result.message);
     }
   };
 
+  /**
+   * Supervisor List
+   */
+  const getSupervisorList = async () => {
+    const result = await Supervisor.getSupervisorList(filters);
+    if (result.data.success) {
+      setSupervisors(result.data.data.rows);
+    } else {
+      toast.error(result.message);
+    }
+  };
 
-  const handleSubmit = (event) => {
+  /**
+   * Add Team Pop
+   */
+
+  const addTeamModal = () => {
+    setShow(true);
+    getSupervisorList();
+  };
+
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     setTeamForm(() => ({
       ...teamForm,
       submitted: true
     }));
+    if (!teamForm.errors) {
+      const result = await Teams.createTeam(teamDetails);
+      if (result.data.success) {
+        handleClose();
+      } else {
+        toast.error(result.message);
+      }
+    }
   };
 
   const handleChange = (event) => {
@@ -56,6 +85,10 @@ const TeamList = () => {
     }));
   };
 
+  /**
+   * Calling Team List
+   */
+
   useEffect(() => {
     getTeamList();
   }, []);
@@ -65,7 +98,7 @@ const TeamList = () => {
       <div className="d-flex justify-content-between flex-wrap flex-md-wrap align-items-center pt-3 pb-2 mb-3">
         <Header selectedPage="Teams" />
         <div className="btn-toolbar mb-2 mb-md-0">
-          <button type="button" className="btn btn-sm btn-primary mr-2" onClick={ handleShow }>
+          <button type="button" className="btn btn-sm btn-primary mr-2" onClick={ addTeamModal }>
             <span>Add</span>
             <UserPlus size={ 13 } />
           </button>
@@ -153,10 +186,11 @@ const TeamList = () => {
               <label htmlFor="teamNameField" className="col-sm-2 col-form-label">Team</label>
               <div className="col-sm-10">
                 <input
-                  type="text"
                   className="form-control"
+                  type="text"
                   id="teamNameField"
                   placeholder="Team Name"
+                  name="teamName"
                   value={ teamDetails.teamName }
                   onChange={ handleChange }
                 />
@@ -174,7 +208,15 @@ const TeamList = () => {
                   onChange={ handleChange }
                 >
                   <option value="">Select Supervisor</option>
-                  <option value="Siju">Siju</option>
+                  {supervisors.map((supervisor, index) => (
+                    <option value={ supervisor.id }>
+                      {supervisor.firstName}
+                      {' '}
+                      {supervisor.middleName}
+                      {' '}
+                      {supervisor.lastName}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>
