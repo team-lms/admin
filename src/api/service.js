@@ -6,6 +6,9 @@ export const Employee = {
    * Get Employee List
    */
   getEmployeeList: async (filters) => {
+    /**
+     * Get Employee List
+     */
     try {
       const result = await axios.get('/employee', {
         params: {
@@ -27,6 +30,18 @@ export const Employee = {
   createAEmployee: async (employee) => {
     try {
       const result = await axios.post('/employee', { ...employee });
+      return result;
+    } catch (error) {
+      return error.response.data;
+    }
+  },
+
+  /**
+   * Delete Employee
+   */
+  deleteEmployee: async (employeeId) => {
+    try {
+      const result = await axios.delete(`/employee/${employeeId}`);
       return result;
     } catch (error) {
       return error.response.data;
@@ -63,6 +78,17 @@ export const HumanResource = {
     } catch (error) {
       return error.response.data;
     }
+  },
+  /**
+   * Delete a HR
+   */
+  deleteAHumanResource: async (hrId) => {
+    try {
+      const result = await axios.delete(`/hr/${hrId}`);
+      return result;
+    } catch (error) {
+      return error.response.data;
+    }
   }
 };
 
@@ -95,10 +121,24 @@ export const Supervisor = {
     } catch (error) {
       return error.response.data;
     }
+  },
+  /**
+   * Delete A Supervisor
+   */
+  deleteASupervisor: async (supervisorId) => {
+    try {
+      const result = await axios.delete(`/supervisor/${supervisorId}`);
+      return result;
+    } catch (error) {
+      return error.response.data;
+    }
   }
 };
 
 export const Teams = {
+  /**
+   * Get Teams List
+   */
   getTeamList: async (filters) => {
     try {
       const result = await axios.get('/team', {
@@ -115,9 +155,25 @@ export const Teams = {
     }
   },
 
+  /**
+   * Create A Team
+   */
+
   createTeam: async (team) => {
     try {
       const result = await axios.post('/team', { ...team });
+      return result;
+    } catch (error) {
+      return error.response.data;
+    }
+  },
+
+  /**
+   * Delete A Team
+   */
+  deleteATeam: async (teamId) => {
+    try {
+      const result = await axios.delete(`/team/${teamId}`);
       return result;
     } catch (error) {
       return error.response.data;
@@ -126,6 +182,9 @@ export const Teams = {
 };
 
 export const CountryList = {
+  /**
+   * Country List API
+   */
   getCountryList: async () => {
     try {
       const result = await axios.get('https://restcountries.eu/rest/v2/all?fields=name;callingCodes;demonym');
