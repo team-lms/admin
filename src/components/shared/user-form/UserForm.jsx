@@ -8,14 +8,13 @@ import { SingleDatePicker } from 'react-dates';
 import * as moment from 'moment';
 import { Teams, CountryList } from '../../../api/service';
 
-const UserForm = ({ location }) => {
+const UserForm = ({ title, cancelLink, handleTest }) => {
   const [userForm, setUserForm] = useState({
     submitted: false,
     errors: null
   });
   const [focused, setFocused] = useState(false);
   const [hiredOnFocused, setHiredOnFocused] = useState(false);
-  const [title, setTitle] = useState('');
 
   const [userDetails, setUserDetails] = useState({
     firstName: '',
@@ -34,7 +33,7 @@ const UserForm = ({ location }) => {
     team: '',
     hiredOn: moment(),
     jobType: '',
-    status: ''
+    status: 'Active'
   });
   const [filters] = useState({
     limit: 10, offset: 0, sortType: 'ASC', sortField: 'createdAt'
@@ -86,10 +85,6 @@ const UserForm = ({ location }) => {
     }
   };
 
-  useEffect(() => {
-    setTitle(location.state.title);
-  }, []);
-
   /**
    * Get Country Wise Information
    */
@@ -109,6 +104,12 @@ const UserForm = ({ location }) => {
       ...userForm,
       submitted: true
     }));
+    if (Object.keys(userForm.errors).length === 0) {
+      userDetails.team = teamList.find(
+        (team) => (parseInt(team.id, 10)) === parseInt(userDetails.team, 10)
+      ) || {};
+      handleTest(userDetails);
+    }
   };
 
   const handleChange = (event) => {
@@ -444,7 +445,7 @@ const UserForm = ({ location }) => {
                 >
                   <option value="">Select A Team</option>
                   { teamList.map((team) => (
-                    <option value={ team.teamName }>{ team.teamName }</option>
+                    <option value={ team.id }>{ team.teamName }</option>
                   )) }
                 </select>
                 { (userForm.submitted
@@ -465,10 +466,11 @@ const UserForm = ({ location }) => {
                   date={ userDetails.hiredOn }
                   onDateChange={ (date) => handleChange({ target: { name: 'hiredOn', value: date } }) }
                   focused={ hiredOnFocused }
-                  onFocusChange={ (focus) => setHiredOnFocused(focus) }
+                  onFocusChange={ ({ focused: _focused }) => setHiredOnFocused(_focused) }
                   id="hiredOnField"
                   placeholder="Hired On"
                   keepOpenOnDateSelect={ false }
+                  numberOfMonths={ 1 }
                 />
 
                 { (userForm.submitted
@@ -493,8 +495,8 @@ const UserForm = ({ location }) => {
                   onChange={ handleChange }
                 >
                   <option value="">Select</option>
-                  <option value="Active">Part Time</option>
-                  <option value="Inactive">Full Time</option>
+                  <option value="Part Time">Part Time</option>
+                  <option value="Full Time">Full Time</option>
                 </select>
                 { (userForm.submitted
                   && userForm.errors
@@ -508,7 +510,7 @@ const UserForm = ({ location }) => {
             </div>
             <div className="col-12 text-right">
               <button type="submit" className="btn btn-primary mr-2">Create</button>
-              <Link type="submit" className="btn btn-secondary" to="/employee/list">Cancel</Link>
+              <Link type="submit" className="btn btn-secondary" to={ cancelLink }>Cancel</Link>
             </div>
           </div>
         </div>
@@ -519,7 +521,9 @@ const UserForm = ({ location }) => {
 
 
 UserForm.propTypes = {
-  location: PropTypes.objectOf(PropTypes.string).isRequired
+  title: PropTypes.string.isRequired,
+  cancelLink: PropTypes.string.isRequired,
+  handleTest: PropTypes.func.isRequired
 };
 
 

@@ -2,6 +2,9 @@ import axios from 'axios';
 
 axios.defaults.baseURL = 'http://localhost:3030/api/v1';
 export const Employee = {
+  /**
+   * Get Employee List
+   */
   getEmployeeList: async (filters) => {
     try {
       const result = await axios.get('/employee', {
@@ -16,10 +19,25 @@ export const Employee = {
     } catch (error) {
       return error.response.data;
     }
+  },
+
+  /**
+   * Create Employee
+   */
+  createAEmployee: async (employee) => {
+    try {
+      const result = await axios.post('/employee', { ...employee });
+      return result;
+    } catch (error) {
+      return error.response.data;
+    }
   }
 };
 
 export const HumanResource = {
+  /**
+   * Get HR List
+   */
   getHumanResourceList: async (filters) => {
     try {
       const result = await axios.get('/hr', {
@@ -34,10 +52,24 @@ export const HumanResource = {
     } catch (error) {
       return error.response.data;
     }
+  },
+  /**
+   * Create a HR
+   */
+  createAHumanResource: async (hr) => {
+    try {
+      const result = await axios.post('/hr', { ...hr });
+      return result;
+    } catch (error) {
+      return error.response.data;
+    }
   }
 };
 
 export const Supervisor = {
+  /**
+   * Get Supervisor List
+   */
   getSupervisorList: async (filters) => {
     try {
       const result = await axios.get('/supervisor', {
@@ -48,6 +80,17 @@ export const Supervisor = {
           sortField: filters.sortField
         }
       });
+      return result;
+    } catch (error) {
+      return error.response.data;
+    }
+  },
+  /**
+   * Create A Supervisor
+   */
+  createASupervisor: async (supervisor) => {
+    try {
+      const result = await axios.post('/supervisor', { ...supervisor });
       return result;
     } catch (error) {
       return error.response.data;
@@ -66,6 +109,15 @@ export const Teams = {
           sortType: filters.sortType
         }
       });
+      return result;
+    } catch (error) {
+      return error.response.data;
+    }
+  },
+
+  createTeam: async (team) => {
+    try {
+      const result = await axios.post('/team', { ...team });
       return result;
     } catch (error) {
       return error.response.data;

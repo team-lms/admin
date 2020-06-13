@@ -15,16 +15,21 @@ import Navbar from './components/navbar/Navbar';
 import SideNav from './components/side-nav/SideNav';
 import Dashboard from './components/dashboard/Dashboard';
 import EmployeeList from './components/employee/employee-list/EmployeeList';
-import UserForm from './components/shared/user-form/UserForm';
+import EmployeeForm from './components/employee/employee-form/EmployeeForm';
+
 import SupervisorList from './components/supervisor/supervisor-list/supervisor-list';
+import SupervisorForm from './components/supervisor/supervisor-form/SupervisorForm';
+
 import HumanResourceList from './components/human-resource-manager/human-resource-listing/human-resource-listing';
+import HumanResourceForm from './components/human-resource-manager/human-resource-form/HumanResourceForm';
+
 import TeamList from './components/team/team-list/team-list';
 import 'react-dates/initialize';
 
 axios.interceptors.request.use((config) => {
   if (config.url !== 'https://restcountries.eu/rest/v2/all?fields=name;callingCodes;demonym') {
     // eslint-disable-next-line no-param-reassign
-    config.headers.authorization = 'Bearer + eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoie1wiaWRcIjoxLFwiZW1haWxcIjpcImFkbWluQGxtcy5jb21cIixcInJvbGVcIjpcIkFkbWluXCIsXCJwaG9uZU51bWJlclwiOlwiODA3NTQzODkyM1wiLFwiZmlyc3ROYW1lXCI6XCJBZG1pblwiLFwibGFzdE5hbWVcIjpudWxsfSIsImlhdCI6MTU5MTM3NzU0NCwiZXhwIjoxNTkxNDYzOTQ0fQ.oDBs33IOqnjlo1tuiY3_Vhp4aw0mr6GqcMm015QTEDY';
+    config.headers.authorization = 'Bearer + eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoie1wiaWRcIjoxLFwiZW1haWxcIjpcImFkbWluQGxtcy5jb21cIixcInJvbGVcIjpcIkFkbWluXCIsXCJwaG9uZU51bWJlclwiOlwiODA3NTQzODkyM1wiLFwiZmlyc3ROYW1lXCI6XCJBZG1pblwiLFwibGFzdE5hbWVcIjpudWxsfSIsImlhdCI6MTU5MTUxMTY5NCwiZXhwIjoxNTkxNTk4MDk0fQ.aK5Ue0R8Vn30EkgasTXUGffRo-Pb3F6Y9aMQgRtygGk';
   }
   return config;
 }, (error) => Promise.reject(error));
@@ -45,15 +50,13 @@ function App() {
                 <Switch>
                   <Redirect exact from="/" to="/dashboard" />
                   <Route exact path="/dashboard" component={ Dashboard } />
-                  <Route exact path="/employee/create" component={ UserForm } />
+                  <Route exact path="/employee/create" component={ EmployeeForm } />
                   <Route path="/employee/list" component={ EmployeeList } />
                   <Route path="/supervisor/list" component={ SupervisorList } />
                   <Route path="/humanresource/list" component={ HumanResourceList } />
                   <Route path="/team/list" component={ TeamList } />
-                  <Route exact path="/humanresource/create" component={ UserForm } />
-                  <Route exact path="/supervisor/create" component={ UserForm } />
-
-
+                  <Route exact path="/humanresource/create" component={ HumanResourceForm } />
+                  <Route exact path="/supervisor/create" component={ SupervisorForm } />
                 </Switch>
               </div>
             </main>
