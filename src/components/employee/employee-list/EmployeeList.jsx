@@ -25,7 +25,7 @@ const EmployeeList = () => {
 
   useEffect(() => {
     getEmployeeList();
-  }, [employees]);
+  }, []);
 
 
   return (
