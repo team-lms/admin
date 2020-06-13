@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import action from '../../../assets/img/Setting-2.png';
 import Header from '../../header/header';
 import { HumanResource } from '../../../api/service';
+import DeleteUser from '../../shared/delete-user/DeleteUser';
 
 
 const HumanResourceList = () => {
@@ -14,11 +15,15 @@ const HumanResourceList = () => {
   const [filters] = useState({
     limit: 10, offset: 0, sortType: 'ASC', sortField: 'createdAt'
   });
+  const [selectedHumanResource, setSelectedHumanResource] = useState();
+
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
 
   const getHumanResourceList = async () => {
     const result = await HumanResource.getHumanResourceList(filters);
     if (result.data.success) {
-      setHumanResources(...humanResources, result.data.data.rows);
+      setHumanResources(result.data.data.rows);
     } else {
       toast.error(result.message);
     }
@@ -26,6 +31,33 @@ const HumanResourceList = () => {
   useEffect(() => {
     getHumanResourceList();
   }, []);
+
+  /**
+   * Delete Pop Up
+   */
+  const onDelete = (humanResource) => {
+    setShow(true);
+    const hrToBeDeleted = humanResource;
+    hrToBeDeleted.name = `${humanResource.firstName} ${humanResource.middleName} ${humanResource.lastName}`;
+    setSelectedHumanResource(hrToBeDeleted);
+    getHumanResourceList();
+  };
+
+  /**
+   * Delete Human Resource
+   */
+  const deleteHumanResource = async (humanResource) => {
+    const result = await HumanResource.deleteAHumanResource(humanResource.id);
+    if (result.data) {
+      setShow(false);
+      if (result.data.success) {
+        toast.success(result.data.message);
+        getHumanResourceList();
+      } else {
+        toast.error(result.message);
+      }
+    }
+  };
 
   return (
     <>
@@ -94,7 +126,7 @@ const HumanResourceList = () => {
                             <Popover.Content bsPrefix="popover-body p-0 overflow-hidden rounded">
                               <div className="list-group list-group-flush rounded">
                                 <Link className="list-group-item list-group-item-action py-1 px-2" to="/employee">Edit</Link>
-                                <Link className="list-group-item list-group-item-action py-1 px-2" to="/">Delete</Link>
+                                <button type="button" className="list-group-item btn  btn-sm py-1 px-2" onClick={ (event) => onDelete(humanResource, event.target) }>Delete</button>
                               </div>
                             </Popover.Content>
                           </Popover>
@@ -112,6 +144,15 @@ const HumanResourceList = () => {
           </tbody>
         </table>
       </div>
+      {show
+      && (
+        <DeleteUser
+          title="Delete Hr"
+          user={ selectedHumanResource }
+          handleClose={ handleClose }
+          deleteUser={ deleteHumanResource }
+        />
+      )}
     </>
   );
 };
