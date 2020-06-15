@@ -10,7 +10,7 @@
     "test": "react-scripts test"
   },
   "dependencies": {
-    "@testing-library/jest-dom": "^5.10.0",
+    "@testing-library/jest-dom": "^5.10.1",
     "@testing-library/react": "^10.2.1",
     "@testing-library/user-event": "^11.4.1",
     "axios": "^0.19.2",
