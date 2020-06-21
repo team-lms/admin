@@ -77,6 +77,8 @@ const TeamList = () => {
       const result = await Teams.createTeam(teamDetails);
       if (result.data.success) {
         handleClose();
+        toast.success(result.data.message);
+        getTeamList();
       } else {
         toast.error(result.message);
       }
@@ -164,10 +166,10 @@ const TeamList = () => {
                   </td>
                   <td className={ index === 0 ? 'border-top-0' : '' }>
                     <span className="d-inline-block">
-                      {team.teamAssociations
+                      {team.users
                         && (
                           <span className="d-block">
-                            {team.teamAssociations.length}
+                            {team.users.length}
                           </span>
                         )}
                     </span>
@@ -175,7 +177,12 @@ const TeamList = () => {
                   <td className={ index === 0 ? 'border-top-0' : '' }>
                     <span className="d-inline-block">
                       <span className="d-block">
-                        Siju Samson
+                        {team.users.map((user) => {
+                          if (user.role === 'Supervisor') {
+                            return (user.firstName + user.middleName + user.lastName);
+                          }
+                          return null;
+                        })}
                       </span>
                     </span>
                   </td>
