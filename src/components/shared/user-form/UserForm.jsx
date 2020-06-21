@@ -104,12 +104,6 @@ const UserForm = ({ title, cancelLink, handleTest }) => {
       submitted: true
     }));
     if (Object.keys(userForm.errors).length === 0) {
-      userDetails.team = teamList.find(
-        (team) => (parseInt(team.id, 10)) === parseInt(userDetails.team, 10)
-      ) || {};
-      userDetails.designation = designationList.find(
-        (designation) => parseInt(designation.id, 10) === parseInt(userDetails.designation, 10)
-      ) || {};
       handleTest(userDetails);
     }
   };
@@ -437,7 +431,7 @@ const UserForm = ({ title, cancelLink, handleTest }) => {
                   <option value="">Select a Designation</option>
                   {
                     designationList.map((designation) => (
-                      <option value={ designation.id }>{designation.name}</option>
+                      <option value={ designation.name }>{designation.name}</option>
                     ))
                   }
                 </select>
