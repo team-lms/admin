@@ -116,9 +116,16 @@ const EmployeeList = () => {
                   </td>
                   <td className={ index === 0 ? 'border-top-0' : '' }>
                     <span className="d-block">
-                      Sally Pena
+                      {(employee.teamAssociation.team.users.length > 0)
+                        ? employee.teamAssociation.team.users[0].firstName
+                        + employee.teamAssociation.team.users[0].middleName
+                        + employee.teamAssociation.team.users[0].lastName : 'NA'}
+
                     </span>
-                    <small className="text-muted">(Technical Head)</small>
+                    <small className="text-muted">
+                      {(employee.teamAssociation.team.users.length > 0)
+                        && (employee.teamAssociation.team.users[0].designation)}
+                    </small>
                   </td>
                   <td className={ index === 0 ? 'border-top-0' : '' }>
                     <OverlayTrigger
