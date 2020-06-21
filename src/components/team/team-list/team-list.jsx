@@ -126,6 +126,14 @@ const TeamList = () => {
       }
     }
   };
+
+  /**
+   * Get SuperVisor
+   */
+  const getSupervisor = (team) => {
+    const supervisor = team.users.find((user) => user.role === 'Supervisor');
+    return supervisor ? (supervisor.firstName + supervisor.middleName + supervisor.lastName) : '';
+  };
   return (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-wrap align-items-center pt-3 pb-2 mb-3">
@@ -177,12 +185,7 @@ const TeamList = () => {
                   <td className={ index === 0 ? 'border-top-0' : '' }>
                     <span className="d-inline-block">
                       <span className="d-block">
-                        {team.users.map((user) => {
-                          if (user.role === 'Supervisor') {
-                            return (user.firstName + user.middleName + user.lastName);
-                          }
-                          return null;
-                        })}
+                        {getSupervisor(team)}
                       </span>
                     </span>
                   </td>
@@ -246,7 +249,7 @@ const TeamList = () => {
                   onChange={ handleChange }
                 >
                   <option value="">Select Supervisor</option>
-                  {supervisors.map((supervisor, index) => (
+                  {supervisors.map((supervisor) => (
                     <option value={ supervisor.id }>
                       {supervisor.firstName}
                       {' '}
