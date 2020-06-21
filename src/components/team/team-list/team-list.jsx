@@ -128,7 +128,7 @@ const TeamList = () => {
   };
 
   /**
-   * Get SuperVisor
+   * Find supervisor of the team
    */
   const getSupervisor = (team) => {
     const supervisor = team.users.find((user) => user.role === 'Supervisor');

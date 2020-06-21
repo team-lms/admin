@@ -181,11 +181,13 @@ export const Teams = {
   }
 };
 
+/**
+ * Designation API
+ */
 export const Designation = {
   /**
-   * Get Designation API
+   * Get Designation List
    */
-
   getDesignationList: async (filters) => {
     try {
       const result = await axios.get('/designation', {
