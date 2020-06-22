@@ -112,7 +112,7 @@ const SupervisorList = () => {
                   <td className={ index === 0 ? 'border-top-0' : '' }>
                     <span className="d-inline-block">
                       <span className="d-block">
-                        Digital Marketing
+                        {supervisor.teamAssociation.team.teamName}
                       </span>
                     </span>
                   </td>
