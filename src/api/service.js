@@ -181,6 +181,30 @@ export const Teams = {
   }
 };
 
+/**
+ * Designation API
+ */
+export const Designation = {
+  /**
+   * Get Designation List
+   */
+  getDesignationList: async (filters) => {
+    try {
+      const result = await axios.get('/designation', {
+        params: {
+          offset: filters.offset,
+          limit: filters.limit,
+          sortField: filters.sortField,
+          sortType: filters.sortType
+        }
+      });
+      return result;
+    } catch (error) {
+      return error.response.data;
+    }
+  }
+};
+
 export const CountryList = {
   /**
    * Country List API

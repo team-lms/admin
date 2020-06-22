@@ -3,18 +3,15 @@ import { Link } from 'react-router-dom';
 import { validate as Validator } from 'validate.js';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
-import 'react-dates/lib/css/_datepicker.css';
-import { SingleDatePicker } from 'react-dates';
-import * as moment from 'moment';
-import { Teams, CountryList } from '../../../api/service';
+import DatePicker from 'react-datepicker';
+import { Teams, CountryList, Designation } from '../../../api/service';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const UserForm = ({ title, cancelLink, handleTest }) => {
   const [userForm, setUserForm] = useState({
     submitted: false,
     errors: null
   });
-  const [focused, setFocused] = useState(false);
-  const [hiredOnFocused, setHiredOnFocused] = useState(false);
 
   const [userDetails, setUserDetails] = useState({
     firstName: '',
@@ -23,7 +20,7 @@ const UserForm = ({ title, cancelLink, handleTest }) => {
     email: '',
     phoneNumber: '',
     whatsappNumber: '',
-    dateOfBirth: moment(),
+    dateOfBirth: new Date(),
     address: '',
     pinCode: '',
     sex: '',
@@ -31,7 +28,7 @@ const UserForm = ({ title, cancelLink, handleTest }) => {
     nationality: '',
     designation: '',
     team: '',
-    hiredOn: moment(),
+    hiredOn: new Date(),
     jobType: '',
     status: 'Active'
   });
@@ -39,6 +36,8 @@ const UserForm = ({ title, cancelLink, handleTest }) => {
     limit: 10, offset: 0, sortType: 'ASC', sortField: 'createdAt'
   });
   const [teamList, setTeamList] = useState([]);
+  const [designationList, setDesignationList] = useState([]);
+
   const [countryList, setCountryList] = useState([]);
 
   useEffect(() => {
@@ -111,6 +110,21 @@ const UserForm = ({ title, cancelLink, handleTest }) => {
       handleTest(userDetails);
     }
   };
+
+  /**
+   * Get Designation List
+   */
+  useEffect(() => {
+    const getDesignations = async () => {
+      const result = await Designation.getDesignationList(filters);
+      if (result.data.success) {
+        setDesignationList(result.data.data.rows);
+      } else {
+        toast.error(result.message);
+      }
+    };
+    getDesignations();
+  }, []);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -249,15 +263,15 @@ const UserForm = ({ title, cancelLink, handleTest }) => {
             <div className="col-4">
               <div className="form-group">
                 <label htmlFor="dateOfBirthField">Date Of Birth</label>
-                <SingleDatePicker
-                  date={ userDetails.dateOfBirth }
-                  onDateChange={ (date) => handleChange({ target: { name: 'dateOfBirth', value: date } }) }
-                  focused={ focused }
-                  onFocusChange={ ({ focused: _focused }) => setFocused(_focused) }
+                <DatePicker
+                  selected={ userDetails.dateOfBirth }
                   id="dateOfBirthField"
                   placeholder="Date of Birth"
-                  keepOpenOnDateSelect={ false }
-                  numberOfMonths={ 1 }
+                  name="dateOfBirth"
+                  onChange={ (date) => handleChange({ target: { name: 'dateOfBirth', value: date } }) }
+                  showMonthDropdown
+                  showYearDropdown
+                  dropdownMode="select"
                 />
                 { (userForm.submitted
                   && userForm.errors
@@ -418,8 +432,12 @@ const UserForm = ({ title, cancelLink, handleTest }) => {
                   onChange={ handleChange }
                 >
                   <option value="">Select a Designation</option>
-                  <option value="Active">Active</option>
-                  <option value="Inactive">Inactive</option>
+                  {' '}
+                  {
+                    designationList.map((designation) => <option value={ designation.id }>{designation.name}</option>)
+                  }
+                  {/* <option value="Active">Active</option>
+                  <option value="Inactive">Inactive</option> */}
                 </select>
                 { (userForm.submitted
                   && userForm.errors
@@ -462,15 +480,16 @@ const UserForm = ({ title, cancelLink, handleTest }) => {
             <div className="col-6">
               <div className="form-group">
                 <label htmlFor="hiredOnField">Hired On</label>
-                <SingleDatePicker
-                  date={ userDetails.hiredOn }
-                  onDateChange={ (date) => handleChange({ target: { name: 'hiredOn', value: date } }) }
-                  focused={ hiredOnFocused }
-                  onFocusChange={ ({ focused: _focused }) => setHiredOnFocused(_focused) }
+
+                <DatePicker
+                  selected={ userDetails.hiredOn }
                   id="hiredOnField"
                   placeholder="Hired On"
-                  keepOpenOnDateSelect={ false }
-                  numberOfMonths={ 1 }
+                  name="hiredOn"
+                  onChange={ (date) => handleChange({ target: { name: 'hiredOn', value: date } }) }
+                  showMonthDropdown
+                  showYearDropdown
+                  dropdownMode="select"
                 />
 
                 { (userForm.submitted
