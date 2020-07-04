@@ -17,7 +17,7 @@
     "bootstrap": "^4.5.0",
     "chart.js": "^2.9.3",
     "dotenv": "^8.2.0",
-    "moment": "^2.26.0",
+    "moment": "^2.27.0",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
@@ -27,15 +27,15 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "react-select": "^3.1.0",
-    "react-toastify": "^6.0.5",
+    "react-toastify": "^6.0.8",
     "validate.js": "^0.13.1"
   },
   "devDependencies": {
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.1.0",
-    "eslint-plugin-import": "^2.21.2",
+    "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-jsx-a11y": "^6.3.1",
-    "eslint-plugin-react": "^7.20.0",
+    "eslint-plugin-react": "^7.20.3",
     "eslint-plugin-react-hooks": "^2.5.1",
     "node-sass": "^4.14.1"
   },
