@@ -22,7 +22,7 @@ const HumanResourceForm = () => {
       <UserForm
         title="Human Resource"
         cancelLink="/humanresource/list"
-        handleTest={ handleSubmit }
+        handleTest={handleSubmit}
       />
     </>
   );
