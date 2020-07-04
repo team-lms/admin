@@ -37,6 +37,18 @@ export const Employee = {
   },
 
   /**
+   * Edit employee
+   */
+  editAEmployee: async (employee) => {
+    try {
+      const result = await axios.patch(`employee/${employee.id}`, { ...employee });
+      return result;
+    } catch (error) {
+      return error.response.date;
+    }
+  },
+
+  /**
    * Delete Employee
    */
   deleteEmployee: async (employeeId) => {

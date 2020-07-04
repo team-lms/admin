@@ -1,13 +1,31 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import UserForm from '../../shared/user-form/UserForm';
 import { Employee } from '../../../api/service';
 
-const EmployeeForm = () => {
+
+const EmployeeForm = ({ match }) => {
   const history = useHistory();
+  const [title, setTitle] = useState('');
+  /**
+   * Select the functionality
+   */
+  useEffect(() => {
+    setTitle(() => ((match.params && match.params.id) ? 'Edit Employee' : 'New employee'));
+  }, []);
+
+  /**
+  * Handling Submit Button
+  */
   const handleSubmit = async (employeeDetails) => {
-    const result = await Employee.createAEmployee(employeeDetails);
+    let result = null;
+    if (employeeDetails.id) {
+      result = await Employee.editAEmployee(employeeDetails);
+    } else {
+      result = await Employee.createAEmployee(employeeDetails);
+    }
     if (result.data.success) {
       history.push('/employee/list');
       toast.success(result.data.message);
@@ -18,13 +36,24 @@ const EmployeeForm = () => {
   return (
     <>
       <UserForm
-        title="Employee"
+        title={ title }
         cancelLink="/employee/list"
         handleTest={ handleSubmit }
       />
-
     </>
   );
+};
+
+EmployeeForm.defaultProps = {
+  match: null
+};
+
+EmployeeForm.propTypes = {
+  match: PropTypes.objectOf(PropTypes.shape({
+    params: PropTypes.objectOf(PropTypes.shape({
+      id: PropTypes.string.isRequired
+    }))
+  }))
 };
 
 export default EmployeeForm;

@@ -20,9 +20,9 @@ const HumanResourceForm = () => {
   return (
     <>
       <UserForm
-        title="Human Resource"
+        title="New Human Resource"
         cancelLink="/humanresource/list"
-        handleTest={handleSubmit}
+        handleTest={ handleSubmit }
       />
     </>
   );

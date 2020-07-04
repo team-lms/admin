@@ -24,7 +24,6 @@ import HumanResourceList from './components/human-resource-manager/human-resourc
 import HumanResourceForm from './components/human-resource-manager/human-resource-form/HumanResourceForm';
 
 import TeamList from './components/team/team-list/team-list';
-import 'react-dates/initialize';
 
 axios.interceptors.request.use((config) => {
   if (config.url !== 'https://restcountries.eu/rest/v2/all?fields=name;callingCodes;demonym') {
@@ -50,8 +49,9 @@ function App() {
                 <Switch>
                   <Redirect exact from="/" to="/dashboard" />
                   <Route exact path="/dashboard" component={ Dashboard } />
+                  <Route exact path="/employee/id:id" component={ EmployeeForm } />
                   <Route exact path="/employee/create" component={ EmployeeForm } />
-                  <Route path="/employee/list" component={ EmployeeList } />
+                  <Route exact path="/employee/list" component={ EmployeeList } />
                   <Route path="/supervisor/list" component={ SupervisorList } />
                   <Route path="/humanresource/list" component={ HumanResourceList } />
                   <Route path="/team/list" component={ TeamList } />
