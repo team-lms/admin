@@ -52,11 +52,12 @@ function App() {
                   <Route exact path="/employee/id:id" component={ EmployeeForm } />
                   <Route exact path="/employee/create" component={ EmployeeForm } />
                   <Route exact path="/employee/list" component={ EmployeeList } />
+                  <Route exact path="/supervisor/id:id" component={ SupervisorForm } />
+                  <Route exact path="/supervisor/create" component={ SupervisorForm } />
                   <Route path="/supervisor/list" component={ SupervisorList } />
                   <Route path="/humanresource/list" component={ HumanResourceList } />
                   <Route path="/team/list" component={ TeamList } />
                   <Route exact path="/humanresource/create" component={ HumanResourceForm } />
-                  <Route exact path="/supervisor/create" component={ SupervisorForm } />
                 </Switch>
               </div>
             </main>

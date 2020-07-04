@@ -135,6 +135,17 @@ export const Supervisor = {
     }
   },
   /**
+ * Edit A Supervisor
+ */
+  editASupervisor: async (supervisor) => {
+    try {
+      const result = await axios.patch(`/supervisor/${supervisor.id}`, { ...supervisor });
+      return result;
+    } catch (error) {
+      return error.response.data;
+    }
+  },
+  /**
    * Delete A Supervisor
    */
   deleteASupervisor: async (supervisorId) => {

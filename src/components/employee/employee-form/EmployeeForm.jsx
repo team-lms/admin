@@ -38,7 +38,7 @@ const EmployeeForm = ({ match }) => {
       <UserForm
         title={ title }
         cancelLink="/employee/list"
-        handleTest={ handleSubmit }
+        handleSubmitForm={ handleSubmit }
       />
     </>
   );

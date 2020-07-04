@@ -65,11 +65,6 @@ const EmployeeList = ({ history }) => {
    * On Edit
    */
   const onEdit = (employee) => {
-    // employee = {
-    //   ...employee,
-    //   dateOfBirth: new Date(employee.dateOfBirth)
-    // }
-    // employee.dateOfBirth = new Date(employee.dateOfBirth);
     window.localStorage.setItem('currentUser', JSON.stringify({ ...employee }));
     history.push(`/employee/id:${employee.id}`);
   };

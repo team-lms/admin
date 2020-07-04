@@ -8,7 +8,7 @@ import DatePicker from 'react-datepicker';
 import { Teams, CountryList, Designation } from '../../../api/service';
 import 'react-datepicker/dist/react-datepicker.css';
 
-const UserForm = ({ title, cancelLink, handleTest }) => {
+const UserForm = ({ title, cancelLink, handleSubmitForm }) => {
   const [isEdit, setIsEdit] = useState(false);
   const [userForm, setUserForm] = useState({
     submitted: false,
@@ -29,7 +29,7 @@ const UserForm = ({ title, cancelLink, handleTest }) => {
     maritalStatus: '',
     nationality: '',
     designation: '',
-    team: '',
+    teamId: '',
     hiredOn: new Date(),
     jobType: 'Full Time',
     status: 'Active'
@@ -63,7 +63,10 @@ const UserForm = ({ title, cancelLink, handleTest }) => {
       email: { presence: { allowEmpty: false }, email: true },
       dateOfBirth: { presence: { allowEmpty: false } },
       address: { presence: { allowEmpty: false } },
-      pinCode: { presence: { allowEmpty: false }, numericality: { onlyInteger: true } },
+      pinCode: {
+        presence: { allowEmpty: false },
+        numericality: { onlyInteger: true }
+      },
       sex: { presence: { allowEmpty: false } },
       maritalStatus: { presence: { allowEmpty: false } },
       nationality: { presence: { allowEmpty: false } },
@@ -118,8 +121,15 @@ const UserForm = ({ title, cancelLink, handleTest }) => {
       ...userForm,
       submitted: true
     }));
-    if ((userForm.errors === null) || (userForm.errors.length === 0)) {
-      handleTest(userDetails);
+    if (userForm.errors
+      && userForm.errors.whatsappNumber
+      && userForm.errors.whatsappNumber[0] && userDetails.whatsappNumber === '') {
+      delete (userForm.errors.whatsappNumber);
+    }
+    if ((userForm.errors === null)
+      || (userForm.errors.length === 0)
+      || Object.keys(userForm.errors).length === 0) {
+      handleSubmitForm(userDetails);
     }
   };
 
@@ -473,8 +483,8 @@ const UserForm = ({ title, cancelLink, handleTest }) => {
                   className="custom-select"
                   type="text"
                   id="teamField"
-                  name="team"
-                  value={ userDetails.team }
+                  name="teamId"
+                  value={ userDetails.teamId }
                   onChange={ handleChange }
                 >
                   <option value="">Select A Team</option>
@@ -482,14 +492,6 @@ const UserForm = ({ title, cancelLink, handleTest }) => {
                     <option value={ team.id }>{ team.teamName }</option>
                   )) }
                 </select>
-                { (userForm.submitted
-                  && userForm.errors
-                  && userForm.errors.team)
-                  && (
-                    <span className="text-danger">
-                      { userForm.errors.team[0] }
-                    </span>
-                  ) }
               </div>
 
             </div>
@@ -562,7 +564,7 @@ const UserForm = ({ title, cancelLink, handleTest }) => {
 UserForm.propTypes = {
   title: PropTypes.string.isRequired,
   cancelLink: PropTypes.string.isRequired,
-  handleTest: PropTypes.func.isRequired
+  handleSubmitForm: PropTypes.func.isRequired
 };
 
 
