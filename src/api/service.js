@@ -91,6 +91,18 @@ export const HumanResource = {
       return error.response.data;
     }
   },
+
+  /**
+  * Edit a HR
+  */
+  editAHumanResource: async (hr) => {
+    try {
+      const result = await axios.patch(`/hr/${hr.id}`, { ...hr });
+      return result;
+    } catch (error) {
+      return error.response.data;
+    }
+  },
   /**
    * Delete a HR
    */

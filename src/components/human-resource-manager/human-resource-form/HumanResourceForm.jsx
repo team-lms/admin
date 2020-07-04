@@ -1,15 +1,31 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import PropTypes from 'prop-types';
 import UserForm from '../../shared/user-form/UserForm';
 import { HumanResource } from '../../../api/service';
 
-
-const HumanResourceForm = () => {
+const HumanResourceForm = ({ match }) => {
   const history = useHistory();
+  const [title, setTitle] = useState('');
 
+  /**
+  * Select the functionality
+  */
+  useEffect(() => {
+    setTitle(() => ((match.params && match.params.id) ? 'Edit Employee' : 'New employee'));
+  }, []);
+
+  /**
+   * Handling Submit button
+   */
   const handleSubmit = async (hrDetails) => {
-    const result = await HumanResource.createAHumanResource(hrDetails);
+    let result = null;
+    if (hrDetails.id) {
+      result = await HumanResource.editAHumanResource(hrDetails);
+    } else {
+      result = await HumanResource.createAHumanResource(hrDetails);
+    }
     if (result.data.success) {
       history.push('/humanresource/list');
       toast.success(result.data.message);
@@ -20,12 +36,20 @@ const HumanResourceForm = () => {
   return (
     <>
       <UserForm
-        title="New Human Resource"
+        title={ title }
         cancelLink="/humanresource/list"
-        handleTest={ handleSubmit }
+        handleSubmitForm={ handleSubmit }
       />
     </>
   );
 };
+HumanResourceForm.defaultProps = {
+  match: null
+};
+
+HumanResourceForm.propTypes = {
+  match: PropTypes.objectOf()
+};
+
 
 export default HumanResourceForm;

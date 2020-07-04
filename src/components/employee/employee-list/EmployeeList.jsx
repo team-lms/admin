@@ -133,7 +133,7 @@ const EmployeeList = ({ history }) => {
                     </span>
                     <small className="text-muted">
                       {(employee.teamAssociation && employee.teamAssociation.team.users.length > 0)
-                        && (employee.teamAssociation.team.users[0].designation)}
+                        && (employee.teamAssociation.team.users[0].designation.name)}
                     </small>
                   </td>
                   <td className={ index === 0 ? 'border-top-0' : '' }>
