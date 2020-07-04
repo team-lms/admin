@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
-import { Link } from 'react-router-dom';
 import {
   OverlayTrigger, Popover, Modal
 } from 'react-bootstrap';
@@ -23,7 +22,7 @@ const TeamList = () => {
   });
   const [teamDetails, setTeamDetails] = useState({
     teamName: '',
-    supervisorName: '',
+    supervisor: '',
     status: 'Active'
   });
   const [selectedTeam, setSelectedTeam] = useState();
@@ -33,6 +32,8 @@ const TeamList = () => {
 
   const handleClose = () => setShow(false);
   const [supervisors, setSupervisors] = useState([]);
+  const [title, setTitle] = useState(null);
+  const [buttonName, setButtonName] = useState(null);
   /**
    * Get Team List API
    */
@@ -63,6 +64,8 @@ const TeamList = () => {
 
   const addTeamModal = () => {
     setShow(true);
+    setTitle('Create Team');
+    setButtonName('Create');
     getSupervisorList();
   };
 
@@ -74,7 +77,12 @@ const TeamList = () => {
       submitted: true
     }));
     if (!teamForm.errors) {
-      const result = await Teams.createTeam(teamDetails);
+      let result = null;
+      if (title === 'Edit Team') {
+        result = await Teams.editATeam(teamDetails);
+      } else {
+        result = await Teams.createTeam(teamDetails);
+      }
       if (result.data.success) {
         handleClose();
         toast.success(result.data.message);
@@ -132,8 +140,28 @@ const TeamList = () => {
    */
   const getSupervisor = (team) => {
     const supervisor = team.users.find((user) => user.role === 'Supervisor');
-    return supervisor ? (supervisor.firstName + supervisor.middleName + supervisor.lastName) : '';
+    return supervisor ? ({
+      supervisor: `${supervisor.firstName} ${
+        supervisor.middleName} ${supervisor.lastName}`,
+      id: supervisor.id
+    }) : '';
   };
+
+  /**
+   * Edit a Team
+   */
+  const onEdit = (team) => {
+    setShow(true);
+    setTitle('Edit Team');
+    setButtonName('Update');
+    setTeamDetails(() => ({
+      ...teamDetails,
+      ...team,
+      supervisor: getSupervisor(team).id
+    }));
+    getSupervisorList();
+  };
+
   return (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-wrap align-items-center pt-3 pb-2 mb-3">
@@ -163,29 +191,29 @@ const TeamList = () => {
                 <tr key={ team.id }>
                   <td className={ index === 0 ? 'border-top-0' : '' }>
                     <span className="d-block">
-                      {team.teamName}
+                      { team.teamName }
                     </span>
                     <small className="text-muted">
                       (Since
-                      {' '}
-                      {moment(team.createdAt).format('Do MMM YYYY')}
+                      { ' ' }
+                      { moment(team.createdAt).format('Do MMM YYYY') }
                       )
                     </small>
                   </td>
                   <td className={ index === 0 ? 'border-top-0' : '' }>
                     <span className="d-inline-block">
-                      {team.users
+                      { team.users
                         && (
                           <span className="d-block">
-                            {team.users.length}
+                            { team.users.length }
                           </span>
-                        )}
+                        ) }
                     </span>
                   </td>
                   <td className={ index === 0 ? 'border-top-0' : '' }>
                     <span className="d-inline-block">
                       <span className="d-block">
-                        {getSupervisor(team)}
+                        { getSupervisor(team).supervisor }
                       </span>
                     </span>
                   </td>
@@ -198,7 +226,7 @@ const TeamList = () => {
                         <Popover id={ `popover-positioned-${team.id}` }>
                           <Popover.Content bsPrefix="popover-body p-0 overflow-hidden rounded">
                             <div className="list-group list-group-flush rounded">
-                              <Link className="list-group-item list-group-item-action py-1 px-2" to="/employee">Edit</Link>
+                              <button type="button" className="list-group-item btn  btn-sm py-1 px-2" onClick={ () => onEdit(team) }>Edit</button>
                               <button type="button" className="list-group-item btn  btn-sm py-1 px-2" onClick={ (event) => onDelete(team, event.target) }>Delete</button>
                             </div>
                           </Popover.Content>
@@ -219,7 +247,7 @@ const TeamList = () => {
       </div>
       <Modal show={ show } onHide={ handleClose }>
         <Modal.Header closeButton>
-          <Modal.Title>Create Team</Modal.Title>
+          <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form>
@@ -249,15 +277,15 @@ const TeamList = () => {
                   onChange={ handleChange }
                 >
                   <option value="">Select Supervisor</option>
-                  {supervisors.map((supervisor) => (
+                  { supervisors.map((supervisor) => (
                     <option value={ supervisor.id }>
-                      {supervisor.firstName}
-                      {' '}
-                      {supervisor.middleName}
-                      {' '}
-                      {supervisor.lastName}
+                      { supervisor.firstName }
+                      { ' ' }
+                      { supervisor.middleName }
+                      { ' ' }
+                      { supervisor.lastName }
                     </option>
-                  ))}
+                  )) }
                 </select>
               </div>
             </div>
@@ -283,11 +311,11 @@ const TeamList = () => {
         </Modal.Body>
         <Modal.Footer>
           <button type="button" className="btn btn-sm btn-primary" onClick={ handleSubmit }>
-            Create
+            { buttonName }
           </button>
         </Modal.Footer>
       </Modal>
-      {showDelete
+      { showDelete
         && (
           <DeleteUser
             title="Delete Team"
@@ -295,7 +323,7 @@ const TeamList = () => {
             handleClose={ handleCloseDelete }
             deleteUser={ deleteTeam }
           />
-        )}
+        ) }
     </>
   );
 };

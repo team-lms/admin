@@ -204,6 +204,18 @@ export const Teams = {
   },
 
   /**
+   * Edit a Team
+   */
+  editATeam: async (team) => {
+    try {
+      const result = await axios.patch(`/team/${team.id}`, { ...team });
+      return result;
+    } catch (error) {
+      return error.response.data;
+    }
+  },
+
+  /**
    * Delete A Team
    */
   deleteATeam: async (teamId) => {
