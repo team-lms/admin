@@ -37,6 +37,18 @@ export const Employee = {
   },
 
   /**
+   * Edit employee
+   */
+  editAEmployee: async (employee) => {
+    try {
+      const result = await axios.patch(`employee/${employee.id}`, { ...employee });
+      return result;
+    } catch (error) {
+      return error.response.date;
+    }
+  },
+
+  /**
    * Delete Employee
    */
   deleteEmployee: async (employeeId) => {
@@ -74,6 +86,18 @@ export const HumanResource = {
   createAHumanResource: async (hr) => {
     try {
       const result = await axios.post('/hr', { ...hr });
+      return result;
+    } catch (error) {
+      return error.response.data;
+    }
+  },
+
+  /**
+  * Edit a HR
+  */
+  editAHumanResource: async (hr) => {
+    try {
+      const result = await axios.patch(`/hr/${hr.id}`, { ...hr });
       return result;
     } catch (error) {
       return error.response.data;
@@ -123,6 +147,17 @@ export const Supervisor = {
     }
   },
   /**
+ * Edit A Supervisor
+ */
+  editASupervisor: async (supervisor) => {
+    try {
+      const result = await axios.patch(`/supervisor/${supervisor.id}`, { ...supervisor });
+      return result;
+    } catch (error) {
+      return error.response.data;
+    }
+  },
+  /**
    * Delete A Supervisor
    */
   deleteASupervisor: async (supervisorId) => {
@@ -162,6 +197,18 @@ export const Teams = {
   createTeam: async (team) => {
     try {
       const result = await axios.post('/team', { ...team });
+      return result;
+    } catch (error) {
+      return error.response.data;
+    }
+  },
+
+  /**
+   * Edit a Team
+   */
+  editATeam: async (team) => {
+    try {
+      const result = await axios.patch(`/team/${team.id}`, { ...team });
       return result;
     } catch (error) {
       return error.response.data;
