@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { UserPlus } from 'react-feather';
+import { UserPlus, ChevronUp, ChevronDown } from 'react-feather';
 import {
   OverlayTrigger, Popover
 } from 'react-bootstrap';
@@ -15,7 +15,7 @@ import DeleteUser from '../../shared/delete-user/DeleteUser';
 const EmployeeList = ({ history }) => {
   const [employees, setEmployees] = useState([]);
   const [filters] = useState({
-    limit: 10, offset: 0, sortType: 'ASC', sortField: 'createdAt'
+    limit: 10, offset: 0, sortType: 'DESC', sortField: 'createdAt'
   });
   const [selectedEmployee, setSelectedEmployee] = useState([]);
   const [show, setShow] = useState(false);
@@ -61,6 +61,16 @@ const EmployeeList = ({ history }) => {
     }
   };
 
+  const changeSortField = (sortField) => {
+    if (filters.sortField === sortField) {
+      filters.sortType = filters.sortType === 'ASC' ? 'DESC' : 'ASC';
+    } else {
+      filters.sortField = sortField;
+      filters.sortType = 'ASC';
+    }
+    getEmployeeList();
+  };
+
   /**
    * On Edit
    */
@@ -89,9 +99,39 @@ const EmployeeList = ({ history }) => {
         <table className="table table-hover mb-0">
           <thead>
             <tr>
-              <th className="border-top-0 border-bottom-0">Basic Details</th>
-              <th className="border-top-0 border-bottom-0">Contact Details</th>
-              <th className="border-top-0 border-bottom-0">Supervisor</th>
+              <th className="border-top-0 border-bottom-0">
+                Basic Details
+                <a
+                  role="button"
+                  onClick={ () => changeSortField('name') }
+                  tabIndex={ 0 }
+                  onKeyPress={ () => changeSortField('name') }
+                >
+                  {
+                  filters.sortField === 'name'
+                   && filters.sortType === 'ASC' ? <ChevronUp size={ 13 } /> : <ChevronDown size={ 13 } />
+                    }
+                </a>
+              </th>
+              <th className="border-top-0 border-bottom-0">
+                Contact Details
+                <a
+                  role="button"
+                  onClick={ () => changeSortField('email') }
+                  tabIndex={ 0 }
+                  onKeyPress={ () => changeSortField('name') }
+                >
+                  {filters.sortField === 'email'
+                  && (filters.sortType === 'ASC' ? <ChevronUp size={ 13 } /> : <ChevronDown size={ 13 } />)}
+                </a>
+              </th>
+              <th className="border-top-0 border-bottom-0">
+                Supervisor
+                <button className="p-0 border_none background_none" type="button" onClick={ () => changeSortField('supervisor') }>
+                  { filters.sortField === 'supervisor'
+                    && (filters.sortType === 'ASC' ? <ChevronUp size={ 13 } /> : <ChevronDown size={ 13 } />) }
+                </button>
+              </th>
               <th className="border-top-0 border-bottom-0">Actions</th>
             </tr>
           </thead>
@@ -101,25 +141,25 @@ const EmployeeList = ({ history }) => {
                 <tr key={ employee.id }>
                   <td className={ index === 0 ? 'border-top-0' : '' }>
                     <span className="d-block">
-                      {employee.firstName}
-                      {' '}
-                      {employee.middleName}
-                      {' '}
-                      {employee.lastName}
+                      { employee.firstName }
+                      { ' ' }
+                      { employee.middleName }
+                      { ' ' }
+                      { employee.lastName }
                     </span>
                     <small className="text-muted">
                       (Since
-                      {' '}
-                      {moment(employee.createdAt).format('Do MMM YYYY')}
+                      { ' ' }
+                      { moment(employee.createdAt).format('Do MMM YYYY') }
                       )
                     </small>
                   </td>
                   <td className={ index === 0 ? 'border-top-0' : '' }>
                     <span className="d-inline-block">
                       <span className="d-block">
-                        {employee.email}
+                        { employee.email }
                       </span>
-                      <small className="text-muted">{employee.phoneNumber}</small>
+                      <small className="text-muted">{ employee.phoneNumber }</small>
                     </span>
                   </td>
                   <td className={ index === 0 ? 'border-top-0' : '' }>
@@ -133,8 +173,8 @@ const EmployeeList = ({ history }) => {
 
                     </span>
                     <small className="text-muted">
-                      {(employee.teamAssociation && employee.teamAssociation.team.users.length > 0)
-                        && (employee.teamAssociation.team.users[0].designation.name)}
+                      { (employee.teamAssociation && employee.teamAssociation.team.users.length > 0)
+                        && (employee.teamAssociation.team.users[0].designation.name) }
                     </small>
                   </td>
                   <td className={ index === 0 ? 'border-top-0' : '' }>
@@ -165,7 +205,7 @@ const EmployeeList = ({ history }) => {
           </tbody>
         </table>
       </div>
-      {show
+      { show
         && (
           <DeleteUser
             title="Delete Employee"
@@ -173,7 +213,7 @@ const EmployeeList = ({ history }) => {
             handleClose={ handleClose }
             deleteUser={ deleteEmployee }
           />
-        )}
+        ) }
 
     </>
   );
