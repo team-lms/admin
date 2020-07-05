@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { UserPlus } from 'react-feather';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import { toast } from 'react-toastify';
 import action from '../../../assets/img/Setting-2.png';
@@ -10,7 +11,7 @@ import { Supervisor } from '../../../api/service';
 import DeleteUser from '../../shared/delete-user/DeleteUser';
 
 
-const SupervisorList = () => {
+const SupervisorList = ({ history }) => {
   const [supervisors, setSupervisor] = useState([]);
   const [filters] = useState({
     limit: 10, offset: 0, sortType: 'ASC', sortField: 'createdAt'
@@ -58,6 +59,15 @@ const SupervisorList = () => {
       }
     }
   };
+
+  /**
+ * On Edit
+ */
+  const onEdit = (supervisor) => {
+    window.localStorage.setItem('currentUser', JSON.stringify({ ...supervisor }));
+    history.push(`/supervisor/id:${supervisor.id}`);
+  };
+
   return (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-wrap align-items-center pt-3 pb-2 mb-3">
@@ -90,13 +100,13 @@ const SupervisorList = () => {
                 <tr key={ supervisor.id }>
                   <td className={ index === 0 ? 'border-top-0' : '' }>
                     <span className="d-block">
-                      {supervisor.firstName}
-                      {' '}
-                      {supervisor.lastName}
+                      { supervisor.firstName }
+                      { ' ' }
+                      { supervisor.lastName }
                     </span>
                     <small className="text-muted">
                       (Since
-                      {' '}
+                      { ' ' }
                       { moment(supervisor.createdAt).format('Do MMM YYYY') }
                       )
                     </small>
@@ -104,15 +114,15 @@ const SupervisorList = () => {
                   <td className={ index === 0 ? 'border-top-0' : '' }>
                     <span className="d-inline-block">
                       <span className="d-block">
-                        {supervisor.email}
+                        { supervisor.email }
                       </span>
-                      <small className="text-muted">{supervisor.phoneNumber}</small>
+                      <small className="text-muted">{ supervisor.phoneNumber }</small>
                     </span>
                   </td>
                   <td className={ index === 0 ? 'border-top-0' : '' }>
                     <span className="d-inline-block">
                       <span className="d-block">
-                        {supervisor.teamAssociation.team.teamName}
+                        { supervisor.teamAssociation && supervisor.teamAssociation.team.teamName }
                       </span>
                     </span>
                   </td>
@@ -125,7 +135,7 @@ const SupervisorList = () => {
                         <Popover id={ `popover-positioned-${supervisor.id}` }>
                           <Popover.Content bsPrefix="popover-body p-0 overflow-hidden rounded">
                             <div className="list-group list-group-flush rounded">
-                              <Link className="list-group-item list-group-item-action py-1 px-2" to="/employee">Edit</Link>
+                              <button type="button" className="list-group-item btn  btn-sm py-1 px-2" onClick={ () => onEdit(supervisor) }>Edit</button>
                               <button type="button" className="list-group-item btn  btn-sm py-1 px-2" onClick={ (event) => onDelete(supervisor, event.target) }>Delete</button>
                             </div>
                           </Popover.Content>
@@ -140,21 +150,30 @@ const SupervisorList = () => {
                 </tr>
               ))
             }
-
           </tbody>
         </table>
       </div>
-      {show
-      && (
-        <DeleteUser
-          title="Delete Supervisor"
-          user={ selectedSupervisor }
-          handleClose={ handleClose }
-          deleteUser={ deleteSupervisor }
-        />
-      )}
+      { show
+        && (
+          <DeleteUser
+            title="Delete Supervisor"
+            user={ selectedSupervisor }
+            handleClose={ handleClose }
+            deleteUser={ deleteSupervisor }
+          />
+        ) }
     </>
   );
+};
+
+SupervisorList.defaultProps = {
+  history: null
+};
+
+SupervisorList.propTypes = {
+  history: PropTypes.objectOf(PropTypes.shape({
+    push: PropTypes.func
+  }))
 };
 
 export default SupervisorList;

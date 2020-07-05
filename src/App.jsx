@@ -50,14 +50,18 @@ function App() {
                 <Switch>
                   <Redirect exact from="/" to="/dashboard" />
                   <Route exact path="/dashboard" component={ Dashboard } />
+                  <Route exact path="/employee/id:id" component={ EmployeeForm } />
                   <Route exact path="/employee/create" component={ EmployeeForm } />
-                  <Route path="/employee/list" component={ EmployeeList } />
+                  <Route exact path="/employee/list" component={ EmployeeList } />
+                  <Route exact path="/supervisor/id:id" component={ SupervisorForm } />
+                  <Route exact path="/supervisor/create" component={ SupervisorForm } />
                   <Route path="/supervisor/list" component={ SupervisorList } />
+                  <Route exact path="/humanresource/id:id" component={ HumanResourceForm } />
                   <Route path="/humanresource/list" component={ HumanResourceList } />
                   <Route path="/team/list" component={ TeamList } />
                   <Route path="/profile" component={ ProfileForm } />
                   <Route exact path="/humanresource/create" component={ HumanResourceForm } />
-                  <Route exact path="/supervisor/create" component={ SupervisorForm } />
+                  <Route path="/team/list" component={ TeamList } />
                 </Switch>
               </div>
             </main>

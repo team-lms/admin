@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { validate as Validator } from 'validate.js';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import { toast } from 'react-toastify';
 import DatePicker from 'react-datepicker';
 import { Teams, CountryList, Designation } from '../../../api/service';
 import 'react-datepicker/dist/react-datepicker.css';
 
-const UserForm = ({ title, cancelLink, handleTest }) => {
+const UserForm = ({ title, cancelLink, handleSubmitForm }) => {
+  const [isEdit, setIsEdit] = useState(false);
   const [userForm, setUserForm] = useState({
     submitted: false,
     errors: null
@@ -27,9 +29,9 @@ const UserForm = ({ title, cancelLink, handleTest }) => {
     maritalStatus: '',
     nationality: '',
     designation: '',
-    team: '',
+    teamId: '',
     hiredOn: new Date(),
-    jobType: '',
+    jobType: 'Full Time',
     status: 'Active'
   });
   const [filters] = useState({
@@ -41,6 +43,19 @@ const UserForm = ({ title, cancelLink, handleTest }) => {
   const [countryList, setCountryList] = useState([]);
 
   useEffect(() => {
+    if (title.split(' ')[0] === 'Edit') {
+      setIsEdit(true);
+      const user = JSON.parse(window.localStorage.getItem('currentUser'));
+      setUserDetails(() => ({
+        ...userDetails,
+        ...user,
+        dateOfBirth: moment(user.dateOfBirth).toDate(),
+        hiredOn: moment(user.hiredOn).toDate()
+      }));
+    }
+  }, [title]);
+
+  useEffect(() => {
     const validationResult = Validator.validate(userDetails, {
       firstName: { presence: { allowEmpty: false } },
       phoneNumber: { presence: { allowEmpty: false }, length: { is: 10 } },
@@ -48,19 +63,22 @@ const UserForm = ({ title, cancelLink, handleTest }) => {
       email: { presence: { allowEmpty: false }, email: true },
       dateOfBirth: { presence: { allowEmpty: false } },
       address: { presence: { allowEmpty: false } },
-      pinCode: { presence: { allowEmpty: false }, numericality: { onlyInteger: true } },
+      pinCode: {
+        presence: { allowEmpty: false },
+        numericality: { onlyInteger: true }
+      },
       sex: { presence: { allowEmpty: false } },
       maritalStatus: { presence: { allowEmpty: false } },
       nationality: { presence: { allowEmpty: false } },
       designation: { presence: { allowEmpty: false } },
-      team: { presence: { allowEmpty: false } },
       hiredOn: { presence: { allowEmpty: false } },
       jobType: { presence: { allowEmpty: false } },
       status: { presence: { allowEmpty: false } }
     });
 
     if (typeof userDetails !== 'undefined') {
-      if (userDetails.whatsappNumber.length === 0) {
+      if (userDetails.whatsappNumber
+        && userDetails.whatsappNumber.length === 0) {
         delete validationResult.whatsappNumber;
       }
     }
@@ -103,11 +121,15 @@ const UserForm = ({ title, cancelLink, handleTest }) => {
       ...userForm,
       submitted: true
     }));
-    if (Object.keys(userForm.errors).length === 0) {
-      userDetails.team = teamList.find(
-        (team) => (parseInt(team.id, 10)) === parseInt(userDetails.team, 10)
-      ) || {};
-      handleTest(userDetails);
+    if (userForm.errors
+      && userForm.errors.whatsappNumber
+      && userForm.errors.whatsappNumber[0] && userDetails.whatsappNumber === '') {
+      delete (userForm.errors.whatsappNumber);
+    }
+    if ((userForm.errors === null)
+      || (userForm.errors.length === 0)
+      || Object.keys(userForm.errors).length === 0) {
+      handleSubmitForm(userDetails);
     }
   };
 
@@ -138,9 +160,7 @@ const UserForm = ({ title, cancelLink, handleTest }) => {
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 className="h3">
-          New
-          {' '}
-          {title}
+          { title }
         </h1>
       </div>
       <form onSubmit={ handleSubmit }>
@@ -432,9 +452,15 @@ const UserForm = ({ title, cancelLink, handleTest }) => {
                   onChange={ handleChange }
                 >
                   <option value="">Select a Designation</option>
-                  {' '}
+                  { ' ' }
                   {
-                    designationList.map((designation) => <option value={ designation.id }>{designation.name}</option>)
+                    designationList.map(
+                      (designation) => (
+                        <option value={ designation.id }>
+                          { designation.name }
+                        </option>
+                      )
+                    )
                   }
                   {/* <option value="Active">Active</option>
                   <option value="Inactive">Inactive</option> */}
@@ -457,8 +483,8 @@ const UserForm = ({ title, cancelLink, handleTest }) => {
                   className="custom-select"
                   type="text"
                   id="teamField"
-                  name="team"
-                  value={ userDetails.team }
+                  name="teamId"
+                  value={ userDetails.teamId }
                   onChange={ handleChange }
                 >
                   <option value="">Select A Team</option>
@@ -466,14 +492,6 @@ const UserForm = ({ title, cancelLink, handleTest }) => {
                     <option value={ team.id }>{ team.teamName }</option>
                   )) }
                 </select>
-                { (userForm.submitted
-                  && userForm.errors
-                  && userForm.errors.team)
-                  && (
-                    <span className="text-danger">
-                      { userForm.errors.team[0] }
-                    </span>
-                  ) }
               </div>
 
             </div>
@@ -528,7 +546,11 @@ const UserForm = ({ title, cancelLink, handleTest }) => {
               </div>
             </div>
             <div className="col-12 text-right">
-              <button type="submit" className="btn btn-primary mr-2">Create</button>
+              <button type="submit" className="btn btn-primary mr-2">
+                {
+                  isEdit ? 'Update' : 'Create'
+                }
+              </button>
               <Link type="submit" className="btn btn-secondary" to={ cancelLink }>Cancel</Link>
             </div>
           </div>
@@ -542,7 +564,7 @@ const UserForm = ({ title, cancelLink, handleTest }) => {
 UserForm.propTypes = {
   title: PropTypes.string.isRequired,
   cancelLink: PropTypes.string.isRequired,
-  handleTest: PropTypes.func.isRequired
+  handleSubmitForm: PropTypes.func.isRequired
 };
 
 
