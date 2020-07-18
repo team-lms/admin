@@ -29,7 +29,7 @@ const UserForm = ({ title, cancelLink, handleSubmitForm }) => {
     maritalStatus: '',
     nationality: '',
     designation: '',
-    teamId: '',
+    teamId: null,
     hiredOn: new Date(),
     jobType: 'Full Time',
     status: 'Active'
@@ -49,6 +49,7 @@ const UserForm = ({ title, cancelLink, handleSubmitForm }) => {
       setUserDetails((userDetail) => ({
         ...userDetail,
         ...user,
+        teamId: user.teamAssociation.team.id,
         dateOfBirth: moment(user.dateOfBirth).toDate(),
         hiredOn: moment(user.hiredOn).toDate()
       }));

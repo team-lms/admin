@@ -61,6 +61,9 @@ const EmployeeList = ({ history }) => {
     }
   };
 
+  /**
+   * Changing Sort Field
+   */
   const changeSortField = (sortField) => {
     if (filters.sortField === sortField) {
       filters.sortType = filters.sortType === 'ASC' ? 'DESC' : 'ASC';
@@ -78,6 +81,12 @@ const EmployeeList = ({ history }) => {
     window.localStorage.setItem('currentUser', JSON.stringify({ ...employee }));
     history.push(`/employee/id:${employee.id}`);
   };
+  /**
+  * Showing Icon for Sorting
+  */
+
+  const showSortIcon = (sortField) => sortField === filters.sortField;
+
 
   return (
     <>
@@ -100,36 +109,45 @@ const EmployeeList = ({ history }) => {
           <thead>
             <tr>
               <th className="border-top-0 border-bottom-0">
-                Basic Details
-                <a
-                  role="button"
+                <button
+                  type="button"
+                  className="button_click"
                   onClick={ () => changeSortField('name') }
-                  tabIndex={ 0 }
                   onKeyPress={ () => changeSortField('name') }
                 >
+                  Basic Details
                   {
-                  filters.sortField === 'name'
-                   && filters.sortType === 'ASC' ? <ChevronUp size={ 13 } /> : <ChevronDown size={ 13 } />
-                    }
-                </a>
+                    showSortIcon('name')
+                      && (filters.sortType === 'ASC' ? <ChevronUp size={ 13 } /> : <ChevronDown size={ 13 } />)
+                  }
+                </button>
               </th>
               <th className="border-top-0 border-bottom-0">
-                Contact Details
-                <a
-                  role="button"
+                <button
+                  type="button"
+                  className="button_click"
                   onClick={ () => changeSortField('email') }
-                  tabIndex={ 0 }
-                  onKeyPress={ () => changeSortField('name') }
+                  onKeyPress={ () => changeSortField('email') }
                 >
-                  {filters.sortField === 'email'
-                  && (filters.sortType === 'ASC' ? <ChevronUp size={ 13 } /> : <ChevronDown size={ 13 } />)}
-                </a>
+                  Contact Details
+                  {
+                    showSortIcon('email')
+                    && (filters.sortType === 'ASC' ? <ChevronUp size={ 13 } /> : <ChevronDown size={ 13 } />)
+                  }
+                </button>
               </th>
               <th className="border-top-0 border-bottom-0">
-                Supervisor
-                <button className="p-0 border_none background_none" type="button" onClick={ () => changeSortField('supervisor') }>
-                  { filters.sortField === 'supervisor'
-                    && (filters.sortType === 'ASC' ? <ChevronUp size={ 13 } /> : <ChevronDown size={ 13 } />) }
+                <button
+                  type="button"
+                  className="button_click"
+                  onClick={ () => changeSortField('supervisor') }
+                  onKeyPress={ () => changeSortField('supervisor') }
+                >
+                  Supervisor
+                  {
+                  showSortIcon('supervisor')
+                  && (filters.sortType === 'ASC' ? <ChevronUp size={ 13 } /> : <ChevronDown size={ 13 } />)
+                }
                 </button>
               </th>
               <th className="border-top-0 border-bottom-0">Actions</th>
