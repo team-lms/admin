@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { UserPlus } from 'react-feather';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -21,17 +21,18 @@ const HumanResourceList = ({ history }) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
 
-  const getHumanResourceList = async () => {
+  const getHumanResourceList = useCallback(async () => {
     const result = await HumanResource.getHumanResourceList(filters);
     if (result.data.success) {
       setHumanResources(result.data.data.rows);
     } else {
       toast.error(result.message);
     }
-  };
+  }, [filters]);
+
   useEffect(() => {
     getHumanResourceList();
-  }, []);
+  }, [getHumanResourceList]);
 
   /**
    * Delete Pop Up
