@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { UserPlus } from 'react-feather';
@@ -20,18 +20,18 @@ const SupervisorList = ({ history }) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
 
-  const getSupervisorList = async () => {
+  const getSupervisorList = useCallback(async () => {
     const result = await Supervisor.getSupervisorList(filters);
     if (result.data.success) {
       setSupervisor(result.data.data.rows);
     } else {
       toast.error(result.message);
     }
-  };
+  }, [filters]);
 
   useEffect(() => {
     getSupervisorList();
-  }, []);
+  }, [getSupervisorList]);
 
   /**
    * Delete Pop Up

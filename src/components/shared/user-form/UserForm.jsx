@@ -46,8 +46,8 @@ const UserForm = ({ title, cancelLink, handleSubmitForm }) => {
     if (title.split(' ')[0] === 'Edit') {
       setIsEdit(true);
       const user = JSON.parse(window.localStorage.getItem('currentUser'));
-      setUserDetails(() => ({
-        ...userDetails,
+      setUserDetails((userDetail) => ({
+        ...userDetail,
         ...user,
         dateOfBirth: moment(user.dateOfBirth).toDate(),
         hiredOn: moment(user.hiredOn).toDate()
@@ -89,31 +89,31 @@ const UserForm = ({ title, cancelLink, handleSubmitForm }) => {
     }));
   }, [userDetails]);
 
-  /**
-   * Get Team API Call
-   */
-
-  const getTeams = async () => {
-    const result = await Teams.getTeamList(filters);
-    if (result.data.success) {
-      setTeamList(...teamList, result.data.data.rows);
-    } else {
-      toast.error(result.message);
-    }
-  };
-
-  /**
-   * Get Country Wise Information
-   */
-  const getCountry = async () => {
-    const result = await CountryList.getCountryList();
-    setCountryList(...countryList, result.data);
-  };
 
   useEffect(() => {
+    /**
+ * Get Country Wise Information
+ */
+    const getCountry = async () => {
+      const result = await CountryList.getCountryList();
+      setCountryList(result.data);
+    };
+
+    /**
+ * Get Team API Call
+ */
+    const getTeams = async () => {
+      const result = await Teams.getTeamList(filters);
+      if (result.data.success) {
+        setTeamList(result.data.data.rows);
+      } else {
+        toast.error(result.message);
+      }
+    };
+
     getTeams();
     getCountry();
-  }, []);
+  }, [filters]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -146,7 +146,7 @@ const UserForm = ({ title, cancelLink, handleSubmitForm }) => {
       }
     };
     getDesignations();
-  }, []);
+  }, [filters]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -455,15 +455,17 @@ const UserForm = ({ title, cancelLink, handleSubmitForm }) => {
                   { ' ' }
                   {
                     designationList.map(
-                      (designation) => (
-                        <option value={ designation.id }>
+                      (designation, index) => (
+                        <option
+                          // eslint-disable-next-line react/no-array-index-key
+                          key={ index }
+                          value={ designation.id }
+                        >
                           { designation.name }
                         </option>
                       )
                     )
                   }
-                  {/* <option value="Active">Active</option>
-                  <option value="Inactive">Inactive</option> */}
                 </select>
                 { (userForm.submitted
                   && userForm.errors
@@ -474,7 +476,6 @@ const UserForm = ({ title, cancelLink, handleSubmitForm }) => {
                     </span>
                   ) }
               </div>
-
             </div>
             <div className="col-6">
               <div className="form-group">
@@ -489,7 +490,7 @@ const UserForm = ({ title, cancelLink, handleSubmitForm }) => {
                 >
                   <option value="">Select A Team</option>
                   { teamList.map((team) => (
-                    <option value={ team.id }>{ team.teamName }</option>
+                    <option key={ team.id } value={ team.id }>{ team.teamName }</option>
                   )) }
                 </select>
               </div>

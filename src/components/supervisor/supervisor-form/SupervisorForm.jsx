@@ -14,7 +14,7 @@ const SupervisorForm = ({ match }) => {
    */
   useEffect(() => {
     setTitle(() => ((match.params && match.params.id) ? 'Edit Supervisor' : 'New Supervisor'));
-  }, []);
+  }, [match.params]);
 
   const handleSubmit = async (supervisorDetails) => {
     let result = null;
