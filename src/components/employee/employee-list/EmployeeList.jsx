@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { UserPlus } from 'react-feather';
 import {
   OverlayTrigger, Popover
@@ -21,18 +21,18 @@ const EmployeeList = ({ history }) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
 
-  const getEmployeeList = async () => {
+  const getEmployeeList = useCallback(async () => {
     const result = await Employee.getEmployeeList(filters);
     if (result.data.success) {
       setEmployees(result.data.data.rows);
     } else {
       toast.error(result.message);
     }
-  };
+  }, [filters]);
 
   useEffect(() => {
     getEmployeeList();
-  }, []);
+  }, [getEmployeeList]);
 
   /**
    * Delete Pop Up

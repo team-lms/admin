@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { toast } from 'react-toastify';
 import {
   OverlayTrigger, Popover, Modal
@@ -37,14 +37,14 @@ const TeamList = () => {
   /**
    * Get Team List API
    */
-  const getTeamList = async () => {
+  const getTeamList = useCallback(async () => {
     const result = await Teams.getTeamList(filters);
     if (result.data.success) {
       setTeams(result.data.data.rows);
     } else {
       toast.error(result.message);
     }
-  };
+  }, [filters]);
 
   /**
    * Supervisor List
@@ -107,7 +107,7 @@ const TeamList = () => {
 
   useEffect(() => {
     getTeamList();
-  }, []);
+  }, [getTeamList]);
 
   /**
    * Delete Pop Up

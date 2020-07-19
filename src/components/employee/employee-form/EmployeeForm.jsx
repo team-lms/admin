@@ -14,7 +14,7 @@ const EmployeeForm = ({ match }) => {
    */
   useEffect(() => {
     setTitle(() => ((match.params && match.params.id) ? 'Edit Employee' : 'New employee'));
-  }, []);
+  }, [match.params]);
 
   /**
   * Handling Submit Button
