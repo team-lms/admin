@@ -141,8 +141,8 @@ const TeamList = () => {
   const getSupervisor = (team) => {
     const supervisor = team.users.find((user) => user.role === 'Supervisor');
     return supervisor ? ({
-      supervisor: `${supervisor.firstName} ${
-        supervisor.middleName} ${supervisor.lastName}`,
+      supervisor: `${supervisor.firstName || ''}  ${
+        supervisor.middleName || ''} ${supervisor.lastName || ''}`,
       id: supervisor.id
     }) : '';
   };
