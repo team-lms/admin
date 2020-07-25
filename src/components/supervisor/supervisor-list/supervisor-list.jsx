@@ -122,7 +122,8 @@ const SupervisorList = ({ history }) => {
                   <td className={ index === 0 ? 'border-top-0' : '' }>
                     <span className="d-inline-block">
                       <span className="d-block">
-                        { supervisor.teamAssociation && supervisor.teamAssociation.team.teamName }
+                        { supervisor.team
+                          && supervisor.team.teamName }
                       </span>
                     </span>
                   </td>
