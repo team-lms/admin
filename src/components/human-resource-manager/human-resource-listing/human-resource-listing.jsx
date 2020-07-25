@@ -123,11 +123,11 @@ const HumanResourceList = ({ history }) => {
                   </td>
                   <td className={ index === 0 ? 'border-top-0' : '' }>
                     <span className="d-block">
-                      { (humanResource.teamAssociation
-                        && humanResource.teamAssociation.team.users.length > 0)
-                        ? humanResource.teamAssociation.team.users[0].firstName
-                        + humanResource.teamAssociation.team.users[0].middleName
-                        + humanResource.teamAssociation.team.users[0].lastName : 'NA' }
+                      { (humanResource.team
+                        && humanResource.team.users.length > 0)
+                        ? `${humanResource.team.users[0].firstName || ''}
+                        ${humanResource.team.users[0].middleName || ''}
+                        ${humanResource.team.users[0].lastName || ''}` : 'NA' }
 
                     </span>
                     <small className="text-muted">

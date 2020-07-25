@@ -84,6 +84,11 @@ const TeamList = () => {
         result = await Teams.createTeam(teamDetails);
       }
       if (result.data.success) {
+        setTeamDetails({
+          teamName: '',
+          supervisor: '',
+          status: 'Active'
+        });
         handleClose();
         toast.success(result.data.message);
         getTeamList();
