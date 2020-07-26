@@ -84,6 +84,11 @@ const TeamList = () => {
         result = await Teams.createTeam(teamDetails);
       }
       if (result.data.success) {
+        setTeamDetails({
+          teamName: '',
+          supervisor: '',
+          status: 'Active'
+        });
         handleClose();
         toast.success(result.data.message);
         getTeamList();
@@ -141,8 +146,8 @@ const TeamList = () => {
   const getSupervisor = (team) => {
     const supervisor = team.users.find((user) => user.role === 'Supervisor');
     return supervisor ? ({
-      supervisor: `${supervisor.firstName} ${
-        supervisor.middleName} ${supervisor.lastName}`,
+      supervisor: `${supervisor.firstName || ''}  ${
+        supervisor.middleName || ''} ${supervisor.lastName || ''}`,
       id: supervisor.id
     }) : '';
   };

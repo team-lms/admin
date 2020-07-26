@@ -124,11 +124,12 @@ const EmployeeList = ({ history }) => {
                   </td>
                   <td className={ index === 0 ? 'border-top-0' : '' }>
                     <span className="d-block">
-                      {(employee.teamAssociation
-                        && employee.teamAssociation.team.users.length > 0)
-                        ? employee.teamAssociation.team.users[0].firstName
-                        + employee.teamAssociation.team.users[0].middleName
-                        + employee.teamAssociation.team.users[0].lastName : 'NA'}
+                      {(employee.team
+                        && employee.team.users.length > 0)
+                        ? `${employee.team.users[0].firstName || ''
+                        } ${
+                          employee.team.users[0].middleName || ''
+                        } ${employee.team.users[0].lastName || ''}` : 'NA'}
 
                     </span>
                     <small className="text-muted">
