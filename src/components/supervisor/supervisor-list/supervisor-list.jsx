@@ -100,9 +100,11 @@ const SupervisorList = ({ history }) => {
                 <tr key={ supervisor.id }>
                   <td className={ index === 0 ? 'border-top-0' : '' }>
                     <span className="d-block">
-                      { supervisor.firstName }
-                      { ' ' }
-                      { supervisor.lastName }
+                      {supervisor.firstName || ''}
+                      {' '}
+                      {supervisor.middleName || ''}
+                      {' '}
+                      {supervisor.lastName || ''}
                     </span>
                     <small className="text-muted">
                       (Since
@@ -122,7 +124,8 @@ const SupervisorList = ({ history }) => {
                   <td className={ index === 0 ? 'border-top-0' : '' }>
                     <span className="d-inline-block">
                       <span className="d-block">
-                        { supervisor.teamAssociation && supervisor.teamAssociation.team.teamName }
+                        { supervisor.team
+                          && supervisor.team.teamName }
                       </span>
                     </span>
                   </td>
