@@ -176,7 +176,8 @@ const TeamList = () => {
             <span>Add</span>
             <UserPlus size={ 13 } />
           </button>
-          <button type="button" className="btn btn-sm btn-outline-secondary">Filters</button>
+          {/* <button type="button" className="btn btn-sm btn-outline-secondary">
+          Filters</button> */}
         </div>
       </div>
 

@@ -80,7 +80,8 @@ const SupervisorList = ({ history }) => {
             </button>
           </Link>
 
-          <button type="button" className="btn btn-sm btn-outline-secondary">Filters</button>
+          {/* <button type="button" className="btn btn-sm btn-outline-secondary">
+          Filters</button> */}
         </div>
       </div>
 

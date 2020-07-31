@@ -80,7 +80,8 @@ const HumanResourceList = ({ history }) => {
               <UserPlus size={ 13 } />
             </button>
           </Link>
-          <button type="button" className="btn btn-sm btn-outline-secondary">Filters</button>
+          {/* <button type="button" className="btn btn-sm btn-outline-secondary">
+          Filters</button> */}
         </div>
       </div>
 
