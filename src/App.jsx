@@ -28,7 +28,7 @@ import TeamList from './components/team/team-list/team-list';
 axios.interceptors.request.use((config) => {
   if (config.url !== 'https://restcountries.eu/rest/v2/all?fields=name;callingCodes;demonym') {
     // eslint-disable-next-line no-param-reassign
-    config.headers.authorization = 'Bearer + eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoie1wiaWRcIjoxLFwiZW1haWxcIjpcImFkbWluQGxtcy5jb21cIixcInJvbGVcIjpcIkFkbWluXCIsXCJwaG9uZU51bWJlclwiOlwiODA3NTQzODkyM1wiLFwiZmlyc3ROYW1lXCI6XCJBZG1pblwiLFwibGFzdE5hbWVcIjpudWxsfSIsImlhdCI6MTU5NTY1MzYwMSwiZXhwIjoxNTk1NzQwMDAxfQ.u3tTBKlsiv3A3MyVS0YVAkOGP2UVzq7ezTMd1UhLstE';
+    config.headers.authorization = 'Bearer + eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoie1wiaWRcIjoxLFwiZW1haWxcIjpcImFkbWluQGxtcy5jb21cIixcInJvbGVcIjpcIkFkbWluXCIsXCJwaG9uZU51bWJlclwiOlwiODA3NTQzODkyM1wiLFwiZmlyc3ROYW1lXCI6XCJBZG1pblwiLFwibGFzdE5hbWVcIjpudWxsfSIsImlhdCI6MTU5NjI4ODAzMywiZXhwIjoxNTk2Mzc0NDMzfQ.0Q60DYS2lSekUQ6MPpB3s8lNGpmhaN-nzjMc49MAk4s';
   }
   return config;
 }, (error) => Promise.reject(error));

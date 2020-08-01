@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { UserPlus, ChevronUp, ChevronDown } from 'react-feather';
 import {
-  OverlayTrigger, Popover
+  OverlayTrigger, Popover, Pagination
 } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
@@ -15,15 +15,21 @@ import DeleteUser from '../../shared/delete-user/DeleteUser';
 const EmployeeList = ({ history }) => {
   const [employees, setEmployees] = useState([]);
   const [filters] = useState({
-    limit: 10, offset: 0, sortType: 'DESC', sortBy: 'createdAt'
+    limit: 1, offset: 0, sortType: 'DESC', sortBy: 'createdAt'
+
   });
+  const [totalPage, setTotalPage] = useState(null);
   const [selectedEmployee, setSelectedEmployee] = useState([]);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
+  const items = [];
 
   const getEmployeeList = useCallback(async () => {
     const result = await Employee.getEmployeeList(filters);
     if (result.data.success) {
+      const totalPageNo = Math.ceil(result.data.data.count / filters.limit);
+      setTotalPage(totalPageNo);
+      pagination();
       setEmployees(result.data.data.rows);
     } else {
       toast.error(result.message);
@@ -33,6 +39,19 @@ const EmployeeList = ({ history }) => {
   useEffect(() => {
     getEmployeeList();
   }, [getEmployeeList]);
+
+  const pagination = () => {
+    for (let number = 1; number <= 5; number++) {
+      items.push(
+        <Pagination.Item key={ number } active={ 5 }>
+          { number }
+        </Pagination.Item>
+      );
+    }
+    console.log(1)
+
+  };
+
 
   /**
    * Delete Pop Up
@@ -81,12 +100,12 @@ const EmployeeList = ({ history }) => {
     window.localStorage.setItem('currentUser', JSON.stringify({ ...employee }));
     history.push(`/employee/id:${employee.id}`);
   };
+
   /**
   * Showing Icon for Sorting
   */
 
   const showSortIcon = (sortBy) => sortBy === filters.sortBy;
-
 
   return (
     <>
@@ -119,7 +138,7 @@ const EmployeeList = ({ history }) => {
                   Basic Details
                   {
                     showSortIcon('name')
-                      && (filters.sortType === 'ASC' ? <ChevronUp size={ 13 } /> : <ChevronDown size={ 13 } />)
+                    && (filters.sortType === 'ASC' ? <ChevronUp size={ 13 } /> : <ChevronDown size={ 13 } />)
                   }
                 </button>
               </th>
@@ -147,8 +166,8 @@ const EmployeeList = ({ history }) => {
                   Supervisor
                   {
                     showSortIcon('supervisorName')
-                  && (filters.sortType === 'ASC' ? <ChevronUp size={ 13 } /> : <ChevronDown size={ 13 } />)
-                }
+                    && (filters.sortType === 'ASC' ? <ChevronUp size={ 13 } /> : <ChevronDown size={ 13 } />)
+                  }
                 </button>
               </th>
               <th className="border-top-0 border-bottom-0">Actions</th>
@@ -183,12 +202,12 @@ const EmployeeList = ({ history }) => {
                   </td>
                   <td className={ index === 0 ? 'border-top-0' : '' }>
                     <span className="d-block">
-                      {(employee.team
+                      { (employee.team
                         && employee.team.users.length > 0)
                         ? `${employee.team.users[0].firstName || ''
                         } ${
                           employee.team.users[0].middleName || ''
-                        } ${employee.team.users[0].lastName || ''}` : 'NA'}
+                        } ${employee.team.users[0].lastName || ''}` : 'NA' }
 
                     </span>
                     <small className="text-muted">
@@ -223,6 +242,28 @@ const EmployeeList = ({ history }) => {
             }
           </tbody>
         </table>
+        <div>
+          { totalPage
+            && (
+            <Pagination>
+              { items
+                // [Array(totalPage).keys()].map((singlePage, index) => (
+                //   <>
+                //     <Pagination.First />
+                //     <Pagination.Prev />
+                //     <Pagination.Item>
+                //       { index + 1 }
+                //       { ' ' }
+                //     </Pagination.Item>
+                //     <Pagination.Item>{ totalPage }</Pagination.Item>
+                //     <Pagination.Next />
+                //     <Pagination.Last />
+                //   </>
+                // ))
+             }
+            </Pagination>
+            )}
+        </div>
       </div>
       { show
         && (
