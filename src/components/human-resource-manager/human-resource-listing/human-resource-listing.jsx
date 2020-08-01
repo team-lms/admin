@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { UserPlus } from 'react-feather';
+import { UserPlus, ChevronUp, ChevronDown } from 'react-feather';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
@@ -14,7 +14,7 @@ import DeleteUser from '../../shared/delete-user/DeleteUser';
 const HumanResourceList = ({ history }) => {
   const [humanResources, setHumanResources] = useState([]);
   const [filters] = useState({
-    limit: 10, offset: 0, sortType: 'ASC', sortField: 'createdAt'
+    limit: 10, offset: 0, sortType: 'ASC', sortBy: 'createdAt'
   });
   const [selectedHumanResource, setSelectedHumanResource] = useState();
 
@@ -62,12 +62,31 @@ const HumanResourceList = ({ history }) => {
   };
 
   /**
+   * Changing Sort Field
+   */
+  const changeSortBy = (sortBy) => {
+    if (filters.sortBy === sortBy) {
+      filters.sortType = filters.sortType === 'ASC' ? 'DESC' : 'ASC';
+    } else {
+      filters.sortBy = sortBy;
+      filters.sortType = 'ASC';
+    }
+    getHumanResourceList();
+  };
+
+  /**
   * On Edit
   */
   const onEdit = (hr) => {
     window.localStorage.setItem('currentUser', JSON.stringify({ ...hr }));
     history.push(`/humanresource/id:${hr.id}`);
   };
+
+  /**
+   * Showing Icon for Sorting
+   */
+
+  const showSortIcon = (sortBy) => sortBy === filters.sortBy;
 
   return (
     <>
@@ -89,9 +108,48 @@ const HumanResourceList = ({ history }) => {
         <table className="table table-hover mb-0">
           <thead>
             <tr>
-              <th className="border-top-0 border-bottom-0">Basic Details</th>
-              <th className="border-top-0 border-bottom-0">Contact Details</th>
-              <th className="border-top-0 border-bottom-0">Supervisor</th>
+              <th className="border-top-0 border-bottom-0">
+                <button
+                  type="button"
+                  className="button_click"
+                  onClick={ () => changeSortBy('name') }
+                  onKeyPress={ () => changeSortBy('name') }
+                >
+                  Basic Details
+                  {
+                    showSortIcon('name')
+                    && (filters.sortType === 'ASC' ? <ChevronUp size={ 13 } /> : <ChevronDown size={ 13 } />)
+                  }
+                </button>
+              </th>
+              <th className="border-top-0 border-bottom-0">
+                <button
+                  type="button"
+                  className="button_click"
+                  onClick={ () => changeSortBy('email') }
+                  onKeyPress={ () => changeSortBy('email') }
+                >
+                  Contact Details
+                  {
+                    showSortIcon('email')
+                    && (filters.sortType === 'ASC' ? <ChevronUp size={ 13 } /> : <ChevronDown size={ 13 } />)
+                  }
+                </button>
+              </th>
+              <th className="border-top-0 border-bottom-0">
+                <button
+                  type="button"
+                  className="button_click"
+                  onClick={ () => changeSortBy('supervisor') }
+                  onKeyPress={ () => changeSortBy('supervisor') }
+                >
+                  Supervisor
+                  {
+                    showSortIcon('supervisor')
+                    && (filters.sortType === 'ASC' ? <ChevronUp size={ 13 } /> : <ChevronDown size={ 13 } />)
+                  }
+                </button>
+              </th>
               <th className="border-top-0 border-bottom-0">Actions</th>
             </tr>
           </thead>

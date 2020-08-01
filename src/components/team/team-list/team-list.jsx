@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import {
   OverlayTrigger, Popover, Modal
 } from 'react-bootstrap';
-import { UserPlus } from 'react-feather';
+import { UserPlus, ChevronUp, ChevronDown } from 'react-feather';
 import moment from 'moment';
 import { Teams, Supervisor } from '../../../api/service';
 import Header from '../../header/header';
@@ -13,7 +13,7 @@ import DeleteUser from '../../shared/delete-user/DeleteUser';
 const TeamList = () => {
   const [teams, setTeams] = useState([]);
   const [filters] = useState({
-    limit: 10, offset: 0, sortType: 'ASC', sortField: 'createdAt'
+    limit: 10, offset: 0, sortType: 'ASC', sortBy: 'createdAt'
   });
   const [show, setShow] = useState(false);
   const [teamForm, setTeamForm] = useState({
@@ -152,6 +152,20 @@ const TeamList = () => {
     }) : '';
   };
 
+
+  /**
+   * Changing Sort Field
+   */
+  const changeSortBy = (sortBy) => {
+    if (filters.sortBy === sortBy) {
+      filters.sortType = filters.sortType === 'ASC' ? 'DESC' : 'ASC';
+    } else {
+      filters.sortBy = sortBy;
+      filters.sortType = 'ASC';
+    }
+    getTeamList();
+  };
+
   /**
    * Edit a Team
    */
@@ -166,6 +180,13 @@ const TeamList = () => {
     }));
     getSupervisorList();
   };
+
+  /**
+ * Showing Icon for Sorting
+ */
+
+  const showSortIcon = (sortBy) => sortBy === filters.sortBy;
+
 
   return (
     <>
@@ -185,9 +206,48 @@ const TeamList = () => {
         <table className="table table-hover mb-0">
           <thead>
             <tr>
-              <th className="border-top-0 border-bottom-0">Team Name</th>
-              <th className="border-top-0 border-bottom-0">Team Size</th>
-              <th className="border-top-0 border-bottom-0">Supervisor Name</th>
+              <th className="border-top-0 border-bottom-0">
+                <button
+                  type="button"
+                  className="button_click"
+                  onClick={ () => changeSortBy('teamName') }
+                  onKeyPress={ () => changeSortBy('teamName') }
+                >
+                  Team Name
+                  {
+                    showSortIcon('teamName')
+                    && (filters.sortType === 'ASC' ? <ChevronUp size={ 13 } /> : <ChevronDown size={ 13 } />)
+                  }
+                </button>
+              </th>
+              <th className="border-top-0 border-bottom-0">
+                <button
+                  type="button"
+                  className="button_click"
+                  onClick={ () => changeSortBy('count') }
+                  onKeyPress={ () => changeSortBy('count') }
+                >
+                  Team Size
+                  {
+                    showSortIcon('count')
+                    && (filters.sortType === 'ASC' ? <ChevronUp size={ 13 } /> : <ChevronDown size={ 13 } />)
+                  }
+                </button>
+              </th>
+              <th className="border-top-0 border-bottom-0">
+                <button
+                  type="button"
+                  className="button_click"
+                  onClick={ () => changeSortBy('name') }
+                  onKeyPress={ () => changeSortBy('name') }
+                >
+                  Supervisor Name
+                  {
+                    showSortIcon('supervisor')
+                    && (filters.sortType === 'ASC' ? <ChevronUp size={ 13 } /> : <ChevronDown size={ 13 } />)
+                  }
+                </button>
+              </th>
               <th className="border-top-0 border-bottom-0">Actions</th>
             </tr>
           </thead>

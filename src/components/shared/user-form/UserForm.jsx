@@ -35,7 +35,7 @@ const UserForm = ({ title, cancelLink, handleSubmitForm }) => {
     status: 'Active'
   });
   const [filters] = useState({
-    limit: 10, offset: 0, sortType: 'ASC', sortField: 'createdAt'
+    limit: 10, offset: 0, sortType: 'ASC', sortBy: 'createdAt'
   });
   const [teamList, setTeamList] = useState([]);
   const [designationList, setDesignationList] = useState([]);

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { UserPlus } from 'react-feather';
+import { UserPlus, ChevronUp, ChevronDown } from 'react-feather';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { toast } from 'react-toastify';
@@ -14,7 +14,7 @@ import DeleteUser from '../../shared/delete-user/DeleteUser';
 const SupervisorList = ({ history }) => {
   const [supervisors, setSupervisor] = useState([]);
   const [filters] = useState({
-    limit: 10, offset: 0, sortType: 'ASC', sortField: 'createdAt'
+    limit: 10, offset: 0, sortType: 'ASC', sortBy: 'createdAt'
   });
   const [selectedSupervisor, setSelectedSupervisor] = useState();
   const [show, setShow] = useState(false);
@@ -61,12 +61,31 @@ const SupervisorList = ({ history }) => {
   };
 
   /**
+ * Changing Sort Field
+ */
+  const changeSortBy = (sortBy) => {
+    if (filters.sortBy === sortBy) {
+      filters.sortType = filters.sortType === 'ASC' ? 'DESC' : 'ASC';
+    } else {
+      filters.sortBy = sortBy;
+      filters.sortType = 'ASC';
+    }
+    getSupervisorList();
+  };
+
+  /**
  * On Edit
  */
   const onEdit = (supervisor) => {
     window.localStorage.setItem('currentUser', JSON.stringify({ ...supervisor }));
     history.push(`/supervisor/id:${supervisor.id}`);
   };
+
+  /**
+* Showing Icon for Sorting
+*/
+
+  const showSortIcon = (sortBy) => sortBy === filters.sortBy;
 
   return (
     <>
@@ -89,9 +108,48 @@ const SupervisorList = ({ history }) => {
         <table className="table table-hover mb-0">
           <thead>
             <tr>
-              <th className="border-top-0 border-bottom-0">Basic Details</th>
-              <th className="border-top-0 border-bottom-0">Contact Details</th>
-              <th className="border-top-0 border-bottom-0">Team Details</th>
+              <th className="border-top-0 border-bottom-0">
+                <button
+                  type="button"
+                  className="button_click"
+                  onClick={ () => changeSortBy('name') }
+                  onKeyPress={ () => changeSortBy('name') }
+                >
+                  Basic Details
+                  {
+                    showSortIcon('name')
+                    && (filters.sortType === 'ASC' ? <ChevronUp size={ 13 } /> : <ChevronDown size={ 13 } />)
+                  }
+                </button>
+              </th>
+              <th className="border-top-0 border-bottom-0">
+                <button
+                  type="button"
+                  className="button_click"
+                  onClick={ () => changeSortBy('email') }
+                  onKeyPress={ () => changeSortBy('email') }
+                >
+                  Contact Details
+                  {
+                    showSortIcon('email')
+                    && (filters.sortType === 'ASC' ? <ChevronUp size={ 13 } /> : <ChevronDown size={ 13 } />)
+                  }
+                </button>
+              </th>
+              <th className="border-top-0 border-bottom-0">
+                <button
+                  type="button"
+                  className="button_click"
+                  onClick={ () => changeSortBy('teamName') }
+                  onKeyPress={ () => changeSortBy('teamName') }
+                >
+                  Team Details
+                  {
+                    showSortIcon('teamName')
+                  && (filters.sortType === 'ASC' ? <ChevronUp size={ 13 } /> : <ChevronDown size={ 13 } />)
+                }
+                </button>
+              </th>
               <th className="border-top-0 border-bottom-0">Actions</th>
             </tr>
           </thead>
@@ -101,11 +159,11 @@ const SupervisorList = ({ history }) => {
                 <tr key={ supervisor.id }>
                   <td className={ index === 0 ? 'border-top-0' : '' }>
                     <span className="d-block">
-                      {supervisor.firstName || ''}
-                      {' '}
-                      {supervisor.middleName || ''}
-                      {' '}
-                      {supervisor.lastName || ''}
+                      { supervisor.firstName || '' }
+                      { ' ' }
+                      { supervisor.middleName || '' }
+                      { ' ' }
+                      { supervisor.lastName || '' }
                     </span>
                     <small className="text-muted">
                       (Since

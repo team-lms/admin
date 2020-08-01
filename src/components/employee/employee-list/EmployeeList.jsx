@@ -15,7 +15,7 @@ import DeleteUser from '../../shared/delete-user/DeleteUser';
 const EmployeeList = ({ history }) => {
   const [employees, setEmployees] = useState([]);
   const [filters] = useState({
-    limit: 10, offset: 0, sortType: 'DESC', sortField: 'createdAt'
+    limit: 10, offset: 0, sortType: 'DESC', sortBy: 'createdAt'
   });
   const [selectedEmployee, setSelectedEmployee] = useState([]);
   const [show, setShow] = useState(false);
@@ -64,11 +64,11 @@ const EmployeeList = ({ history }) => {
   /**
    * Changing Sort Field
    */
-  const changeSortField = (sortField) => {
-    if (filters.sortField === sortField) {
+  const changeSortBy = (sortBy) => {
+    if (filters.sortBy === sortBy) {
       filters.sortType = filters.sortType === 'ASC' ? 'DESC' : 'ASC';
     } else {
-      filters.sortField = sortField;
+      filters.sortBy = sortBy;
       filters.sortType = 'ASC';
     }
     getEmployeeList();
@@ -85,7 +85,7 @@ const EmployeeList = ({ history }) => {
   * Showing Icon for Sorting
   */
 
-  const showSortIcon = (sortField) => sortField === filters.sortField;
+  const showSortIcon = (sortBy) => sortBy === filters.sortBy;
 
 
   return (
@@ -113,8 +113,8 @@ const EmployeeList = ({ history }) => {
                 <button
                   type="button"
                   className="button_click"
-                  onClick={ () => changeSortField('name') }
-                  onKeyPress={ () => changeSortField('name') }
+                  onClick={ () => changeSortBy('name') }
+                  onKeyPress={ () => changeSortBy('name') }
                 >
                   Basic Details
                   {
@@ -127,8 +127,8 @@ const EmployeeList = ({ history }) => {
                 <button
                   type="button"
                   className="button_click"
-                  onClick={ () => changeSortField('email') }
-                  onKeyPress={ () => changeSortField('email') }
+                  onClick={ () => changeSortBy('email') }
+                  onKeyPress={ () => changeSortBy('email') }
                 >
                   Contact Details
                   {
@@ -141,12 +141,12 @@ const EmployeeList = ({ history }) => {
                 <button
                   type="button"
                   className="button_click"
-                  onClick={ () => changeSortField('supervisor') }
-                  onKeyPress={ () => changeSortField('supervisor') }
+                  onClick={ () => changeSortBy('supervisorName') }
+                  onKeyPress={ () => changeSortBy('supervisorName') }
                 >
                   Supervisor
                   {
-                  showSortIcon('supervisor')
+                    showSortIcon('supervisorName')
                   && (filters.sortType === 'ASC' ? <ChevronUp size={ 13 } /> : <ChevronDown size={ 13 } />)
                 }
                 </button>
