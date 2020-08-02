@@ -72,7 +72,6 @@ const TeamList = () => {
     getSupervisorList();
   };
 
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     setTeamForm(() => ({
@@ -154,7 +153,6 @@ const TeamList = () => {
       id: supervisor.id
     }) : '';
   };
-
 
   /**
    * Changing Sort Field
@@ -414,6 +412,5 @@ const TeamList = () => {
     </>
   );
 };
-
 
 export default TeamList;
