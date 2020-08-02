@@ -9,20 +9,22 @@ import action from '../../../assets/img/Setting-2.png';
 import Header from '../../header/header';
 import { Supervisor } from '../../../api/service';
 import DeleteUser from '../../shared/delete-user/DeleteUser';
-
+import Pagination from '../../shared/pagination/pagination';
 
 const SupervisorList = ({ history }) => {
   const [supervisors, setSupervisor] = useState([]);
-  const [filters] = useState({
+  const [filters, setFilters] = useState({
     limit: 10, offset: 0, sortType: 'ASC', sortBy: 'createdAt'
   });
   const [selectedSupervisor, setSelectedSupervisor] = useState();
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
+  const [supCount, setSupCount] = useState(null);
 
   const getSupervisorList = useCallback(async () => {
     const result = await Supervisor.getSupervisorList(filters);
     if (result.data.success) {
+      setSupCount(result.data.data.count);
       setSupervisor(result.data.data.rows);
     } else {
       toast.error(result.message);
@@ -86,6 +88,13 @@ const SupervisorList = ({ history }) => {
 */
 
   const showSortIcon = (sortBy) => sortBy === filters.sortBy;
+
+  const paginate = (e, page) => {
+    setFilters((prev) => ({
+      ...prev,
+      offset: (page - 1) * prev.limit
+    }));
+  };
 
   return (
     <>
@@ -214,6 +223,16 @@ const SupervisorList = ({ history }) => {
             }
           </tbody>
         </table>
+      </div>
+      <div className="d-flex align-items-center justify-content-center">
+        { supCount
+        && (
+          <Pagination
+            totalPage={ Math.ceil(supCount / filters.limit) }
+            activePage={ filters.offset ? (filters.offset / filters.limit + 1) : 1 }
+            paginate={ paginate }
+          />
+        )}
       </div>
       { show
         && (

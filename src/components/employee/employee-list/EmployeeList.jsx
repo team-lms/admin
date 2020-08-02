@@ -14,7 +14,7 @@ import Pagination from '../../shared/pagination/pagination';
 const EmployeeList = ({ history }) => {
   const [employees, setEmployees] = useState([]);
   const [filters, setFilters] = useState({
-    limit: 1, offset: 0, sortType: 'DESC', sortBy: 'createdAt'
+    limit: 10, offset: 0, sortType: 'DESC', sortBy: 'createdAt'
   });
   const [empCount, setEmpCount] = useState(null);
   const [selectedEmployee, setSelectedEmployee] = useState([]);
@@ -228,7 +228,7 @@ const EmployeeList = ({ history }) => {
           </tbody>
         </table>
       </div>
-      <div>
+      <div className="d-flex align-items-center justify-content-center">
         { empCount && (
           <Pagination
             totalPage={ Math.ceil(empCount / filters.limit) }

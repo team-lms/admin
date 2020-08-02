@@ -9,21 +9,23 @@ import action from '../../../assets/img/Setting-2.png';
 import Header from '../../header/header';
 import { HumanResource } from '../../../api/service';
 import DeleteUser from '../../shared/delete-user/DeleteUser';
-
+import Pagination from '../../shared/pagination/pagination';
 
 const HumanResourceList = ({ history }) => {
   const [humanResources, setHumanResources] = useState([]);
-  const [filters] = useState({
+  const [filters, setFilters] = useState({
     limit: 10, offset: 0, sortType: 'ASC', sortBy: 'createdAt'
   });
   const [selectedHumanResource, setSelectedHumanResource] = useState();
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
+  const [hrCount, setHrCount] = useState(null);
 
   const getHumanResourceList = useCallback(async () => {
     const result = await HumanResource.getHumanResourceList(filters);
     if (result.data.success) {
+      setHrCount(result.data.data.count);
       setHumanResources(result.data.data.rows);
     } else {
       toast.error(result.message);
@@ -87,6 +89,13 @@ const HumanResourceList = ({ history }) => {
    */
 
   const showSortIcon = (sortBy) => sortBy === filters.sortBy;
+
+  const paginate = (e, page) => {
+    setFilters((prev) => ({
+      ...prev,
+      offset: (page - 1) * prev.limit
+    }));
+  };
 
   return (
     <>
@@ -224,6 +233,18 @@ const HumanResourceList = ({ history }) => {
             }
           </tbody>
         </table>
+      </div>
+      <div className="d-flex align-items-center justify-content-center">
+        {
+          hrCount
+          && (
+            <Pagination
+              totalPage={ Math.ceil(hrCount / filters.limit) }
+              activePage={ filters.offset ? (filters.offset / filters.limit + 1) : 1 }
+              paginate={ paginate }
+            />
+          )
+        }
       </div>
       { show
         && (

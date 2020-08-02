@@ -9,10 +9,11 @@ import { Teams, Supervisor } from '../../../api/service';
 import Header from '../../header/header';
 import action from '../../../assets/img/Setting-2.png';
 import DeleteUser from '../../shared/delete-user/DeleteUser';
+import Pagination from '../../shared/pagination/pagination';
 
 const TeamList = () => {
   const [teams, setTeams] = useState([]);
-  const [filters] = useState({
+  const [filters, setFilters] = useState({
     limit: 10, offset: 0, sortType: 'ASC', sortBy: 'createdAt'
   });
   const [show, setShow] = useState(false);
@@ -20,6 +21,7 @@ const TeamList = () => {
     submitted: false,
     errors: null
   });
+  const [teamCount, setTeamCount] = useState(null);
   const [teamDetails, setTeamDetails] = useState({
     teamName: '',
     supervisor: '',
@@ -40,6 +42,7 @@ const TeamList = () => {
   const getTeamList = useCallback(async () => {
     const result = await Teams.getTeamList(filters);
     if (result.data.success) {
+      setTeamCount(result.data.data.count);
       setTeams(result.data.data.rows);
     } else {
       toast.error(result.message);
@@ -187,6 +190,12 @@ const TeamList = () => {
 
   const showSortIcon = (sortBy) => sortBy === filters.sortBy;
 
+  const paginate = (e, page) => {
+    setFilters((prev) => ({
+      ...prev,
+      offset: (page - 1) * prev.limit
+    }));
+  };
 
   return (
     <>
@@ -310,6 +319,18 @@ const TeamList = () => {
 
           </tbody>
         </table>
+      </div>
+      <div className="d-flex align-items-center justify-content-center">
+        {
+            teamCount
+            && (
+              <Pagination
+                totalPage={ Math.ceil(teamCount / filters.limit) }
+                activePage={ filters.offset ? (filters.offset / filters.limit + 1) : 1 }
+                paginate={ paginate }
+              />
+            )
+          }
       </div>
       <Modal show={ show } onHide={ handleClose }>
         <Modal.Header closeButton>
