@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { UserPlus, ChevronUp, ChevronDown } from 'react-feather';
-import {
-  OverlayTrigger, Popover, Pagination
-} from 'react-bootstrap';
+import { OverlayTrigger, Popover } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
@@ -11,25 +9,22 @@ import action from '../../../assets/img/Setting-2.png';
 import { Employee } from '../../../api/service';
 import Header from '../../header/header';
 import DeleteUser from '../../shared/delete-user/DeleteUser';
+import Pagination from '../../shared/pagination/pagination';
 
 const EmployeeList = ({ history }) => {
   const [employees, setEmployees] = useState([]);
-  const [filters] = useState({
+  const [filters, setFilters] = useState({
     limit: 1, offset: 0, sortType: 'DESC', sortBy: 'createdAt'
-
   });
-  const [totalPage, setTotalPage] = useState(null);
+  const [empCount, setEmpCount] = useState(null);
   const [selectedEmployee, setSelectedEmployee] = useState([]);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
-  const items = [];
 
   const getEmployeeList = useCallback(async () => {
     const result = await Employee.getEmployeeList(filters);
     if (result.data.success) {
-      const totalPageNo = Math.ceil(result.data.data.count / filters.limit);
-      setTotalPage(totalPageNo);
-      pagination();
+      setEmpCount(result.data.data.count);
       setEmployees(result.data.data.rows);
     } else {
       toast.error(result.message);
@@ -39,19 +34,6 @@ const EmployeeList = ({ history }) => {
   useEffect(() => {
     getEmployeeList();
   }, [getEmployeeList]);
-
-  const pagination = () => {
-    for (let number = 1; number <= 5; number++) {
-      items.push(
-        <Pagination.Item key={ number } active={ 5 }>
-          { number }
-        </Pagination.Item>
-      );
-    }
-    console.log(1)
-
-  };
-
 
   /**
    * Delete Pop Up
@@ -107,6 +89,13 @@ const EmployeeList = ({ history }) => {
 
   const showSortIcon = (sortBy) => sortBy === filters.sortBy;
 
+  const paginate = (e, page) => {
+    setFilters((prev) => ({
+      ...prev,
+      offset: (page - 1) * prev.limit
+    }));
+  };
+
   return (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
@@ -125,7 +114,7 @@ const EmployeeList = ({ history }) => {
       </div>
 
       <div className="table-responsive mb-3">
-        <table className="table table-hover mb-0">
+        <table className="table table-hover">
           <thead>
             <tr>
               <th className="border-top-0 border-bottom-0">
@@ -204,11 +193,7 @@ const EmployeeList = ({ history }) => {
                     <span className="d-block">
                       { (employee.team
                         && employee.team.users.length > 0)
-                        ? `${employee.team.users[0].firstName || ''
-                        } ${
-                          employee.team.users[0].middleName || ''
-                        } ${employee.team.users[0].lastName || ''}` : 'NA' }
-
+                        ? `${employee.team.users[0].firstName || ''} ${employee.team.users[0].middleName || ''} ${employee.team.users[0].lastName || ''}` : 'NA' }
                     </span>
                     <small className="text-muted">
                       { (employee.teamAssociation && employee.teamAssociation.team.users.length > 0)
@@ -242,28 +227,15 @@ const EmployeeList = ({ history }) => {
             }
           </tbody>
         </table>
-        <div>
-          { totalPage
-            && (
-            <Pagination>
-              { items
-                // [Array(totalPage).keys()].map((singlePage, index) => (
-                //   <>
-                //     <Pagination.First />
-                //     <Pagination.Prev />
-                //     <Pagination.Item>
-                //       { index + 1 }
-                //       { ' ' }
-                //     </Pagination.Item>
-                //     <Pagination.Item>{ totalPage }</Pagination.Item>
-                //     <Pagination.Next />
-                //     <Pagination.Last />
-                //   </>
-                // ))
-             }
-            </Pagination>
-            )}
-        </div>
+      </div>
+      <div>
+        { empCount && (
+          <Pagination
+            totalPage={ Math.ceil(empCount / filters.limit) }
+            activePage={ filters.offset ? (filters.offset / filters.limit + 1) : 1 }
+            paginate={ paginate }
+          />
+        ) }
       </div>
       { show
         && (
@@ -288,6 +260,5 @@ EmployeeList.propTypes = {
     push: PropTypes.func
   }))
 };
-
 
 export default EmployeeList;
