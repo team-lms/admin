@@ -14,7 +14,7 @@ import Pagination from '../../shared/pagination/pagination';
 const SupervisorList = ({ history }) => {
   const [supervisors, setSupervisor] = useState([]);
   const [filters, setFilters] = useState({
-    limit: 10, offset: 0, sortType: 'ASC', sortBy: 'createdAt'
+    limit: 10, offset: 0, sortType: 'ASC', sortBy: 'createdAt', searchTerm: ''
   });
   const [selectedSupervisor, setSelectedSupervisor] = useState();
   const [show, setShow] = useState(false);
@@ -89,6 +89,9 @@ const SupervisorList = ({ history }) => {
 
   const showSortIcon = (sortBy) => sortBy === filters.sortBy;
 
+  /**
+ * Control Pagination Function
+ */
   const paginate = (e, page) => {
     setFilters((prev) => ({
       ...prev,
@@ -96,10 +99,20 @@ const SupervisorList = ({ history }) => {
     }));
   };
 
+  /**
+ * Handling Search Functionality
+ */
+  const handleSearch = async (search) => {
+    setFilters((prev) => ({
+      ...prev,
+      searchTerm: search
+    }));
+  };
+
   return (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-wrap align-items-center pt-3 pb-2 mb-3">
-        <Header selectedPage="Supervisors" />
+        <Header selectedPage="Supervisors" handleSearch={ handleSearch } />
         <div className="btn-toolbar mb-2 mb-md-0">
           <Link to="/supervisor/create">
             <button type="button" className="btn btn-sm btn-primary mr-2">
@@ -107,9 +120,6 @@ const SupervisorList = ({ history }) => {
               <UserPlus size={ 13 } />
             </button>
           </Link>
-
-          {/* <button type="button" className="btn btn-sm btn-outline-secondary">
-          Filters</button> */}
         </div>
       </div>
 
@@ -155,8 +165,8 @@ const SupervisorList = ({ history }) => {
                   Team Details
                   {
                     showSortIcon('teamName')
-                  && (filters.sortType === 'ASC' ? <ChevronUp size={ 13 } /> : <ChevronDown size={ 13 } />)
-                }
+                    && (filters.sortType === 'ASC' ? <ChevronUp size={ 13 } /> : <ChevronDown size={ 13 } />)
+                  }
                 </button>
               </th>
               <th className="border-top-0 border-bottom-0">Actions</th>
@@ -226,13 +236,13 @@ const SupervisorList = ({ history }) => {
       </div>
       <div className="d-flex align-items-center justify-content-center">
         { supCount
-        && (
-          <Pagination
-            totalPage={ Math.ceil(supCount / filters.limit) }
-            activePage={ filters.offset ? (filters.offset / filters.limit + 1) : 1 }
-            paginate={ paginate }
-          />
-        )}
+          && (
+            <Pagination
+              totalPage={ Math.ceil(supCount / filters.limit) }
+              activePage={ filters.offset ? (filters.offset / filters.limit + 1) : 1 }
+              paginate={ paginate }
+            />
+          ) }
       </div>
       { show
         && (

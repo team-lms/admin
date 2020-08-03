@@ -14,7 +14,7 @@ import Pagination from '../../shared/pagination/pagination';
 const TeamList = () => {
   const [teams, setTeams] = useState([]);
   const [filters, setFilters] = useState({
-    limit: 10, offset: 0, sortType: 'ASC', sortBy: 'createdAt'
+    limit: 10, offset: 0, sortType: 'ASC', sortBy: 'createdAt', searchTerm: ''
   });
   const [show, setShow] = useState(false);
   const [teamForm, setTeamForm] = useState({
@@ -195,10 +195,19 @@ const TeamList = () => {
     }));
   };
 
+  /**
+* Handling Search Functionality
+*/
+  const handleSearch = async (search) => {
+    setFilters((prev) => ({
+      ...prev,
+      searchTerm: search
+    }));
+  };
   return (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-wrap align-items-center pt-3 pb-2 mb-3">
-        <Header selectedPage="Teams" />
+        <Header selectedPage="Teams" handleSearch={ handleSearch } />
         <div className="btn-toolbar mb-2 mb-md-0">
           <button type="button" className="btn btn-sm btn-primary mr-2" onClick={ addTeamModal }>
             <span>Add</span>
