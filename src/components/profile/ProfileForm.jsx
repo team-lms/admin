@@ -1,7 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import moment from 'moment';
+import { connect, useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { toast } from 'react-toastify';
+import { validate as Validator } from 'validate.js';
+import { LoginUser } from '../../api/service';
+import { setProfile } from '../../store/actions/profile';
 
-const SettingsForm = () => {
+const SettingsForm = ({ profile }) => {
+  const dispatch = useDispatch();
   const [profileForm, setProfileForm] = useState({
     submitted: false,
     errors: null
@@ -12,8 +21,8 @@ const SettingsForm = () => {
     lastName: '',
     email: '',
     phoneNumber: '',
-    whatsAppNumber: '',
-    dateOfBirth: moment(),
+    whatsappNumber: '',
+    dateOfBirth: new Date(),
     address: '',
     pinCode: '',
     sex: '',
@@ -21,10 +30,47 @@ const SettingsForm = () => {
     nationality: '',
     designation: '',
     team: '',
-    hiredOn: moment(),
+    hiredOn: new Date(),
     jobType: '',
     status: ''
   });
+
+  useEffect(() => {
+    setProfileDetails((prevProfile) => ({
+      ...prevProfile,
+      ...profile,
+      dateOfBirth: moment(profile.dateOfBirth).toDate(),
+      hiredOn: moment(profile.hiredOn).toDate()
+    }
+    ));
+  }, []);
+
+  useEffect(() => {
+    const validationResult = Validator.validate(profileDetails, {
+      whatsappNumber: { length: { is: 10 } },
+      address: { presence: { allowEmpty: false } },
+      pinCode: {
+        presence: { allowEmpty: false },
+        numericality: { onlyInteger: true }
+      },
+      maritalStatus: { presence: { allowEmpty: false } },
+      jobType: { presence: { allowEmpty: false } },
+      status: { presence: { allowEmpty: false } }
+    });
+    setProfileForm((prev) => ({
+      ...prev,
+      errors: validationResult || null
+    }));
+  }, [profileDetails]);
+
+  const saveProfile = async (body) => {
+    const result = await LoginUser.updateProfile(body);
+    if (result.data.success) {
+      toast.success(result.data.message);
+      const updatedProfile = await LoginUser.getProfile();
+      dispatch(setProfile(updatedProfile.data.data));
+    }
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -32,6 +78,17 @@ const SettingsForm = () => {
       ...profileForm,
       submitted: true
     }));
+    console.log(profileForm);
+    if (profileForm.errors
+      && profileForm.errors.whatsappNumber
+      && profileForm.errors.whatsappNumber[0] && profileForm.whatsappNumber === '') {
+      delete (profileForm.errors.whatsappNumber);
+    }
+    if ((profileForm.errors === null)
+      || profileForm.errors.length === 0
+      || Object.keys(profileForm.errors).length === 0) {
+      saveProfile(profileDetails);
+    }
   };
 
   const handleChange = (event) => {
@@ -60,15 +117,7 @@ const SettingsForm = () => {
             <div className="col-4">
               <div className="form-group">
                 <label htmlFor="firstNameField">First Name</label>
-                <input
-                  className="form-control"
-                  type="text"
-                  id="firstNameField"
-                  name="firstName"
-                  placeholder="First Name"
-                  value={ profileDetails.firstName }
-                  onChange={ handleChange }
-                />
+                <span className="form-control">{ profileDetails.firstName }</span>
               </div>
             </div>
             <div className="col-4">
@@ -80,7 +129,7 @@ const SettingsForm = () => {
                   id="middleNameField"
                   name="middleName"
                   placeholder="Middle Name"
-                  value={ profileDetails.middleName }
+                  value={ profileDetails.middleName ? profileDetails.middleName : '' }
                   onChange={ handleChange }
                 />
               </div>
@@ -94,7 +143,7 @@ const SettingsForm = () => {
                   id="lastNameField"
                   name="lastName"
                   placeholder="Last Name"
-                  value={ profileDetails.lastName }
+                  value={ profileDetails.lastName ? profileDetails.lastName : '' }
                   onChange={ handleChange }
                 />
               </div>
@@ -103,15 +152,7 @@ const SettingsForm = () => {
             <div className="col-4">
               <div className="form-group">
                 <label htmlFor="phoneNumberField">Phone Number</label>
-                <input
-                  className="form-control"
-                  type="text"
-                  id="phoneNumberField"
-                  name="phoneNumber"
-                  placeholder="Phone Number"
-                  value={ profileDetails.phoneNumber }
-                  onChange={ handleChange }
-                />
+                <span className="form-control">{ profileDetails.phoneNumber }</span>
               </div>
             </div>
 
@@ -124,7 +165,7 @@ const SettingsForm = () => {
                   id="whatsappNumberField"
                   name="whatsappNumber"
                   placeholder="Whatsapp Number"
-                  value={ profileDetails.whatsappNumber }
+                  value={ profileDetails.whatsappNumber ? profileDetails.whatsappNumber : '' }
                   onChange={ handleChange }
                 />
               </div>
@@ -133,14 +174,24 @@ const SettingsForm = () => {
             <div className="col-4">
               <div className="form-group">
                 <label htmlFor="emailField">Email</label>
-                <span className="form-control">sijusamson@gmail.com</span>
+                <span className="form-control">{ profileDetails.email }</span>
               </div>
             </div>
 
             <div className="col-4">
               <div className="form-group">
                 <label htmlFor="dateOfBirthField">Date of Birth</label>
-                <span className="form-control">04/06/1995</span>
+                <DatePicker
+                  disabled
+                  selected={ profileDetails.dateOfBirth }
+                  id="dateOfBirthField"
+                  placeholder="Date of Birth"
+                  name="dateOfBirth"
+                  onChange={ (date) => handleChange({ target: { name: 'dateOfBirth', value: date } }) }
+                  showMonthDropdown
+                  showYearDropdown
+                  dropdownMode="select"
+                />
               </div>
             </div>
 
@@ -156,6 +207,14 @@ const SettingsForm = () => {
                   value={ profileDetails.address }
                   onChange={ handleChange }
                 />
+                { (profileForm.submitted
+                  && profileForm.errors
+                  && profileForm.errors.address)
+                  && (
+                    <span className="text-danger">
+                      { profileForm.errors.address[0] }
+                    </span>
+                  ) }
               </div>
             </div>
 
@@ -171,13 +230,21 @@ const SettingsForm = () => {
                   value={ profileDetails.pinCode }
                   onChange={ handleChange }
                 />
+                { (profileForm.submitted
+                  && profileForm.errors
+                  && profileForm.errors.pinCode)
+                  && (
+                    <span className="text-danger">
+                    { profileForm.errors.pinCode[0] }
+                    </span>
+                  ) }
               </div>
             </div>
 
             <div className="col-4">
               <div className="form-group">
                 <label htmlFor="sexField">Sex</label>
-                <span className="form-control">Male</span>
+                <span className="form-control">{ profileDetails.sex }</span>
               </div>
             </div>
 
@@ -199,21 +266,21 @@ const SettingsForm = () => {
                   <option value="Separated">Separated</option>
                   <option value="Divorced">Divorced</option>
                 </select>
-                {/* { (employeeForm.submitted
-                  && employeeForm.errors
-                  && employeeForm.errors.maritalStatus)
+                { (profileForm.submitted
+                  && profileForm.errors
+                  && profileForm.errors.maritalStatus)
                   && (
                     <span className="text-danger">
-                      { employeeForm.errors.maritalStatus[0] }
+                      { profileForm.errors.maritalStatus[0] }
                     </span>
-                  ) } */}
+                  ) }
               </div>
             </div>
 
             <div className="col-4">
               <div className="form-group">
                 <label htmlFor="nationalityField">Nationality</label>
-                <span className="form-control">Indian</span>
+                <span className="form-control">{ profileDetails.nationality }</span>
               </div>
             </div>
           </div>
@@ -223,51 +290,23 @@ const SettingsForm = () => {
             <div className="col-6">
               <div className="form-group">
                 <label htmlFor="designationField">Designation</label>
-                <select
-                  className="custom-select"
-                  type="text"
-                  id="designationField"
-                  name="designation"
-                  value={ profileDetails.designation }
-                  onChange={ handleChange }
-                >
-                  <option value="">Select a Designation</option>
-                  <option value="Active">Active</option>
-                  <option value="Inactive">Inactive</option>
-                </select>
-              </div>
-            </div>
-
-            <div className="col-6">
-              <div className="form-group">
-                <label htmlFor="teamField">Team</label>
-                <select
-                  className="custom-select"
-                  type="text"
-                  id="teamField"
-                  name="team"
-                  value={ profileDetails.team }
-                  onChange={ handleChange }
-                >
-                  <option value="">Select a Team</option>
-                  {/* { teamList.map((team) => (
-                    <option value={ team.teamName }>{ team.teamName }</option>
-                  )) } */}
-                </select>
-                { (profileForm.submitted
-                  && profileForm.errors
-                  && profileForm.errors.team)
-                  && (
-                    <span className="text-danger">
-                      { profileForm.errors.team[0] }
-                    </span>
-                  ) }
+                <span className="form-control">{ profileDetails.designation }</span>
               </div>
             </div>
             <div className="col-6">
               <div className="form-group">
                 <label htmlFor="hiredOnField">Hired On</label>
-                <span className="form-control">11/01/2020</span>
+                <DatePicker
+                  disabled
+                  selected={ profileDetails.hiredOn }
+                  id="hiredOnField"
+                  placeholder="Hired on"
+                  name="hiredOn"
+                  onChange={ (date) => handleChange({ target: { name: 'hiredOn', value: date } }) }
+                  showMonthDropdown
+                  showYearDropdown
+                  dropdownMode="select"
+                />
               </div>
             </div>
 
@@ -283,8 +322,8 @@ const SettingsForm = () => {
                   onChange={ handleChange }
                 >
                   <option value="">Select</option>
-                  <option value="Active">Part Time</option>
-                  <option value="Inactive">Full Time</option>
+                  <option value="Part Time">Part Time</option>
+                  <option value="Full Time">Full Time</option>
                 </select>
                 { (profileForm.submitted
                   && profileForm.errors
@@ -296,7 +335,11 @@ const SettingsForm = () => {
                   ) }
               </div>
             </div>
-
+            <div className="col-12 text-right">
+              <button type="submit" className="btn btn-primary mr-2">
+                Update
+              </button>
+            </div>
           </div>
         </div>
       </form>
@@ -304,4 +347,12 @@ const SettingsForm = () => {
   );
 };
 
-export default SettingsForm;
+SettingsForm.propTypes = {
+  profile: PropTypes.func.isRequired
+};
+
+const mapStateToProps = (state) => ({
+  profile: state.profile
+});
+
+export default connect(mapStateToProps)(SettingsForm);

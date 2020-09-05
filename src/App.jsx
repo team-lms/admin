@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import axios from 'axios';
 import './assets/scss/theme.scss';
 import './App.scss';
@@ -10,6 +10,9 @@ import {
   Route,
   Switch
 } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setProfile } from './store/actions/profile';
+import { LoginUser } from './api/service';
 
 import Navbar from './components/navbar/Navbar';
 import SideNav from './components/side-nav/SideNav';
@@ -24,17 +27,25 @@ import HumanResourceList from './components/human-resource-manager/human-resourc
 import HumanResourceForm from './components/human-resource-manager/human-resource-form/HumanResourceForm';
 
 import TeamList from './components/team/team-list/team-list';
-import ProfileForm from './components/Profile/ProfileForm';
+import ProfileForm from './components/profile/ProfileForm';
 
 axios.interceptors.request.use((config) => {
   if (config.url !== 'https://restcountries.eu/rest/v2/all?fields=name;callingCodes;demonym') {
     // eslint-disable-next-line no-param-reassign
-    config.headers.authorization = 'Bearer + eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoie1wiaWRcIjoxLFwiZW1haWxcIjpcImFkbWluQGxtcy5jb21cIixcInJvbGVcIjpcIkFkbWluXCIsXCJwaG9uZU51bWJlclwiOlwiODA3NTQzODkyM1wiLFwiZmlyc3ROYW1lXCI6XCJBZG1pblwiLFwibGFzdE5hbWVcIjpudWxsfSIsImlhdCI6MTU5NTY1MzYwMSwiZXhwIjoxNTk1NzQwMDAxfQ.u3tTBKlsiv3A3MyVS0YVAkOGP2UVzq7ezTMd1UhLstE';
+    config.headers.authorization = 'Bearer + eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoie1wiaWRcIjoxLFwiZW1haWxcIjpcImFkbWluQGxtcy5jb21cIixcInJvbGVcIjpcIkFkbWluXCIsXCJwaG9uZU51bWJlclwiOlwiODA3NTQzODkyM1wiLFwiZmlyc3ROYW1lXCI6XCJBZG1pblwiLFwibGFzdE5hbWVcIjpudWxsfSIsImlhdCI6MTU5OTI4NjA4NSwiZXhwIjoxNTk5MzcyNDg1fQ.Wc7UnTR6SlQiVZhi49TO_iH6fVfKirlyIujNmFn2T4c';
   }
   return config;
 }, (error) => Promise.reject(error));
 
 function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const getUserProfile = async () => {
+      const result = await LoginUser.getProfile();
+      dispatch(setProfile(result.data.data));
+    };
+    getUserProfile();
+  }, []);
   return (
     <div className="App">
       <ToastContainer />

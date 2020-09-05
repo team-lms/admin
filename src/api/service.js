@@ -265,3 +265,28 @@ export const CountryList = {
     }
   }
 };
+
+export const LoginUser = {
+  /**
+   * Get Profile
+   */
+  getProfile: async () => {
+    try {
+      const result = await axios.get('/user');
+      return result;
+    } catch (error) {
+      return error.response.data;
+    }
+  },
+  /**
+   * Update Profile
+   */
+  updateProfile: async (user) => {
+    try {
+      const result = await axios.put(`/user/${user.id}`, { ...user });
+      return result;
+    } catch (error) {
+      return error.response.data;
+    }
+  }
+};
