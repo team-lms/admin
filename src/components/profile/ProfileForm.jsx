@@ -235,7 +235,7 @@ const SettingsForm = ({ profile }) => {
                   && profileForm.errors.pinCode)
                   && (
                     <span className="text-danger">
-                    { profileForm.errors.pinCode[0] }
+                      { profileForm.errors.pinCode[0] }
                     </span>
                   ) }
               </div>
