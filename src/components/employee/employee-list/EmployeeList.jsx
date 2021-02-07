@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { UserPlus } from 'react-feather';
-import {
-  OverlayTrigger, Popover
-} from 'react-bootstrap';
+import { UserPlus, ChevronUp, ChevronDown } from 'react-feather';
+import { OverlayTrigger, Popover } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
@@ -11,12 +9,14 @@ import action from '../../../assets/img/Setting-2.png';
 import { Employee } from '../../../api/service';
 import Header from '../../header/header';
 import DeleteUser from '../../shared/delete-user/DeleteUser';
+import Pagination from '../../shared/pagination/pagination';
 
 const EmployeeList = ({ history }) => {
   const [employees, setEmployees] = useState([]);
-  const [filters] = useState({
-    limit: 10, offset: 0, sortType: 'ASC', sortField: 'createdAt'
+  const [filters, setFilters] = useState({
+    limit: 10, offset: 0, sortType: 'DESC', sortBy: 'createdAt', searchTerm: ''
   });
+  const [empCount, setEmpCount] = useState(null);
   const [selectedEmployee, setSelectedEmployee] = useState([]);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -24,6 +24,7 @@ const EmployeeList = ({ history }) => {
   const getEmployeeList = useCallback(async () => {
     const result = await Employee.getEmployeeList(filters);
     if (result.data.success) {
+      setEmpCount(result.data.data.count);
       setEmployees(result.data.data.rows);
     } else {
       toast.error(result.message);
@@ -62,6 +63,19 @@ const EmployeeList = ({ history }) => {
   };
 
   /**
+   * Changing Sort Field
+   */
+  const changeSortBy = (sortBy) => {
+    if (filters.sortBy === sortBy) {
+      filters.sortType = filters.sortType === 'ASC' ? 'DESC' : 'ASC';
+    } else {
+      filters.sortBy = sortBy;
+      filters.sortType = 'ASC';
+    }
+    getEmployeeList();
+  };
+
+  /**
    * On Edit
    */
   const onEdit = (employee) => {
@@ -69,10 +83,36 @@ const EmployeeList = ({ history }) => {
     history.push(`/employee/id:${employee.id}`);
   };
 
+  /**
+  * Showing Icon for Sorting
+  */
+
+  const showSortIcon = (sortBy) => sortBy === filters.sortBy;
+
+  /**
+   * Control Pagination Function
+   */
+  const paginate = (e, page) => {
+    setFilters((prev) => ({
+      ...prev,
+      offset: (page - 1) * prev.limit
+    }));
+  };
+
+  /**
+   * Handling Search Functionality
+   */
+  const handleSearch = async (search) => {
+    setFilters((prev) => ({
+      ...prev,
+      searchTerm: search
+    }));
+  };
+
   return (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
-        <Header selectedPage="Employees" />
+        <Header selectedPage="Employees" handleSearch={ handleSearch } />
         <div className="btn-toolbar mb-2 mb-md-0">
           <Link to="/employee/create">
             <button type="button" className="btn btn-sm btn-primary mr-2">
@@ -80,18 +120,55 @@ const EmployeeList = ({ history }) => {
               <UserPlus size={ 13 } />
             </button>
           </Link>
-
-          <button type="button" className="btn btn-sm btn-outline-secondary">Filters</button>
         </div>
       </div>
 
       <div className="table-responsive mb-3">
-        <table className="table table-hover mb-0">
+        <table className="table table-hover">
           <thead>
             <tr>
-              <th className="border-top-0 border-bottom-0">Basic Details</th>
-              <th className="border-top-0 border-bottom-0">Contact Details</th>
-              <th className="border-top-0 border-bottom-0">Supervisor</th>
+              <th className="border-top-0 border-bottom-0">
+                <button
+                  type="button"
+                  className="button_click"
+                  onClick={ () => changeSortBy('name') }
+                  onKeyPress={ () => changeSortBy('name') }
+                >
+                  Basic Details
+                  {
+                    showSortIcon('name')
+                    && (filters.sortType === 'ASC' ? <ChevronUp size={ 13 } /> : <ChevronDown size={ 13 } />)
+                  }
+                </button>
+              </th>
+              <th className="border-top-0 border-bottom-0">
+                <button
+                  type="button"
+                  className="button_click"
+                  onClick={ () => changeSortBy('email') }
+                  onKeyPress={ () => changeSortBy('email') }
+                >
+                  Contact Details
+                  {
+                    showSortIcon('email')
+                    && (filters.sortType === 'ASC' ? <ChevronUp size={ 13 } /> : <ChevronDown size={ 13 } />)
+                  }
+                </button>
+              </th>
+              <th className="border-top-0 border-bottom-0">
+                <button
+                  type="button"
+                  className="button_click"
+                  onClick={ () => changeSortBy('supervisorName') }
+                  onKeyPress={ () => changeSortBy('supervisorName') }
+                >
+                  Supervisor
+                  {
+                    showSortIcon('supervisorName')
+                    && (filters.sortType === 'ASC' ? <ChevronUp size={ 13 } /> : <ChevronDown size={ 13 } />)
+                  }
+                </button>
+              </th>
               <th className="border-top-0 border-bottom-0">Actions</th>
             </tr>
           </thead>
@@ -101,40 +178,36 @@ const EmployeeList = ({ history }) => {
                 <tr key={ employee.id }>
                   <td className={ index === 0 ? 'border-top-0' : '' }>
                     <span className="d-block">
-                      {employee.firstName}
-                      {' '}
-                      {employee.middleName}
-                      {' '}
-                      {employee.lastName}
+                      { employee.firstName }
+                      { ' ' }
+                      { employee.middleName }
+                      { ' ' }
+                      { employee.lastName }
                     </span>
                     <small className="text-muted">
                       (Since
-                      {' '}
-                      {moment(employee.createdAt).format('Do MMM YYYY')}
+                      { ' ' }
+                      { moment(employee.createdAt).format('Do MMM YYYY') }
                       )
                     </small>
                   </td>
                   <td className={ index === 0 ? 'border-top-0' : '' }>
                     <span className="d-inline-block">
                       <span className="d-block">
-                        {employee.email}
+                        { employee.email }
                       </span>
-                      <small className="text-muted">{employee.phoneNumber}</small>
+                      <small className="text-muted">{ employee.phoneNumber }</small>
                     </span>
                   </td>
                   <td className={ index === 0 ? 'border-top-0' : '' }>
                     <span className="d-block">
-                      {(employee.team
+                      { (employee.team
                         && employee.team.users.length > 0)
-                        ? `${employee.team.users[0].firstName || ''
-                        } ${
-                          employee.team.users[0].middleName || ''
-                        } ${employee.team.users[0].lastName || ''}` : 'NA'}
-
+                        ? `${employee.team.users[0].firstName || ''} ${employee.team.users[0].middleName || ''} ${employee.team.users[0].lastName || ''}` : 'NA' }
                     </span>
                     <small className="text-muted">
-                      {(employee.teamAssociation && employee.teamAssociation.team.users.length > 0)
-                        && (employee.teamAssociation.team.users[0].designation.name)}
+                      { (employee.teamAssociation && employee.teamAssociation.team.users.length > 0)
+                        && (employee.teamAssociation.team.users[0].designation.name) }
                     </small>
                   </td>
                   <td className={ index === 0 ? 'border-top-0' : '' }>
@@ -165,7 +238,16 @@ const EmployeeList = ({ history }) => {
           </tbody>
         </table>
       </div>
-      {show
+      <div className="d-flex align-items-center justify-content-center">
+        { empCount && (
+          <Pagination
+            totalPage={ Math.ceil(empCount / filters.limit) }
+            activePage={ filters.offset ? (filters.offset / filters.limit + 1) : 1 }
+            paginate={ paginate }
+          />
+        ) }
+      </div>
+      { show
         && (
           <DeleteUser
             title="Delete Employee"
@@ -173,7 +255,7 @@ const EmployeeList = ({ history }) => {
             handleClose={ handleClose }
             deleteUser={ deleteEmployee }
           />
-        )}
+        ) }
 
     </>
   );
@@ -188,6 +270,5 @@ EmployeeList.propTypes = {
     push: PropTypes.func
   }))
 };
-
 
 export default EmployeeList;

@@ -6,7 +6,7 @@
     "build": "react-scripts build && rm build/static/**/*.map",
     "eject": "react-scripts eject",
     "lint": "eslint --ignore-pattern .gitignore '**/*.{js,jsx}' --fix",
-    "start": "react-scripts start",
+    "start": "PORT=3006 react-scripts start",
     "test": "react-scripts test"
   },
   "dependencies": {

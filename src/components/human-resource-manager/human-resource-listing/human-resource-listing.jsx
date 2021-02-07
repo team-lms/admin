@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { UserPlus } from 'react-feather';
+import { UserPlus, ChevronUp, ChevronDown } from 'react-feather';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
@@ -9,21 +9,23 @@ import action from '../../../assets/img/Setting-2.png';
 import Header from '../../header/header';
 import { HumanResource } from '../../../api/service';
 import DeleteUser from '../../shared/delete-user/DeleteUser';
-
+import Pagination from '../../shared/pagination/pagination';
 
 const HumanResourceList = ({ history }) => {
   const [humanResources, setHumanResources] = useState([]);
-  const [filters] = useState({
-    limit: 10, offset: 0, sortType: 'ASC', sortField: 'createdAt'
+  const [filters, setFilters] = useState({
+    limit: 10, offset: 0, sortType: 'ASC', sortBy: 'createdAt'
   });
   const [selectedHumanResource, setSelectedHumanResource] = useState();
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
+  const [hrCount, setHrCount] = useState(null);
 
   const getHumanResourceList = useCallback(async () => {
     const result = await HumanResource.getHumanResourceList(filters);
     if (result.data.success) {
+      setHrCount(result.data.data.count);
       setHumanResources(result.data.data.rows);
     } else {
       toast.error(result.message);
@@ -62,6 +64,19 @@ const HumanResourceList = ({ history }) => {
   };
 
   /**
+   * Changing Sort Field
+   */
+  const changeSortBy = (sortBy) => {
+    if (filters.sortBy === sortBy) {
+      filters.sortType = filters.sortType === 'ASC' ? 'DESC' : 'ASC';
+    } else {
+      filters.sortBy = sortBy;
+      filters.sortType = 'ASC';
+    }
+    getHumanResourceList();
+  };
+
+  /**
   * On Edit
   */
   const onEdit = (hr) => {
@@ -69,10 +84,33 @@ const HumanResourceList = ({ history }) => {
     history.push(`/humanresource/id:${hr.id}`);
   };
 
+  /**
+   * Showing Icon for Sorting
+   */
+
+  const showSortIcon = (sortBy) => sortBy === filters.sortBy;
+
+  const paginate = (e, page) => {
+    setFilters((prev) => ({
+      ...prev,
+      offset: (page - 1) * prev.limit
+    }));
+  };
+
+  /**
+ * Handling Search Functionality
+ */
+  const handleSearch = async (search) => {
+    setFilters((prev) => ({
+      ...prev,
+      searchTerm: search
+    }));
+  };
+
   return (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
-        <Header selectedPage="Human Resource Managers" />
+        <Header selectedPage="Human Resource Managers" handleSearch={ handleSearch } />
         <div className="btn-toolbar mb-2 mb-md-0">
           <Link to="/humanresource/create">
             <button type="button" className="btn btn-sm btn-primary mr-2">
@@ -80,7 +118,8 @@ const HumanResourceList = ({ history }) => {
               <UserPlus size={ 13 } />
             </button>
           </Link>
-          <button type="button" className="btn btn-sm btn-outline-secondary">Filters</button>
+          {/* <button type="button" className="btn btn-sm btn-outline-secondary">
+          Filters</button> */}
         </div>
       </div>
 
@@ -88,9 +127,48 @@ const HumanResourceList = ({ history }) => {
         <table className="table table-hover mb-0">
           <thead>
             <tr>
-              <th className="border-top-0 border-bottom-0">Basic Details</th>
-              <th className="border-top-0 border-bottom-0">Contact Details</th>
-              <th className="border-top-0 border-bottom-0">Supervisor</th>
+              <th className="border-top-0 border-bottom-0">
+                <button
+                  type="button"
+                  className="button_click"
+                  onClick={ () => changeSortBy('name') }
+                  onKeyPress={ () => changeSortBy('name') }
+                >
+                  Basic Details
+                  {
+                    showSortIcon('name')
+                    && (filters.sortType === 'ASC' ? <ChevronUp size={ 13 } /> : <ChevronDown size={ 13 } />)
+                  }
+                </button>
+              </th>
+              <th className="border-top-0 border-bottom-0">
+                <button
+                  type="button"
+                  className="button_click"
+                  onClick={ () => changeSortBy('email') }
+                  onKeyPress={ () => changeSortBy('email') }
+                >
+                  Contact Details
+                  {
+                    showSortIcon('email')
+                    && (filters.sortType === 'ASC' ? <ChevronUp size={ 13 } /> : <ChevronDown size={ 13 } />)
+                  }
+                </button>
+              </th>
+              <th className="border-top-0 border-bottom-0">
+                <button
+                  type="button"
+                  className="button_click"
+                  onClick={ () => changeSortBy('supervisor') }
+                  onKeyPress={ () => changeSortBy('supervisor') }
+                >
+                  Supervisor
+                  {
+                    showSortIcon('supervisor')
+                    && (filters.sortType === 'ASC' ? <ChevronUp size={ 13 } /> : <ChevronDown size={ 13 } />)
+                  }
+                </button>
+              </th>
               <th className="border-top-0 border-bottom-0">Actions</th>
             </tr>
           </thead>
@@ -165,6 +243,18 @@ const HumanResourceList = ({ history }) => {
             }
           </tbody>
         </table>
+      </div>
+      <div className="d-flex align-items-center justify-content-center">
+        {
+          hrCount
+          && (
+            <Pagination
+              totalPage={ Math.ceil(hrCount / filters.limit) }
+              activePage={ filters.offset ? (filters.offset / filters.limit + 1) : 1 }
+              paginate={ paginate }
+            />
+          )
+        }
       </div>
       { show
         && (

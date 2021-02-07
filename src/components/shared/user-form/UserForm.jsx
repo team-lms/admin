@@ -29,13 +29,13 @@ const UserForm = ({ title, cancelLink, handleSubmitForm }) => {
     maritalStatus: '',
     nationality: '',
     designation: '',
-    teamId: '',
+    teamId: null,
     hiredOn: new Date(),
     jobType: 'Full Time',
     status: 'Active'
   });
   const [filters] = useState({
-    limit: 10, offset: 0, sortType: 'ASC', sortField: 'createdAt'
+    limit: 10, offset: 0, sortType: 'ASC', sortBy: 'createdAt'
   });
   const [teamList, setTeamList] = useState([]);
   const [designationList, setDesignationList] = useState([]);
@@ -49,6 +49,7 @@ const UserForm = ({ title, cancelLink, handleSubmitForm }) => {
       setUserDetails((userDetail) => ({
         ...userDetail,
         ...user,
+        teamId: user.teamAssociation.team.id,
         dateOfBirth: moment(user.dateOfBirth).toDate(),
         hiredOn: moment(user.hiredOn).toDate()
       }));

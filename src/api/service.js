@@ -15,7 +15,8 @@ export const Employee = {
           offset: filters.offset,
           limit: filters.limit,
           sortType: filters.sortType,
-          sortField: filters.sortField
+          sortBy: filters.sortBy,
+          searchTerm: filters.searchTerm
         }
       });
       return result;
@@ -72,7 +73,8 @@ export const HumanResource = {
           offset: filters.offset,
           limit: filters.limit,
           sortType: filters.sortType,
-          sortField: filters.sortField
+          sortBy: filters.sortBy,
+          searchTerm: filters.searchTerm
         }
       });
       return result;
@@ -127,7 +129,8 @@ export const Supervisor = {
           offset: filters.offset,
           limit: filters.limit,
           sortType: filters.sortType,
-          sortField: filters.sortField
+          sortBy: filters.sortBy,
+          searchTerm: filters.searchTerm
         }
       });
       return result;
@@ -180,8 +183,9 @@ export const Teams = {
         params: {
           offset: filters.offset,
           limit: filters.limit,
-          sortField: filters.sortField,
-          sortType: filters.sortType
+          sortBy: filters.sortBy,
+          sortType: filters.sortType,
+          searchTerm: filters.searchTerm
         }
       });
       return result;
@@ -241,7 +245,7 @@ export const Designation = {
         params: {
           offset: filters.offset,
           limit: filters.limit,
-          sortField: filters.sortField,
+          sortBy: filters.sortBy,
           sortType: filters.sortType
         }
       });

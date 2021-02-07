@@ -3,23 +3,25 @@ import { toast } from 'react-toastify';
 import {
   OverlayTrigger, Popover, Modal
 } from 'react-bootstrap';
-import { UserPlus } from 'react-feather';
+import { UserPlus, ChevronUp, ChevronDown } from 'react-feather';
 import moment from 'moment';
 import { Teams, Supervisor } from '../../../api/service';
 import Header from '../../header/header';
 import action from '../../../assets/img/Setting-2.png';
 import DeleteUser from '../../shared/delete-user/DeleteUser';
+import Pagination from '../../shared/pagination/pagination';
 
 const TeamList = () => {
   const [teams, setTeams] = useState([]);
-  const [filters] = useState({
-    limit: 10, offset: 0, sortType: 'ASC', sortField: 'createdAt'
+  const [filters, setFilters] = useState({
+    limit: 10, offset: 0, sortType: 'ASC', sortBy: 'createdAt', searchTerm: ''
   });
   const [show, setShow] = useState(false);
   const [teamForm, setTeamForm] = useState({
     submitted: false,
     errors: null
   });
+  const [teamCount, setTeamCount] = useState(null);
   const [teamDetails, setTeamDetails] = useState({
     teamName: '',
     supervisor: '',
@@ -40,6 +42,7 @@ const TeamList = () => {
   const getTeamList = useCallback(async () => {
     const result = await Teams.getTeamList(filters);
     if (result.data.success) {
+      setTeamCount(result.data.data.count);
       setTeams(result.data.data.rows);
     } else {
       toast.error(result.message);
@@ -68,7 +71,6 @@ const TeamList = () => {
     setButtonName('Create');
     getSupervisorList();
   };
-
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -153,6 +155,19 @@ const TeamList = () => {
   };
 
   /**
+   * Changing Sort Field
+   */
+  const changeSortBy = (sortBy) => {
+    if (filters.sortBy === sortBy) {
+      filters.sortType = filters.sortType === 'ASC' ? 'DESC' : 'ASC';
+    } else {
+      filters.sortBy = sortBy;
+      filters.sortType = 'ASC';
+    }
+    getTeamList();
+  };
+
+  /**
    * Edit a Team
    */
   const onEdit = (team) => {
@@ -167,16 +182,39 @@ const TeamList = () => {
     getSupervisorList();
   };
 
+  /**
+ * Showing Icon for Sorting
+ */
+
+  const showSortIcon = (sortBy) => sortBy === filters.sortBy;
+
+  const paginate = (e, page) => {
+    setFilters((prev) => ({
+      ...prev,
+      offset: (page - 1) * prev.limit
+    }));
+  };
+
+  /**
+* Handling Search Functionality
+*/
+  const handleSearch = async (search) => {
+    setFilters((prev) => ({
+      ...prev,
+      searchTerm: search
+    }));
+  };
   return (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-wrap align-items-center pt-3 pb-2 mb-3">
-        <Header selectedPage="Teams" />
+        <Header selectedPage="Teams" handleSearch={ handleSearch } />
         <div className="btn-toolbar mb-2 mb-md-0">
           <button type="button" className="btn btn-sm btn-primary mr-2" onClick={ addTeamModal }>
             <span>Add</span>
             <UserPlus size={ 13 } />
           </button>
-          <button type="button" className="btn btn-sm btn-outline-secondary">Filters</button>
+          {/* <button type="button" className="btn btn-sm btn-outline-secondary">
+          Filters</button> */}
         </div>
       </div>
 
@@ -184,9 +222,48 @@ const TeamList = () => {
         <table className="table table-hover mb-0">
           <thead>
             <tr>
-              <th className="border-top-0 border-bottom-0">Team Name</th>
-              <th className="border-top-0 border-bottom-0">Team Size</th>
-              <th className="border-top-0 border-bottom-0">Supervisor Name</th>
+              <th className="border-top-0 border-bottom-0">
+                <button
+                  type="button"
+                  className="button_click"
+                  onClick={ () => changeSortBy('teamName') }
+                  onKeyPress={ () => changeSortBy('teamName') }
+                >
+                  Team Name
+                  {
+                    showSortIcon('teamName')
+                    && (filters.sortType === 'ASC' ? <ChevronUp size={ 13 } /> : <ChevronDown size={ 13 } />)
+                  }
+                </button>
+              </th>
+              <th className="border-top-0 border-bottom-0">
+                <button
+                  type="button"
+                  className="button_click"
+                  onClick={ () => changeSortBy('count') }
+                  onKeyPress={ () => changeSortBy('count') }
+                >
+                  Team Size
+                  {
+                    showSortIcon('count')
+                    && (filters.sortType === 'ASC' ? <ChevronUp size={ 13 } /> : <ChevronDown size={ 13 } />)
+                  }
+                </button>
+              </th>
+              <th className="border-top-0 border-bottom-0">
+                <button
+                  type="button"
+                  className="button_click"
+                  onClick={ () => changeSortBy('name') }
+                  onKeyPress={ () => changeSortBy('name') }
+                >
+                  Supervisor Name
+                  {
+                    showSortIcon('supervisor')
+                    && (filters.sortType === 'ASC' ? <ChevronUp size={ 13 } /> : <ChevronDown size={ 13 } />)
+                  }
+                </button>
+              </th>
               <th className="border-top-0 border-bottom-0">Actions</th>
             </tr>
           </thead>
@@ -249,6 +326,18 @@ const TeamList = () => {
 
           </tbody>
         </table>
+      </div>
+      <div className="d-flex align-items-center justify-content-center">
+        {
+            teamCount
+            && (
+              <Pagination
+                totalPage={ Math.ceil(teamCount / filters.limit) }
+                activePage={ filters.offset ? (filters.offset / filters.limit + 1) : 1 }
+                paginate={ paginate }
+              />
+            )
+          }
       </div>
       <Modal show={ show } onHide={ handleClose }>
         <Modal.Header closeButton>
@@ -332,6 +421,5 @@ const TeamList = () => {
     </>
   );
 };
-
 
 export default TeamList;
